@@ -24,7 +24,7 @@ in {
     deadnix
     statix
     #wget
-    $imagemagickBig
+    #$imagemagickBig
     # /nvim
     #unstable.kitty
     obsidian

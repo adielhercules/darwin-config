@@ -61,20 +61,14 @@ outputs = inputs@{ self, paths, nix-darwin, nixpkgs, nixpkgs-unstable, home-mana
 
   outputs = inputs@{ self, paths, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager
     , homebrew-bundle, homebrew-cask, homebrew-core
-    , homebrew-xcodesorg, nix-homebrew, ... }: 
-  let
-    configuration = { pkgs, config, ... }: (import ./config {
-      inherit self inputs nixpkgs nixpkgs-unstable nix-homebrew
+    , homebrew-xcodesorg, nix-homebrew, ... }: {
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#simple
+    darwinConfigurations = (import ./darwin {
+      inherit self inputs nix-darwin nixpkgs nixpkgs-unstable nix-homebrew
           home-manager homebrew-bundle homebrew-cask homebrew-core
           homebrew-xcodesorg paths;
     });
-  in
-  {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."mymbp" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
-    };
 
     # Expose the package set, including overlays, for convenience.
     #darwinPackages = self.darwinConfigurations."mymbp".pkgs;
