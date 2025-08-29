@@ -1,6 +1,17 @@
-{ self, paths, inputs, nix-darwin, nix-homebrew, nixpkgs, nixpkgs-unstable
-, home-manager, homebrew-bundle, homebrew-cask, homebrew-core
-, homebrew-xcodesorg, ... }:
+{ self
+, paths
+, inputs
+, nix-darwin
+, nix-homebrew
+, nixpkgs
+, nixpkgs-unstable
+, home-manager
+, homebrew-bundle
+, homebrew-cask
+, homebrew-core
+, homebrew-xcodesorg
+, ...
+}:
 
 let
   system = "aarch64-darwin";
@@ -16,7 +27,8 @@ let
     lcars = lcarsConfig.lcars;
   };
 
-in {
+in
+{
   "mymbp" = nix-darwin.lib.darwinSystem {
     modules = [
       ../options/default.nix
@@ -36,7 +48,7 @@ in {
           })
         ];
       }
-      #inputs.stylix.darwinModules.stylix
+      inputs.stylix.darwinModules.stylix
       nix-homebrew.darwinModules.nix-homebrew
       home-manager.darwinModules.home-manager
 
@@ -52,6 +64,7 @@ in {
           lazygit
           nodejs_22
           (lua5_1.withPackages (ps: with ps; [ luarocks ]))
+          bun
         ];
 
         environment.shellAliases = {
@@ -70,7 +83,7 @@ in {
           onActivation.cleanup = "zap";
           brews = [ "mas" "xcodes" "aria2" ];
           casks = [
-	          "mouseless@preview"
+            "mouseless@preview"
             "ghostty"
             "raycast"
             "font-monaspace"
@@ -119,6 +132,18 @@ in {
         nixpkgs.hostPlatform = system;
         nixpkgs.config.allowUnfree = true;
 
+        stylix = {
+          enable = true;
+          polarity = "dark";
+          base16Scheme = "${files}/lcars.yaml";
+          fonts = {
+            monospace = {
+              package = pkgs.nerd-fonts.jetbrains-mono;
+              name = "JetBrainsMono Nerd Font";
+            };
+          };
+        };
+
         users = {
           knownUsers = [ username ];
           users.${username} = lib.mkMerge [
@@ -146,7 +171,7 @@ in {
         home-manager.useUserPackages = true;
         home-manager.users.${username} = import "${nixPath}/darwin/home.nix";
         home-manager.extraSpecialArgs = inputs // specialArgs;
-	home-manager.backupFileExtension = "backup";
+        home-manager.backupFileExtension = "backup";
       }
     ];
 

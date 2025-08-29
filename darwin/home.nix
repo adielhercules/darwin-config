@@ -6,7 +6,7 @@ in {
     ../modules/home/ghostty.nix
     ../modules/home/neovim.nix
     ../modules/home/oh_my_posh.nix
-    #../modules/home/zellij.nix
+    ../modules/home/zellij.nix
     #../modules/home/darwin # this can be for aerospace
   ] ++ (lib.optional lcars.shell.fish.enable fishModule);
   home.stateVersion = "24.11"; # Please read the comment before changing.
@@ -28,6 +28,13 @@ in {
     # /nvim
     #unstable.kitty
     obsidian
+
+    # For rust
+    rustup # Rust toolchain installer
+    #cargo     # Rust package manager
+    #rustc     # Rust compiler
+    ripgrep
+    fd
   ];
 
   # I prefer the default: vim

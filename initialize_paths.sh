@@ -5,4 +5,5 @@
 } > ./nix/paths/flake.nix
 
 # This marks the file to be skipped in the worktree. Effectively ignoring changes to it.
-#git update-index --skip-worktree ./paths/flake.nix
+cd nix
+git update-index --skip-worktree ./paths/flake.nix
