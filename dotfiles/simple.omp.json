@@ -1,0 +1,236 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "___comment": "Make this work with my current stylix theme",
+  "palette": {
+    "black": "black",
+    "blue": "blue",
+    "green": "green",
+    "orange": "166",
+    "red": "red",
+    "white": "white",
+    "yellow": "yellow"
+  },
+  "secondary_prompt": {
+    "template": "<p:yellow,transparent>\ue0b6</><,p:yellow> > </><p:yellow,transparent>\ue0b0</> ",
+    "foreground": "p:black",
+    "background": "transparent"
+  },
+  "transient_prompt": {
+    "template": "{{ .PWD }}> ",
+    "foreground": "p:yellow",
+    "background": "transparent"
+  },
+  "console_title_template": "{{ .Folder }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "session",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "{{ if .SSHSession }} {{ end }}{{ .UserName }}",
+          "foreground": "p:yellow",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "path",
+          "properties": {
+            "cache_duration": "none",
+            "style": "letter"
+          },
+          "template": "  {{ .Path }}",
+          "foreground": "p:orange",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "git",
+          "properties": {
+            "branch_max_length": 25,
+            "cache_duration": "none",
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "template": " {{ if .UpstreamURL }}{{ url .UpstreamIcon .UpstreamURL }} {{ end }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}",
+          "foreground": "p:white",
+          "background": "transparent",
+          "style": "plain",
+          "foreground_templates": [
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+            "{{ if gt .Ahead 0 }}p:green{{ end }}",
+            "{{ if gt .Behind 0 }}p:blue{{ end }}"
+          ]
+        },
+        {
+          "type": "node",
+          "template": " {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ else }} {{ end }}{{ .Full }}",
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "files",
+            "fetch_package_manager": true,
+            "missing_command_text": "js",
+            "home_enabled": false
+          },
+          "foreground": "p:orange",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "lua",
+          "template": "  {{ .Full }}",
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "files",
+            "fetch_version": true
+          },
+          "foreground": "p:blue",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "go",
+          "template": " 󰟓 {{ .Full }}",
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "files",
+            "fetch_version": true
+          },
+          "foreground": "p:blue",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "python",
+          "template": "  {{ .Full }}{{ if .Venv }} {{ .Venv }}{{ end }}",
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "files",
+            "fetch_version": true,
+            "fetch_virtual_env": true
+          },
+          "foreground": "p:yellow",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "rust",
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "files",
+            "fetch_version": true
+          },
+          "template": "  {{ .Full }}",
+          "foreground": "p:white",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "root",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "  ",
+          "foreground": "p:red",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "status",
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "template": " {{ if gt .Code 0 }}{{ else }}{{ end }}",
+          "foreground": "p:blue",
+          "background": "transparent",
+          "style": "plain",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:red{{ end }}"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "rprompt",
+      "segments": [
+        {
+          "type": "executiontime",
+          "properties": {
+            "cache_duration": "none",
+            "style": "austin",
+            "threshold": 0
+          },
+          "template": "{{ .FormattedMs }} ",
+          "foreground": "p:blue",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "nix-shell",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "󱄅 ",
+          "foreground": "p:blue",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "shell",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "in <p:blue><b>{{ .Name }}</b></> ",
+          "foreground": "p:white",
+          "background": "transparent",
+          "style": "plain"
+        },
+        {
+          "type": "time",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "at <p:blue><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>",
+          "foreground": "p:white",
+          "background": "transparent",
+          "style": "plain"
+        }
+      ]
+    }
+  ],
+  "tooltips": [
+    {
+      "type": "aws",
+      "properties": {
+        "display_default": true
+      },
+      "template": "  {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
+      "foreground": "p:white",
+      "background": "p:orange",
+      "style": "plain",
+      "tips": [
+        "aws"
+      ]
+    },
+    {
+      "type": "az",
+      "properties": {
+        "display_default": true
+      },
+      "template": "  {{ .Name }} ",
+      "foreground": "p:white",
+      "background": "p:blue",
+      "style": "plain",
+      "tips": [
+        "az"
+      ]
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}

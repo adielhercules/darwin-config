@@ -7,7 +7,7 @@ let
   username = "adielhercules";
   rootPath = paths.rootPath;
   nixPath = "${rootPath}/nix";
-  files = "${rootPath}/files";
+  files = "${rootPath}/nix/dotfiles";
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
   specialArgs = {
@@ -49,17 +49,19 @@ in {
           bat
           curl
           neovim
+          lazygit
           nodejs_22
-          #(lua5_1.withPackages (ps: with ps; [ luarocks ]))
+          (lua5_1.withPackages (ps: with ps; [ luarocks ]))
         ];
 
         environment.shellAliases = {
           klingon = ''say -v Xander "QgaplA"'';
           listening = "lsof -iTCP -sTCP:LISTEN -n -P";
-	  astro = "APP_NAME=astro nvim";
           gitskipped = "git ls-files -v|grep '^S'";
           gitskip = "git update-index --skip-worktree";
           gitunskip = "git update-index --no-skip-worktree";
+          gst = "git status";
+          gd = "git diff";
           ",," = ", -d ";
         };
 
@@ -68,9 +70,10 @@ in {
           onActivation.cleanup = "zap";
           brews = [ "mas" "xcodes" "aria2" ];
           casks = [
-	    "mouseless@preview"
+	          "mouseless@preview"
             "ghostty"
             "raycast"
+            "font-monaspace"
           ];
           # masApps = { "Tomito" = 1526042938; };
         };
@@ -143,6 +146,7 @@ in {
         home-manager.useUserPackages = true;
         home-manager.users.${username} = import "${nixPath}/darwin/home.nix";
         home-manager.extraSpecialArgs = inputs // specialArgs;
+	home-manager.backupFileExtension = "backup";
       }
     ];
 

@@ -3,11 +3,11 @@
 let fishModule = ../modules/home/fish.nix;
 in {
   imports = [
-    #../modules/home/ghostty.nix
-    #../modules/home/neovim.nix
-    #../modules/home/oh_my_posh.nix
+    ../modules/home/ghostty.nix
+    ../modules/home/neovim.nix
+    ../modules/home/oh_my_posh.nix
     #../modules/home/zellij.nix
-    #../modules/home/darwin
+    #../modules/home/darwin # this can be for aerospace
   ] ++ (lib.optional lcars.shell.fish.enable fishModule);
   home.stateVersion = "24.11"; # Please read the comment before changing.
   # The home.packages option allows you to install Nix packages into your
@@ -17,10 +17,10 @@ in {
     #python3
     pyenv
     #fd
-    $tldr
+    #tldr
     # TODO:More nvim
     nixd
-    #nixfmt-classic
+    nixfmt-classic
     deadnix
     statix
     #wget
