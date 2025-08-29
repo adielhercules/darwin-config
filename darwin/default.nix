@@ -65,6 +65,7 @@ in
           nodejs_22
           (lua5_1.withPackages (ps: with ps; [ luarocks ]))
           bun
+          vscode
         ];
 
         environment.shellAliases = {

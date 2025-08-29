@@ -52,19 +52,6 @@
     paths.url = ./paths;
   };
 
-  /*
-    outputs = inputs@{ self, paths, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager
-    , homebrew-bundle, homebrew-cask, homebrew-core
-    , homebrew-xcodesorg, nix-homebrew, ... }: {
-      configuration = (import ./config {
-        inherit self inputs nixpkgs nixpkgs-unstable nix-homebrew
-          home-manager homebrew-bundle homebrew-cask homebrew-core
-          homebrew-xcodesorg paths;
-      });
-    };
-    }
-  */
-
   outputs =
     inputs@{ self
     , paths
@@ -90,47 +77,4 @@
       # Expose the package set, including overlays, for convenience.
       #darwinPackages = self.darwinConfigurations."mymbp".pkgs;
     };
-
-  /**
-
-    let
-    configuration = { pkgs, config, ... }: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [
-      	ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
-      	pkgs.mkalias
-      	pkgs.neovim
-        ];
-      
-
-      # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
-
-      # Enable alternative shell support in nix-darwin.
-      programs.fish.enable = true;
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
-      system.stateVersion = 6;
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
-    };
-    in
-    {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."mymbp" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
-    };
-
-    # Expose the package set, including overlays, for convenience.
-    #darwinPackages = self.darwinConfigurations."mymbp".pkgs;
-    };
-  */
 }
