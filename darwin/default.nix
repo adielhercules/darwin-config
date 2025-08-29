@@ -86,6 +86,7 @@ in
             "mouseless@preview"
             "ghostty"
             "raycast"
+            "leader-key"
             "font-monaspace"
           ];
           # masApps = { "Tomito" = 1526042938; };
