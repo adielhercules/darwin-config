@@ -36,7 +36,7 @@ in {
           })
         ];
       }
-      inputs.stylix.darwinModules.stylix
+      #inputs.stylix.darwinModules.stylix
       nix-homebrew.darwinModules.nix-homebrew
       home-manager.darwinModules.home-manager
 
