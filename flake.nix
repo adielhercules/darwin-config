@@ -59,8 +59,8 @@ outputs = inputs@{ self, paths, nix-darwin, nixpkgs, nixpkgs-unstable, home-mana
 }
   */
 
-  outputs = inputs@{ self, paths, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager
-    , homebrew-bundle, homebrew-cask, homebrew-core
+  outputs = inputs@{ self, paths, nixpkgs, nixpkgs-unstable, home-manager
+    , nix-darwin, homebrew-bundle, homebrew-cask, homebrew-core
     , homebrew-xcodesorg, nix-homebrew, ... }: {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
