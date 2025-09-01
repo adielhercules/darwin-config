@@ -67,23 +67,23 @@ in {
         pager = { difftool = true; };
       };
     };
-    zsh = {
-      enable = true;
-      autocd = true;
-      enableCompletion = true;
-      history = {
-        ignoreDups = true;
-        ignoreSpace = true;
-      };
-      #oh-my-zsh = {
-      #  enable = true;
-      #  plugins = [ "git" ];
-      #};
-      syntaxHighlighting = {
-        enable = true;
-        highlighters = [ "brackets" ];
-      };
-    };
+    # zsh = {
+    #   enable = true;
+    #   autocd = true;
+    #   enableCompletion = true;
+    #   history = {
+    #     ignoreDups = true;
+    #     ignoreSpace = true;
+    #   };
+    #   #oh-my-zsh = {
+    #   #  enable = true;
+    #   #  plugins = [ "git" ];
+    #   #};
+    #   syntaxHighlighting = {
+    #     enable = true;
+    #     highlighters = [ "brackets" ];
+    #   };
+    # };
     fzf = { enable = true; };
     ripgrep = { enable = true; };
     zoxide = { enable = true; };
