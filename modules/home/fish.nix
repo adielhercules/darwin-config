@@ -2,7 +2,7 @@
   config = {
 
     xdg.configFile = {
-      #"fish/functions/zz.fish".source = ./fish/zz.fish;
+      "fish/functions/zz.fish".source = ./fish/zz.fish;
       #"fish/functions/mr.fish".source = ./fish/mr.fish;
     };
     programs = {
@@ -44,4 +44,3 @@
     };
   };
 }
-

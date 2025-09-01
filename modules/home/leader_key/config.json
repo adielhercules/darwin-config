@@ -1,0 +1,64 @@
+{
+  "actions" : [
+    {
+      "actions" : [
+        {
+          "key" : "s",
+          "type" : "application",
+          "value" : "/Applications/Safari.app"
+        },
+        {
+          "iconPath" : "/System/Applications/Mail.app",
+          "key" : "e",
+          "type" : "application",
+          "value" : "/Applications/Mail.app"
+        },
+        {
+          "key" : "m",
+          "type" : "application",
+          "value" : "/System/Applications/Music.app"
+        },
+        {
+          "key" : "d",
+          "type" : "application",
+          "value" : "/Applications/Dia.app"
+        },
+        {
+          "key" : "g",
+          "type" : "application",
+          "value" : "/Applications/Ghostty.app"
+        }
+      ],
+      "key" : "o",
+      "label" : "Open",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "e",
+          "label" : "Search emoji",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols"
+        },
+        {
+          "key" : "c",
+          "label" : "Caffeinate",
+          "type" : "url",
+          "value" : "raycast://extensions/mooxl/coffee/caffeinateToggle"
+        },
+        {
+          "key" : "l",
+          "label" : "Lock",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/system/lock-screen"
+        }
+      ],
+      "iconPath" : "apple.terminal",
+      "key" : "c",
+      "label" : "Command",
+      "type" : "group"
+    }
+  ],
+  "type" : "group"
+}
