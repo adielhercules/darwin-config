@@ -52,20 +52,9 @@
     paths.url = ./paths;
   };
 
-  outputs =
-    inputs@{ self
-    , paths
-    , nixpkgs
-    , nixpkgs-unstable
-    , home-manager
-    , nix-darwin
-    , homebrew-bundle
-    , homebrew-cask
-    , homebrew-core
-    , homebrew-xcodesorg
-    , nix-homebrew
-    , ...
-    }: {
+  outputs = inputs@{ self, paths, nixpkgs, nixpkgs-unstable, home-manager
+    , nix-darwin, homebrew-bundle, homebrew-cask, homebrew-core
+    , homebrew-xcodesorg, nix-homebrew, ... }: {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#simple
       darwinConfigurations = (import ./darwin {
@@ -75,6 +64,6 @@
       });
 
       # Expose the package set, including overlays, for convenience.
-      #darwinPackages = self.darwinConfigurations."mymbp".pkgs;
+      darwinPackages = self.darwinConfigurations."mymbp".pkgs;
     };
 }

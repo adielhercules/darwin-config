@@ -58,18 +58,20 @@ in {
     };
     git = {
       enable = true;
-      userName = "Adiel Hercules";
-      userEmail = "me@adielhercules.com";
-      difftastic = {
-        enable = true;
-        enableAsDifftool = true;
-        display = "inline";
-        package = pkgs.unstable.difftastic;
-      };
-      extraConfig = {
+      settings = {
         difftool = { prompt = false; };
         pager = { difftool = true; };
+        user = {
+          name = "Adiel Hercules";
+          email = "me@adielhercules.com";
+        };
       };
+    };
+    difftastic = {
+      enable = true;
+      package = pkgs.unstable.difftastic;
+      git = { diffToolMode = true; };
+      options = { display = "inline"; };
     };
     # zsh = {
     #   enable = true;

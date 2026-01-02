@@ -20,9 +20,6 @@ in {
     modules = [
       ../options/default.nix
       ../features.nix
-      # Use application linking from main PR
-      { disabledModules = [ "system/applications.nix" ]; }
-      "${inputs.nix-darwin-linking}/modules/system/applications.nix"
       # overlays and modules
       {
         nixpkgs.overlays = [
@@ -52,7 +49,7 @@ in {
           nodejs_22
           (lua5_1.withPackages (ps: with ps; [ luarocks ]))
           bun
-          vscode
+          # vscode
         ];
 
         environment.shellAliases = {
@@ -79,8 +76,9 @@ in {
             "alcove"
             "postman"
             "herd"
+            "zed"
           ];
-          # masApps = { "Tomito" = 1526042938; };
+          masApps = { };
         };
 
         system.defaults = {
@@ -161,7 +159,7 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users.${username} = import "${nixPath}/darwin/home.nix";
+        home-manager.users.${username} = import ./home.nix;
         home-manager.extraSpecialArgs = inputs // specialArgs;
         home-manager.backupFileExtension = "backup";
       }
