@@ -34,6 +34,10 @@ in {
     rustup # Rust toolchain installer
     ripgrep
     fd
+
+    # /Terminal tools
+    # Coding tools
+    unstable.devenv
   ];
 
   # I prefer the default: vim

@@ -1,17 +1,5 @@
-{ self
-, paths
-, inputs
-, nix-darwin
-, nix-homebrew
-, nixpkgs
-, nixpkgs-unstable
-, home-manager
-, homebrew-bundle
-, homebrew-cask
-, homebrew-core
-, homebrew-xcodesorg
-, ...
-}:
+{ self, paths, inputs, nix-darwin, nix-homebrew, nixpkgs, nixpkgs-unstable
+, home-manager, ... }:
 
 let
   system = "aarch64-darwin";
@@ -27,8 +15,7 @@ let
     lcars = lcarsConfig.lcars;
   };
 
-in
-{
+in {
   "mymbp" = nix-darwin.lib.darwinSystem {
     modules = [
       ../options/default.nix
@@ -57,7 +44,7 @@ in
         system.primaryUser = username;
         environment.systemPackages = with pkgs; [
           comma
-          inputs.devenv.packages."${pkgs.system}".devenv
+          unstable.devenv
           bat
           curl
           neovim
@@ -82,13 +69,16 @@ in
         homebrew = {
           enable = true;
           onActivation.cleanup = "zap";
-          brews = [ "mas" "xcodes" "aria2" ];
+          brews = [ "mas" "xcodes" "aria2" "just" ];
           casks = [
-            "mouseless@preview"
+            "mouseless"
             "ghostty"
             "raycast"
             "leader-key"
             "font-monaspace"
+            "alcove"
+            "postman"
+            "herd"
           ];
           # masApps = { "Tomito" = 1526042938; };
         };
