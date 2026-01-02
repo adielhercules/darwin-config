@@ -1,7 +1,7 @@
 system: "base16"
 name: "LCARS"
 slug: "lcars-dark"
-author: "Corintho Assunção"
+author: "Adiel Hercules"
 variant: "dark"
 palette:
   base00: "#0e121b"
