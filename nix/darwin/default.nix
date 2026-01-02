@@ -6,7 +6,7 @@ let
   username = "adielhercules";
   rootPath = paths.rootPath;
   nixPath = "${rootPath}/nix";
-  files = "${rootPath}/nix/dotfiles";
+  files = "${rootPath}/dotfiles";
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
   specialArgs = {
