@@ -9,12 +9,13 @@
     nixfmt-classic
     deadnix
     statix
-    nodejs_22
     (lua5_1.withPackages (ps: with ps; [ luarocks ]))
   ];
 
   xdg.configFile = {
-    "nvim" = { source = config.lib.file.mkOutOfStoreSymlink "${files}/nvim.astro-v5"; };
+    "nvim" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${files}/nvim.astro-v5";
+    };
   };
   home.activation.nvim = with config.lib.stylix.colors.withHashtag;
     let
@@ -45,7 +46,7 @@
         -- Set overrides for hl groups
         -- Using the command for this one, so we can just change the existing one, instead of replacing it
         vim.cmd \"highlight NeogitDiffDeleteCursor guifg='${base08}' gui=bold\"
-        
+
         -- Set transparent background to window
         vim.api.nvim_create_autocmd(\"ColorScheme\", {
           pattern = \"*\",
@@ -76,8 +77,7 @@
           end
         })
       '';
-    in
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       run echo "${theme}" > "${config.home.homeDirectory}/.config/nvim/colors/stylix.lua"
     '';
 }
