@@ -46,6 +46,7 @@ in {
           curl
           neovim
           lazygit
+          nodejs_22
           (lua5_1.withPackages (ps: with ps; [ luarocks ]))
           bun
           # vscode
@@ -59,12 +60,16 @@ in {
           gitunskip = "git update-index --no-skip-worktree";
           gst = "git status";
           gd = "git diff";
+          gl = "git pull";
+          gpsup = "git push --set-upstream";
+          gco = "git checkout";
           ",," = ", -d ";
         };
 
         homebrew = {
           enable = true;
           onActivation.cleanup = "zap";
+          onActivation.autoUpdate = true;
           brews = [ "mas" "xcodes" "aria2" "just" ];
           casks = [
             "mouseless"
