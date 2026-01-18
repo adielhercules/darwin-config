@@ -70,7 +70,12 @@ in {
           enable = true;
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
-          brews = [ "mas" "xcodes" "aria2" "just" ];
+          brews = [ "mas" "xcodes" "aria2" "just" "superfile" "gitui" "opencode" ];
+          taps = [{
+            name = "BarutSRB/tap";
+            clone_target = "https://github.com/BarutSRB/OmniWM.git";
+            force_auto_update = true;
+          }];
           casks = [
             "mouseless"
             "ghostty"
@@ -81,6 +86,7 @@ in {
             "postman"
             "herd"
             "zed"
+            "BarutSRB/omniwm"
           ];
           masApps = { };
         };

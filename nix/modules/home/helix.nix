@@ -61,6 +61,7 @@
         inherits = 'stylix'
 
         "ui.cursor.primary" = { fg = "base04", modifiers = ["reversed"] }
+        "ui.background" = {bg = "bg_transparent"}
       '';
     };
   };
