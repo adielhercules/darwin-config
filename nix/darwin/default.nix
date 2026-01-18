@@ -93,7 +93,7 @@ in {
 
         system.defaults = {
           controlcenter.BatteryShowPercentage = true;
-          # dock.autohide = true;
+          dock.autohide = true;
           finder = {
             _FXSortFoldersFirst = true;
             AppleShowAllExtensions = true;
@@ -163,6 +163,9 @@ in {
             experimental-features = nix-command flakes
           '';
         };
+
+        nix.settings.extra-substituters = [ "https://devenv.cachix.org" ];
+        nix.settings.extra-trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];
       })
 
       # Home-manager user configuration
