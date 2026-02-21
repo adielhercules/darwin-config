@@ -55,6 +55,9 @@
   outputs = inputs@{ self, paths, nixpkgs, nixpkgs-unstable, home-manager
     , nix-darwin, homebrew-bundle, homebrew-cask, homebrew-core
     , homebrew-xcodesorg, nix-homebrew, ... }: {
+      # Disable nix management from nix-darwin to avoid determinate conflict
+      nix.enable = false;
+
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#simple
       darwinConfigurations = (import ./darwin {

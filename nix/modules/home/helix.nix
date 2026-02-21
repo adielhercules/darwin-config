@@ -41,16 +41,30 @@
                 "goto_file"
                 ":buffer-close! /tmp/files2open"
               ];
-              "C-g" =
-                [ ":new" ":insert-output lazygit" ":buffer-close!" ":redraw" ];
+              "C-E" = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
+              "C-l" =
+                [ ":new" ":insert-output lazygit" ":buffer-close!" ":reload-all" ];
+              "C-a" =
+                [ ":new" ":insert-output opencode" ":buffer-close!" ":reload-all" ];
+              "tab" = ":buffer-next";
+              "S-tab" = ":buffer-previous";
+              "]" = { b = ":buffer-next"; };
+              "[" = { b = ":buffer-previous"; };
               space = {
                 c = ":buffer-close";
                 q = ":quit";
                 Q = ":quit!";
                 w = ":write";
+                b = {
+                  c = ":buffer-close";
+                  e = ":buffer-next";
+                  n = ":buffer-previous";
+                  o = ":buffer-close-others";
+                  x = ":buffer-close!";
+                  a = ":buffer-close-all";
+                  b = "buffer_picker";
+                };
               };
-              "]" = { b = ":buffer-next"; };
-              "[" = { b = ":buffer-previous"; };
             };
           };
         };

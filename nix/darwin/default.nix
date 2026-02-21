@@ -70,12 +70,8 @@ in {
           enable = true;
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
-          brews = [ "mas" "xcodes" "aria2" "just" "superfile" "gitui" "opencode" ];
-          taps = [{
-            name = "BarutSRB/tap";
-            clone_target = "https://github.com/BarutSRB/OmniWM.git";
-            force_auto_update = true;
-          }];
+          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi"];
+          taps = [];
           casks = [
             "mouseless"
             "ghostty"
@@ -86,8 +82,7 @@ in {
             "postman"
             "herd"
             "zed"
-            "BarutSRB/omniwm"
-          ];
+         ];
           masApps = { };
         };
 
@@ -156,13 +151,8 @@ in {
           ];
         };
 
-        nix = {
-          enable = true;
-          package = pkgs.nix;
-          extraOptions = ''
-            experimental-features = nix-command flakes
-          '';
-        };
+        # Disable nix management from nix-darwin to avoid determindate conflict
+        nix.enable = false;
 
         nix.settings.extra-substituters = [ "https://devenv.cachix.org" ];
         nix.settings.extra-trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];

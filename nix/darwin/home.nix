@@ -9,6 +9,7 @@ in {
     ../modules/home/zellij.nix
     ../modules/home/leader_key.nix
     ../modules/home/helix.nix
+    ../modules/home/helix.scripts-manager.nix
     #../modules/home/darwin # this can be for aerospace
   ] ++ (lib.optional lcars.shell.fish.enable fishModule);
   home.stateVersion = "24.11"; # Please read the comment before changing.
