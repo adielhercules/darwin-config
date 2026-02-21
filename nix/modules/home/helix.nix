@@ -69,6 +69,8 @@
         };
       };
     };
+
+    home.sessionVariables = { EDITOR = "hx"; };
     xdg.configFile = {
       "helix/themes/lcars.toml".text = ''
         inherits = 'stylix'
