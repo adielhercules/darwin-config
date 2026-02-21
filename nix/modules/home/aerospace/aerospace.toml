@@ -152,7 +152,7 @@ outer.right = 64
 #   'move-node-to-monitor --wrap-around --focus-follows-window next',
 # ]
 
-[workspace-to-monitor-force-assigment]
+[workspace-to-monitor-force-assignment]
 B = 'secondary'
 C = 'secondary'
 D = 'secondary'

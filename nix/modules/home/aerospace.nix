@@ -4,7 +4,7 @@
       enable = true;
       launchd.enable = true;
       package = pkgs.unstable.aerospace;
-      userSettings =
+      settings =
         builtins.fromTOML (builtins.readFile ./aerospace/aerospace.toml);
     };
   };
