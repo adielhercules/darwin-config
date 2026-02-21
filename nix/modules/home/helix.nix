@@ -30,18 +30,18 @@
             normal = {
               "C-y" = "copy_between_registers";
               "C-," = "command_mode";
-              "C-e" = [
-                ":sh rm -f /tmp/files2open"
-                ''
-                  :insert-output yazi "%{buffer_name}" --chooser-file=/tmp/files2open''
-                ":redraw"
-                ":open /tmp/files2open"
-                "select_all"
-                "split_selection_on_newline"
-                "goto_file"
-                ":buffer-close! /tmp/files2open"
-              ];
-              "C-E" = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
+              # "C-e" = [
+              #   ":sh rm -f /tmp/files2open"
+              #   ''
+              #     :insert-output yazi "%{buffer_name}" --chooser-file=/tmp/files2open''
+              #   ":redraw"
+              #   ":open /tmp/files2open"
+              #   "select_all"
+              #   "split_selection_on_newline"
+                # "goto_file"
+              #   ":buffer-close! /tmp/files2open"
+              # ];
+              "C-e" = ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
               "C-l" =
                 [ ":new" ":insert-output lazygit" ":buffer-close!" ":reload-all" ];
               "C-a" =
@@ -51,7 +51,6 @@
               "]" = { b = ":buffer-next"; };
               "[" = { b = ":buffer-previous"; };
               space = {
-                c = ":buffer-close";
                 q = ":quit";
                 Q = ":quit!";
                 w = ":write";
