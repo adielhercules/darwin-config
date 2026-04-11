@@ -75,8 +75,8 @@ in {
           casks = [
             "mouseless"
             "ghostty"
-            "raycast"
-            "leader-key"
+            # "raycast"
+            # "leader-key"
             "font-monaspace"
             "alcove"
             "postman"

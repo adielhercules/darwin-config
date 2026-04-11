@@ -5,18 +5,18 @@
     # Base packages
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager?shallow=1";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Global styling through stylix
     stylix = {
-      url = "github:nix-community/stylix?shallow=1";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Custom
     devenv.url = "github:cachix/devenv/latest";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable?shallow=1";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Darwin specific
     nix-darwin = {
@@ -29,27 +29,27 @@
     };
 
     # Enable homebrew management through nix
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew?shallow=1";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle?shallow=1";
+      url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
     homebrew-cask = {
-      url = "github:homebrew/homebrew-cask?shallow=1";
+      url = "github:homebrew/homebrew-cask";
       flake = false;
     };
     homebrew-core = {
-      url = "github:homebrew/homebrew-core?shallow=1";
+      url = "github:homebrew/homebrew-core";
       flake = false;
     };
     homebrew-xcodesorg = {
-      url = "github:xcodesorg/homebrew-made?shallow=1";
+      url = "github:xcodesorg/homebrew-made";
       flake = false;
     };
 
-    zjstatus = { url = "github:dj95/zjstatus?shallow=1"; };
+    zjstatus = { url = "github:dj95/zjstatus"; };
     # Workaround for absolute path requirements
-    paths.url = ./paths;
+    paths.url = "path:./paths";
   };
 
   outputs = inputs@{ self, paths, nixpkgs, nixpkgs-unstable, home-manager

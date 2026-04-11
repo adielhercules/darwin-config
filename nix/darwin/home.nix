@@ -7,7 +7,8 @@ in {
     ../modules/home/neovim.nix
     ../modules/home/oh_my_posh.nix
     ../modules/home/zellij.nix
-    ../modules/home/leader_key.nix
+    # ../modules/home/leader_key.nix
+    ../modules/home/tuna.nix
     ../modules/home/helix.nix
     ../modules/home/helix.scripts-manager.nix
     ../modules/home/aerospace.nix
