@@ -870,27 +870,6 @@
         "type": "github"
       }
     },
-    "nix-darwin-linking": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1750492472,
-        "narHash": "sha256-0FKpJlzwgbvM2eD+hq9M363CEStiJUAh880fsIBMwUQ=",
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "rev": "be2d7d653567f49223d4d675e4a7d268a6ce90ba",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-darwin",
-        "ref": "pull/1396/head",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": "brew-src"
@@ -1124,18 +1103,6 @@
         "type": "github"
       }
     },
-    "paths": {
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-01lSO63V1eoSD6IPxMIMqD6q1Y0feun0iA7a2sUfI4E=",
-        "path": "./paths",
-        "type": "path"
-      },
-      "original": {
-        "path": "./paths",
-        "type": "path"
-      }
-    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": [
@@ -1203,11 +1170,9 @@
         "homebrew-core": "homebrew-core",
         "homebrew-xcodesorg": "homebrew-xcodesorg",
         "nix-darwin": "nix-darwin",
-        "nix-darwin-linking": "nix-darwin-linking",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "paths": "paths",
         "stylix": "stylix",
         "zjstatus": "zjstatus"
       }

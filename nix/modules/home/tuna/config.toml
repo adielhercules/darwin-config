@@ -535,7 +535,7 @@ backspaceBehavior = 'deleteCharacters'
 clipboardHistoryEnabled = false
 leaderModeBackspaceBehavior = 'stepBack'
 leaderModeCheatsheetDelayMS = 1000
-leaderModeThemeStyle = 'cheatsheet'
+leaderModeThemeStyle = 'inherit'
 shelfCatalogEnabled = false
 themeIdentifier = 'com.brnbw.tuna.themes.default'
 

@@ -1,3 +1,3 @@
-#!/run/current-system/sw/bin/bash
+#!/bin/bash
 
-sudo darwin-rebuild switch --flake .#mymbp --impure
+sudo /nix/var/nix/profiles/system/sw/bin/darwin-rebuild switch --flake .#mymbp --impure

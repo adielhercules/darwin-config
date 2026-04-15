@@ -23,11 +23,6 @@
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-darwin-linking = {
-      url = "github:nix-darwin/nix-darwin/pull/1396/head";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Enable homebrew management through nix
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-bundle = {
@@ -48,16 +43,13 @@
     };
 
     zjstatus = { url = "github:dj95/zjstatus"; };
-    # Workaround for absolute path requirements
-    paths.url = "path:./paths";
   };
 
-  outputs = inputs@{ self, paths, nixpkgs, nixpkgs-unstable, home-manager
-    , nix-darwin, homebrew-bundle, homebrew-cask, homebrew-core
-    , homebrew-xcodesorg, nix-homebrew, ... }: {
-      # Disable nix management from nix-darwin to avoid determinate conflict
-      nix.enable = false;
-
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin
+    , homebrew-bundle, homebrew-cask, homebrew-core, homebrew-xcodesorg
+    , nix-homebrew, ... }:
+    let paths = { rootPath = "/Users/adielhercules/darwin-config"; };
+    in {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#simple
       darwinConfigurations = (import ./darwin {

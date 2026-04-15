@@ -70,8 +70,8 @@ in {
           enable = true;
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
-          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi"];
-          taps = [];
+          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" ];
+          taps = [ ];
           casks = [
             "mouseless"
             "ghostty"
@@ -82,7 +82,7 @@ in {
             "postman"
             "herd"
             "zed"
-         ];
+          ];
           masApps = { };
         };
 
@@ -141,21 +141,25 @@ in {
 
         users = {
           knownUsers = [ username ];
-          users.${username} = lib.mkMerge [
-            {
-              home = "/Users/${username}";
-              name = "${username}";
-              uid = 501;
-            }
-            (lib.mkIf lcars.shell.fish.enable { shell = lcars.shell.fish.pkg; })
-          ];
+          users.${username} = {
+            home = "/Users/${username}";
+            name = "${username}";
+            uid = 501;
+            # Login shell intentionally left as macOS default (/bin/zsh).
+            # Fish is launched directly by Ghostty via its `command` setting,
+            # using the stable home-manager path that doesn't depend on
+            # /run/current-system being set up before login.
+          };
         };
 
-        # Disable nix management from nix-darwin to avoid determindate conflict
+        # Disable nix management from nix-darwin - Lix manages its own daemon
         nix.enable = false;
 
-        nix.settings.extra-substituters = [ "https://devenv.cachix.org" ];
-        nix.settings.extra-trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];
+        # Add logging to the activate-system boot daemon so failures are visible
+        launchd.daemons.activate-system.serviceConfig = {
+          StandardOutPath = "/var/log/nix-darwin-activate.log";
+          StandardErrorPath = "/var/log/nix-darwin-activate.log";
+        };
       })
 
       # Home-manager user configuration

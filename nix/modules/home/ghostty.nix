@@ -16,7 +16,10 @@
           window-inherit-font-size = false;
           macos-titlebar-style = "tabs";
 
-          # Exit without prompt
+          # Launch fish via the stable home-manager-managed path.
+          # This avoids depending on /run/current-system being set up before
+          # Ghostty opens (which isn't guaranteed at login time).
+          command = "/etc/profiles/per-user/adielhercules/bin/fish";
           confirm-close-surface = false;
           #macos-option-as-alt = true;
           #keybind = [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
