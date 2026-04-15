@@ -1,7 +1,14 @@
-{ lcars, lib, pkgs, ... }:
+{
+  lcars,
+  lib,
+  pkgs,
+  ...
+}:
 
-let fishModule = ../modules/home/fish.nix;
-in {
+let
+  fishModule = ../modules/home/fish.nix;
+in
+{
   imports = [
     ../modules/home/ghostty.nix
     ../modules/home/neovim.nix
@@ -14,7 +21,8 @@ in {
     ../modules/home/aerospace.nix
     ../modules/home/rtk.nix
     #../modules/home/darwin # this can be for aerospace
-  ] ++ (lib.optional lcars.shell.fish.enable fishModule);
+  ]
+  ++ (lib.optional lcars.shell.fish.enable fishModule);
   home.stateVersion = "25.05"; # Please read the comment before changing.
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -50,7 +58,9 @@ in {
 
   # Setup programs options
   programs = {
-    bash = { enable = true; };
+    bash = {
+      enable = true;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -65,19 +75,30 @@ in {
       enable = true;
       signing.format = null;
       settings = {
-        difftool = { prompt = false; };
-        pager = { difftool = true; };
+        difftool = {
+          prompt = false;
+        };
+        pager = {
+          difftool = true;
+        };
         user = {
           name = "Adiel Hercules";
           email = "me@adielhercules.com";
+        };
+        "init" = {
+          "defaultBranch" = "main";
         };
       };
     };
     difftastic = {
       enable = true;
       package = pkgs.unstable.difftastic;
-      git = { diffToolMode = true; };
-      options = { display = "inline"; };
+      git = {
+        diffToolMode = true;
+      };
+      options = {
+        display = "inline";
+      };
     };
     # zsh = {
     #   enable = true;
@@ -96,9 +117,15 @@ in {
     #     highlighters = [ "brackets" ];
     #   };
     # };
-    fzf = { enable = true; };
-    ripgrep = { enable = true; };
-    zoxide = { enable = true; };
+    fzf = {
+      enable = true;
+    };
+    ripgrep = {
+      enable = true;
+    };
+    zoxide = {
+      enable = true;
+    };
   };
 
   # Let Home Manager install and manage itself.
