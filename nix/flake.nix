@@ -59,6 +59,6 @@
       });
 
       # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."mymbp".pkgs;
+      darwinPackages = self.darwinConfigurations."<hostname>".pkgs;
     };
 }

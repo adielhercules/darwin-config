@@ -6,6 +6,19 @@ if git diff --cached --name-only | grep -q 'nix/flake.nix'; then
     echo "Run init.sh first, then stage nix/flake.nix only after restoring the placeholder."
     exit 1
   fi
+  if ! git show :nix/flake.nix | grep -q '<hostname>'; then
+    echo "ERROR: nix/flake.nix staged without '<hostname>' placeholder. Real hostname may be committed."
+    echo "Restore the '<hostname>' placeholder before staging nix/flake.nix."
+    exit 1
+  fi
+fi
+
+if git diff --cached --name-only | grep -q 'nix/darwin/default.nix'; then
+  if ! git show :nix/darwin/default.nix | grep -q '<hostname>'; then
+    echo "ERROR: nix/darwin/default.nix staged without '<hostname>' placeholder. Real hostname may be committed."
+    echo "Restore the '<hostname>' placeholder before staging nix/darwin/default.nix."
+    exit 1
+  fi
 fi
 
 exit 0

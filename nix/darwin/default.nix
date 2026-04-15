@@ -16,7 +16,7 @@ let
   };
 
 in {
-  "mymbp" = nix-darwin.lib.darwinSystem {
+  "<hostname>" = nix-darwin.lib.darwinSystem {
     modules = [
       ../options/default.nix
       ../features.nix

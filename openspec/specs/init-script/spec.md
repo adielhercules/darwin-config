@@ -1,9 +1,9 @@
 ### Requirement: init.sh replaces rootPath placeholder
-`init.sh` SHALL replace the `<init-required>` placeholder in `nix/flake.nix` with the absolute path of the repository root (`$SCRIPT_DIR`) using `sed`. This stage runs when `--paths` or `--all` is passed, or when no flags are given.
+`init.sh` SHALL replace the `<init-required>` placeholder in `nix/flake.nix` with the absolute path of the repository root (`$SCRIPT_DIR`) using `sed`, AND replace the `<hostname>` placeholder in `nix/darwin/default.nix` and `nix/flake.nix` with the machine's hostname from `scutil --get LocalHostName`. This stage runs when `--paths` or `--all` is passed, or when no flags are given.
 
 #### Scenario: Fresh clone path init
-- **WHEN** user runs `init.sh`, `init.sh --paths`, or `init.sh --all` on a freshly cloned repo where `nix/flake.nix` contains `rootPath = "<init-required>"`
-- **THEN** `nix/flake.nix` SHALL contain `rootPath = "<absolute-path-to-repo>"` with the real path substituted
+- **WHEN** user runs `init.sh`, `init.sh --paths`, or `init.sh --all` on a freshly cloned repo where `nix/flake.nix` contains `rootPath = "<init-required>"` and both nix files contain `<hostname>`
+- **THEN** `nix/flake.nix` SHALL contain `rootPath = "<absolute-path-to-repo>"` with the real path substituted, AND both `nix/darwin/default.nix` and `nix/flake.nix` SHALL contain the machine's actual hostname in place of `<hostname>`
 
 ### Requirement: init.sh activates git hooks
 `init.sh` SHALL run `git config core.hooksPath .githooks` to activate the committed hook directory. This stage runs when `--paths`, `--git`, or `--all` is passed, or when no flags are given.
@@ -24,11 +24,11 @@
 - **THEN** nix-darwin SHALL be bootstrapped via `nix run` without requiring a locally installed `darwin-rebuild`
 
 ### Requirement: init.sh runs standard deploy
-`init.sh` SHALL run `sudo darwin-rebuild switch --flake ".#mymbp" --impure` after bootstrap. This stage runs when `--deploy` or `--all` is passed, or when no flags are given.
+`init.sh` SHALL run `sudo darwin-rebuild switch --flake "./nix" --impure` after bootstrap. `darwin-rebuild` automatically resolves the flake attribute from the machine's hostname via `scutil --get LocalHostName`. This stage runs when `--deploy` or `--all` is passed, or when no flags are given.
 
-#### Scenario: Deploy uses configured hostname
+#### Scenario: Deploy resolves hostname automatically
 - **WHEN** `init.sh` reaches the deploy phase (via `init.sh` or `init.sh --deploy`)
-- **THEN** the flake target SHALL be `.#mymbp`
+- **THEN** `sudo darwin-rebuild switch --flake "./nix" --impure` SHALL be executed and `darwin-rebuild` SHALL automatically select the flake attribute matching the machine's `scutil --get LocalHostName`
 
 ### Requirement: pre-commit hook blocks real rootPath commit
 `.githooks/pre-commit` SHALL exit non-zero and print an error if `nix/flake.nix` is staged and its staged content does not contain the string `<init-required>`.

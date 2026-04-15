@@ -13,6 +13,16 @@ run_paths_sed() {
   echo "rootPath set to: $SCRIPT_DIR"
 }
 
+run_hostname_sed() {
+  local hostname
+  hostname="$(scutil --get LocalHostName)"
+  echo "Initialising hostname..."
+  sed -i '' "s|\"<hostname>\"|\"$hostname\"|g" \
+    "$SCRIPT_DIR/nix/darwin/default.nix" \
+    "$SCRIPT_DIR/nix/flake.nix"
+  echo "hostname set to: $hostname"
+}
+
 run_git() {
   echo "Activating git hooks..."
   git -C "$SCRIPT_DIR" config core.hooksPath .githooks
@@ -21,6 +31,7 @@ run_git() {
 
 run_paths() {
   run_paths_sed
+  run_hostname_sed
   run_git
 }
 
@@ -34,7 +45,7 @@ run_bootstrap() {
 
 run_deploy() {
   echo "Running deploy..."
-  sudo darwin-rebuild switch --flake ".#mymbp" --impure
+  sudo darwin-rebuild switch --flake "./nix" --impure
 }
 
 run_all() {

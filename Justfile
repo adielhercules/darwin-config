@@ -1,5 +1,6 @@
 # Lix requires experimental features to be explicitly enabled
 nix_flags := "--extra-experimental-features 'nix-command flakes'"
+darwin_rebuild := "/nix/var/nix/profiles/system/sw/bin/darwin-rebuild"
 
 # List all commands
 [private]
@@ -13,17 +14,17 @@ default:
 # Standard deploy
 [group('build')]
 deploy: && optimise
-  sudo /nix/var/nix/profiles/system/sw/bin/darwin-rebuild switch --flake ./nix#mymbp --impure
+  sudo {{darwin_rebuild}} switch --flake ./nix --impure
 
 # Standard deploy with extended debug enabled
 [group('build')]
 verbose:
-  sudo /nix/var/nix/profiles/system/sw/bin/darwin-rebuild switch --flake ./nix#mymbp --impure --show-trace --verbose
+  sudo {{darwin_rebuild}} switch --flake ./nix --impure --show-trace --verbose
 
 # Dry run. Makes it easy to catch errors without generating a new profile
 [group('build')]
 check:
-  sudo /nix/var/nix/profiles/system/sw/bin/darwin-rebuild check --flake ./nix#mymbp --impure
+  sudo {{darwin_rebuild}} check --flake ./nix --impure
 
 # List all current available generations
 [group('info')]
@@ -58,11 +59,11 @@ up:
 # Update flake lock file, fixing unstable to the specified commit. Remember to redeploy. Look at: https://status.nixos.org/ for the current build status
 [group('maintenance')]
 up-unstable-to hash:
-  nix {{nix_flags}} flake lock --update-input nixpkgs-unstable --override-input nixpkgs-unstable github:nixos/nixpkgs/{{hash}}?shallow=1 ./nix#mymbp
+  nix {{nix_flags}} flake lock --update-input nixpkgs-unstable --override-input nixpkgs-unstable github:nixos/nixpkgs/{{hash}}?shallow=1 ./nix
 # Update secrets. Remember to redeploy
 [group('maintenance')]
 up-secrets:
-  nix {{nix_flags}} flake update secrets --flake ./nix#mymbp
+  nix {{nix_flags}} flake update secrets --flake ./nix
 
 # Check if git status is clean before deploying
 [private]
