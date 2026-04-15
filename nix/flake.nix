@@ -48,7 +48,7 @@
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin
     , homebrew-bundle, homebrew-cask, homebrew-core, homebrew-xcodesorg
     , nix-homebrew, ... }:
-    let paths = { rootPath = "/Users/adielhercules/darwin-config"; };
+    let paths = { rootPath = "<init-required>"; };
     in {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#simple

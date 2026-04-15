@@ -1,9 +1,0 @@
-#!/run/current-system/sw/bin/bash
-
-{ 
-  echo "{ outputs = { ... }: { rootPath = \"$PWD\"; }; }"
-} > ./nix/paths/flake.nix
-
-# This marks the file to be skipped in the worktree. Effectively ignoring changes to it.
-cd nix
-git update-index --skip-worktree ./paths/flake.nix
