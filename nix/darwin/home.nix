@@ -12,6 +12,7 @@ in {
     ../modules/home/helix.nix
     ../modules/home/helix.scripts-manager.nix
     ../modules/home/aerospace.nix
+    ../modules/home/rtk.nix
     #../modules/home/darwin # this can be for aerospace
   ] ++ (lib.optional lcars.shell.fish.enable fishModule);
   home.stateVersion = "24.11"; # Please read the comment before changing.

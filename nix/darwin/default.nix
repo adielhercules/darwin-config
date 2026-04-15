@@ -70,7 +70,7 @@ in {
           enable = true;
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
-          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" ];
+          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" "rtk" ];
           taps = [ ];
           casks = [
             "mouseless"
