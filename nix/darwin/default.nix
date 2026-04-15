@@ -24,11 +24,14 @@ in {
       {
         nixpkgs.overlays = [
           (final: _prev: {
-            unstable =
-              import nixpkgs-unstable { inherit (final) system config; };
+            unstable = import nixpkgs-unstable {
+              inherit (final) config;
+              system = final.stdenv.hostPlatform.system;
+            };
           })
           (_final: prev: {
-            zjstatus = inputs.zjstatus.packages.${prev.system}.default;
+            zjstatus =
+              inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
           })
         ];
       }

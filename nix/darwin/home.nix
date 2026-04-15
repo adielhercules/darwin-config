@@ -15,7 +15,7 @@ in {
     ../modules/home/rtk.nix
     #../modules/home/darwin # this can be for aerospace
   ] ++ (lib.optional lcars.shell.fish.enable fishModule);
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "25.05"; # Please read the comment before changing.
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
@@ -26,7 +26,7 @@ in {
     #tldr
     # TODO:More nvim
     nixd
-    nixfmt-classic
+    nixfmt
     deadnix
     statix
     #wget
@@ -63,6 +63,7 @@ in {
     };
     git = {
       enable = true;
+      signing.format = null;
       settings = {
         difftool = { prompt = false; };
         pager = { difftool = true; };
@@ -102,4 +103,7 @@ in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # Suppress GTK4 theme migration warning (macOS-only setup, no GTK apps)
+  gtk.gtk4.theme = null;
 }
