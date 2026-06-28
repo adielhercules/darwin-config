@@ -5,7 +5,12 @@ layout {
       }
       children
   }
-  tab {
-    pane
+  tab stacked=true name="workarea" {
+    pane name="edit"
+    pane name="agents"
+  }
+  tab name="commands" {
+    pane name="ephimeral"
+    pane name="held"
   }
 }

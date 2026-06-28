@@ -71,15 +71,23 @@ in {
 
         homebrew = {
           enable = true;
-          onActivation.cleanup = "zap";
-          onActivation.autoUpdate = true;
+
+          onActivation = {
+            autoUpdate = true;
+            upgrade = true;
+            cleanup = "zap";
+          };
+
+          global = {
+            autoUpdate = true;
+            brewfile = true;
+          };
+          
           brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" "rtk" ];
-          taps = [ ];
+          taps = [];
           casks = [
             "mouseless"
             "ghostty"
-            # "raycast"
-            # "leader-key"
             "font-monaspace"
             "alcove"
             "postman"
