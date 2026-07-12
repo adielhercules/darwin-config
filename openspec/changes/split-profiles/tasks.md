@@ -67,3 +67,10 @@
 - [x] 9.4 Verify work-only brew casks/packages are present, and personal-only entries are absent
 - [x] 9.5 Temporarily rename `~/.config/darwin-secrets/work.nix` (if present) and re-run the work dry-build to confirm the missing-secrets warning appears without failing the build
 - [x] 9.6 Confirm `darwin-rebuild switch --flake "." --impure` (bare, no profile target) now fails as expected, validating that hostname-based auto-resolution has been fully removed
+
+## 10. Split git identity per profile
+
+- [x] 10.1 Create `nix/modules/home/git-personal.nix` with the real personal `user.name`/`user.email`
+- [x] 10.2 Create `nix/modules/home/git-work.nix` with placeholder `user.name`/`user.email` (`<work-name-required>`/`<work-email-required>`) and a soft `warnings` entry while placeholders remain unedited
+- [x] 10.3 Update `nix/darwin/home.nix` to resolve the git identity module via the resolver and remove the hardcoded `user` block from `programs.git.settings`
+- [x] 10.4 Verify via `nix eval` that personal resolves to the real identity and work resolves to placeholders (with warning), and that profile-independent git settings (`difftool`, `pager`, `init.defaultBranch`) still apply to both

@@ -30,6 +30,14 @@ let
     sep = "-";
   };
   hasFishBindings = builtins.pathExists fishBindingsPath;
+
+  # Both git-personal.nix and git-work.nix always exist, so this always
+  # resolves to the profile-specific file (no shared fallback needed).
+  gitProfileModule = resolveModule {
+    inherit profile;
+    base = ../modules/home/git;
+    sep = "-";
+  };
 in
 {
   imports = [
@@ -43,6 +51,7 @@ in
     ../modules/home/helix.scripts-manager.nix
     aerospaceModule
     ../modules/home/rtk.nix
+    gitProfileModule
     #../modules/home/darwin # this can be for aerospace
   ]
   ++ (lib.optional lcars.shell.fish.enable fishModule)
@@ -110,10 +119,6 @@ in
         };
         pager = {
           difftool = true;
-        };
-        user = {
-          name = "Adiel Hercules";
-          email = "me@adielhercules.com";
         };
         "init" = {
           "defaultBranch" = "main";

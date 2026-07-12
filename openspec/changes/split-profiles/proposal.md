@@ -45,6 +45,8 @@ A proper profile split removes this friction: one config repo, explicit per-mach
 - **`nix/modules/home/tuna/`**: Directory restructuring with shared base module + per-profile full configs
 - **`nix/modules/home/fish-personal.bindings`**: New — personal shell aliases/hooks
 - **`nix/modules/home/fish-work.bindings`**: New — work corporate settings/proxies
+- **`nix/modules/home/git-personal.nix`**: New — personal git `user.name`/`user.email`
+- **`nix/modules/home/git-work.nix`**: New — work git `user.name`/`user.email`, placeholders (`<work-name-required>`/`<work-email-required>`) with a build-time warning until filled in
 - **`init.sh`**: Remove `run_hostname_sed` (dead code once configs are profile-named); add `deploy_personal`/`deploy_work` shortcuts targeting the named flake outputs
 - **No breaking changes** to existing modules (ghostty, helix, neovim, zellij, oh_my_posh)
 - **Behavioral change**: `darwin-rebuild switch --flake .` with no explicit target no longer auto-resolves — an explicit `--flake ".#personal"` or `".#work"` is required on every deploy, by design

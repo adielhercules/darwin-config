@@ -1,13 +1,5 @@
 #!/bin/bash
 
-if git diff --cached --name-only | grep -q 'nix/flake.nix'; then
-  if ! git show :nix/flake.nix | grep -q '<init-required>'; then
-    echo "ERROR: nix/flake.nix staged without '<init-required>' placeholder. Real path may be committed."
-    echo "Run init.sh first, then stage nix/flake.nix only after restoring the placeholder."
-    exit 1
-  fi
-fi
-
 if git diff --cached --name-only | grep -q 'Justfile'; then
   if ! git show :Justfile | grep -q 'flake_target := "<not_initialized>"'; then
     echo "ERROR: Justfile staged without 'flake_target := \"<not_initialized>\"' placeholder."

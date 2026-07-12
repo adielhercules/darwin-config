@@ -299,6 +299,24 @@ The default value `"<not_initialized>"` is deliberately not a valid flake output
 
 **Alternative considered:** Have `init.sh` fully own deploys (keep `just deploy` targeting a hardcoded default profile, or remove `just deploy` in favor of always using `init.sh`). **Rejected** — the user's existing daily workflow already relies on `just deploy` (with its `optimise`-chained cleanup step, `check`/`verbose` variants, and the broader `sanitize-all`/`update` recipe chains); changing that muscle memory has more cost than persisting one variable via `sed`.
 
+### Decision 12: Git identity split per profile (`git-personal.nix` / `git-work.nix`)
+
+`programs.git.settings.user.{name,email}` was previously hardcoded once in `home.nix` (personal identity, shared unconditionally by both machines). Since work commits should use a distinct corporate identity, this is split into two always-present, profile-specific files:
+
+```
+nix/modules/home/
+  git-personal.nix   # real personal identity (name = "Adiel Hercules", email = "me@adielhercules.com")
+  git-work.nix        # placeholders: <work-name-required> / <work-email-required>
+```
+
+Resolved via the same `resolveModule` helper used elsewhere (`base = ../modules/home/git; sep = "-";`), imported unconditionally into `home.nix` — unlike the fish-bindings case, there is no shared fallback file (no `git.nix`), since both `git-personal.nix` and `git-work.nix` always exist; the resolver always finds the profile-specific file directly.
+
+`home.nix` retains the profile-independent `programs.git.settings` keys (`difftool`, `pager`, `init.defaultBranch`) — home-manager merges the `user` key contributed by the profile module with these via the normal attrset-merging module system (`programs.git.settings` is a freeform/attrs-typed option), so no special merge logic is needed (unlike the aerospace `on-window-detected` array case).
+
+`git-work.nix` uses real placeholder strings (`<work-name-required>`, `<work-email-required>`) rather than empty strings, and emits a `warnings` entry (same soft-warning pattern as the missing work secrets file, Decision 5) for as long as those placeholders remain unedited — this makes it immediately visible in `darwin-rebuild switch` output that the work git identity still needs to be filled in, without failing the build.
+
+**Alternative considered:** Route the work git identity through the external `~/.config/darwin-secrets/work.nix` mechanism (Decision 5), treating it as sensitive. **Rejected** — a corporate git name/email is not inherently secret (it's visible in every commit made with it) and doesn't need to be kept out of the repo; committing real placeholder text (rather than requiring an external file) makes the expected shape self-documenting directly in the repo, consistent with how `personal.nix`/`work.nix` brew casks are handled.
+
 ## Migration Plan
 
 1. Create `nix/lib/resolve-module.nix` — profile-aware resolver function
@@ -310,7 +328,8 @@ The default value `"<not_initialized>"` is deliberately not a valid flake output
 7. Restructure `nix/modules/home/aerospace/` — create directory with `main.toml` + per-profile TOMLs; rewrite `aerospace.nix` as `aerospace/default.nix` using `lib.recursiveUpdate` (with the `on-window-detected` array-concat exception, see Decision 6)
 8. Restructure `nix/modules/home/tuna/` — create directory with shared base module + per-profile full configs; rewrite `tuna.nix` as `tuna/default.nix` resolving the active config by profile
 9. Split fish into `fish.nix` (base, unchanged name) + `fish-personal.bindings`/`fish-work.bindings` (profiles)
-10. Update `nix/darwin/home.nix` — replace hardcoded imports with resolver calls where profile-dependent
+10. Update `nix/darwin/home.nix` — replace hardcoded imports with resolver calls where profile-dependent; remove hardcoded `programs.git.settings.user` in favor of the resolved `git-personal.nix`/`git-work.nix` module
+10a. Create `nix/modules/home/git-personal.nix` (real identity) and `nix/modules/home/git-work.nix` (placeholders + warning)
 11. Update `init.sh` — remove `run_hostname_sed`; add `deploy_personal`/`deploy_work` helpers that persist the profile into `Justfile`'s `flake_target` and delegate to `just deploy`
 12. Update `Justfile` — add `flake_target := "<not_initialized>"`; update `deploy`/`verbose`/`check` to use `--flake {{flake_target}} --impure`
 13. Create `~/.config/darwin-secrets/work.nix.example` template (committed, no real secrets) documenting the expected shape for the real file

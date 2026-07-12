@@ -87,6 +87,25 @@ The fish module SHALL share all plugins and base `interactiveShellInit` across p
 - WHEN the work profile is active
 - THEN `fish-work.bindings` appends corporate proxy/alias settings to `interactiveShellInit`
 
+### Requirement: Git identity split per profile
+The system SHALL resolve `programs.git.settings.user.{name,email}` from an always-present, profile-specific module (`nix/modules/home/git-personal.nix` / `nix/modules/home/git-work.nix`) via the same resolver used elsewhere, rather than a single hardcoded value shared by both profiles. `git-work.nix` SHALL ship with placeholder values and SHALL emit a soft build-time warning (not a build failure) for as long as those placeholders remain unedited. Profile-independent git settings (`difftool`, `pager`, `init.defaultBranch`, etc.) remain defined once in `home.nix` and are merged with the profile-specific `user` key by the normal home-manager module system — no custom merge logic is required.
+
+#### Scenario: Personal profile uses the real personal git identity
+- WHEN deploying the personal profile
+- THEN `programs.git.settings.user` resolves to `{ name = "Adiel Hercules"; email = "me@adielhercules.com"; }`, sourced from `git-personal.nix`
+
+#### Scenario: Work profile uses placeholder git identity until edited
+- WHEN deploying the work profile and `git-work.nix` still contains its default placeholder values
+- THEN `programs.git.settings.user` resolves to `{ name = "<work-name-required>"; email = "<work-email-required>"; }`, and a `warnings` entry is emitted stating the work git identity still needs to be filled in
+
+#### Scenario: Work profile uses the real corporate identity once edited
+- WHEN `git-work.nix` has been edited to contain real values (neither equal to the default placeholders)
+- THEN `programs.git.settings.user` resolves to those real values and no git-identity-related warning is emitted
+
+#### Scenario: Profile-independent git settings apply to both profiles
+- WHEN deploying either profile
+- THEN `programs.git.settings.difftool`, `.pager`, and `.init.defaultBranch` (defined once in `home.nix`) apply unchanged, merged alongside whichever profile's `user` key was resolved
+
 ### Requirement: External secrets directory for work-only sensitive configuration
 The system SHALL support an external, non-committed directory at `~/.config/darwin-secrets/` for corporate certificates, proxy settings, and other sensitive work-only values. `profiles/work.nix` SHALL conditionally import `~/.config/darwin-secrets/work.nix` if present, and SHALL emit a soft build-time warning (not a build failure) if that file is absent when the work profile is being deployed. Additionally, any `.crt`/`.pem` files placed in the same directory SHALL be auto-discovered via `builtins.readDir` and fed into `security.pki.certificateFiles` without requiring individual registration in Nix. The personal profile SHALL NOT reference or require this directory.
 
