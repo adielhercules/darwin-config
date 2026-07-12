@@ -22,20 +22,38 @@
 - **THEN** `nix run nix-darwin/master#darwin-rebuild ... -- switch` SHALL be executed
 - **AND** no sed substitution or git config change SHALL occur
 
-### Requirement: init.sh accepts --deploy flag
-`init.sh` SHALL accept a `--deploy` flag that runs only `sudo darwin-rebuild switch --flake "./nix" --impure`, without running other stages. `darwin-rebuild` automatically resolves the flake attribute from the machine's hostname.
+### Requirement: init.sh --deploy flag is a stub that always fails
+`init.sh` SHALL accept a `--deploy` flag, but it SHALL always fail (non-zero exit) and print a message directing the user to `--personal`/`--work` and then `just deploy`, since a bare, profile-less deploy is no longer supported.
 
-#### Scenario: --deploy flag runs darwin-rebuild only
+#### Scenario: --deploy flag always fails with guidance
 - **WHEN** user runs `init.sh --deploy`
-- **THEN** `sudo darwin-rebuild switch --flake "./nix" --impure` SHALL be executed
-- **AND** no path substitution, git config change, or bootstrap SHALL occur
+- **THEN** the script SHALL exit non-zero without performing any deploy
+- **AND** it SHALL print a message directing the user to use `--personal` or `--work` to select a profile, then `just deploy` for subsequent day-to-day deploys
+
+### Requirement: init.sh accepts --personal flag
+`init.sh` SHALL accept a `--personal` flag that persists `personal` as the selected profile into `Justfile`'s `flake_target` variable (setting it to `./nix#personal`) and then invokes `just deploy` to perform the actual `darwin-rebuild switch`.
+
+#### Scenario: --personal flag sets flake_target and deploys
+- **WHEN** user runs `init.sh --personal`
+- **THEN** `Justfile`'s `flake_target` SHALL be set to `./nix#personal`
+- **AND** `just deploy` SHALL be invoked immediately afterward
+
+### Requirement: init.sh accepts --work flag
+`init.sh` SHALL accept a `--work` flag that persists `work` as the selected profile into `Justfile`'s `flake_target` variable (setting it to `./nix#work`) and then invokes `just deploy` to perform the actual `darwin-rebuild switch`.
+
+#### Scenario: --work flag sets flake_target and deploys
+- **WHEN** user runs `init.sh --work`
+- **THEN** `Justfile`'s `flake_target` SHALL be set to `./nix#work`
+- **AND** `just deploy` SHALL be invoked immediately afterward
 
 ### Requirement: init.sh accepts --all flag
-`init.sh` SHALL accept an `--all` flag that runs all stages in order: paths (sed + git hooks), bootstrap deploy, then standard deploy.
+`init.sh` SHALL accept an `--all` flag that runs the paths stage (sed + git hooks) and the bootstrap stage, in order. It SHALL NOT perform any profile-specific deploy; instead it SHALL print instructions directing the user to run `init.sh --personal` or `init.sh --work` next.
 
-#### Scenario: --all flag runs all stages
+#### Scenario: --all flag bootstraps only, does not deploy
 - **WHEN** user runs `init.sh --all`
-- **THEN** all stages SHALL run in order: sed substitution, git hook activation, bootstrap deploy, standard deploy
+- **THEN** the paths stage (sed substitution, git hook activation) and the bootstrap stage SHALL run in order
+- **AND** no `darwin-rebuild switch` targeting a profile SHALL be triggered
+- **AND** the script SHALL print guidance to run `--personal` or `--work` next
 
 ### Requirement: init.sh defaults to --all when no flag is given
 `init.sh` SHALL run all stages when invoked with no arguments, preserving backwards-compatible behaviour.
