@@ -36,7 +36,7 @@ A proper profile split removes this friction: one config repo, explicit per-mach
 
 ## Impact
 
-- **`nix/flake.nix`**: Replace single `darwinConfigurations."Adiels-MacBook-Pro"` with `darwinConfigurations.personal` and `darwinConfigurations.work`, both built from the same shared module list plus their respective `profiles/*.nix`
+- **`nix/flake.nix`**: Replace single `darwinConfigurations."Adiels-MacBook-Pro"` with `darwinConfigurations.personal` and `darwinConfigurations.work`, both built from the same shared module list plus their respective `profiles/*.nix`. Remove the stale `darwinPackages` output (previously `self.darwinConfigurations."<hostname>".pkgs`); instead expose the shared `pkgs` set as a sibling attribute directly inside `darwinConfigurations` — `darwinConfigurations = configs // { pkgs = configs.personal.pkgs; }` — accessible as `self.darwinConfigurations.pkgs`. This is a cosmetic/tooling convenience only (both profiles apply identical overlays); it does not affect which `personal`/`work` output `darwin-rebuild switch --flake ".#<profile>"` builds.
 - **`nix/darwin/default.nix`**: Accept a `profile` parameter (passed internally from flake.nix, not via CLI), import `profiles/{defaults,personal,work}.nix` accordingly
 - **`nix/lib/resolve-module.nix`**: New — profile-aware module resolver with fallback logic
 - **`nix/darwin/home.nix`**: Use resolver for all module imports; replace hardcoded module paths with resolved ones

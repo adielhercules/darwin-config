@@ -16,7 +16,7 @@ Nix flakes evaluate `outputs` as a pure function of `inputs` only — there is n
 - Enable explicit profile-based deployment via named flake outputs: `darwin-rebuild switch --flake ".#personal"` or `".#work"` — always explicit, no hostname-based auto-resolution, no environment variables
 - Define a shared default layer (`profiles/defaults.nix`) so brew casks and system packages are not repeated across profiles
 - Create a tiny profile-aware module resolver (`nix/lib/resolve-module.nix`) that falls back to shared modules via suffix pattern matching (e.g., `fish-personal.bindings` or `ghostty.nix`)
-- Restructure aerospace config into directory with shared base (`main.toml`) + per-profile diffs (`personal.toml`, `work.toml`), merged via `lib.recursiveUpdate` on the parsed TOML attrsets — no custom merge logic, no text-replacement hacks
+- Restructure aerospace config into directory with shared base (`main.toml`) + per-profile diffs (`personal.toml`, `work.toml`), merged via `lib.recursiveUpdate` on the parsed TOML attrsets, with one narrowly-scoped array-concat exception for `on-window-detected` (see Decision 6) — no general-purpose custom merge logic, no text-replacement hacks
 - Restructure tuna config into directory with shared base module + near-duplicate profile configs (`personal/config.toml`, `work/config.toml` containing full config with ~20% app combo diffs)
 - Split fish plugin/base configuration from per-profile bindings into separate files
 - Provide a safe, non-committed mechanism for work-only secrets (corporate certificates, proxy settings) via an external file path, with a soft build-time warning if it's missing when deploying the work profile
@@ -96,32 +96,49 @@ Note: Nix-darwin deep-merges these as module inputs — list entries accumulate.
 
 **Alternative considered:** Per-profile full lists replacing defaults entirely. **Rejected** because it creates a maintenance burden — every new shared package must be added to both profiles individually, violating DRY.
 
-### Decision 5: External secrets file for work-only sensitive values
+### Decision 5: External secrets directory for work-only sensitive values
 
-This repository is public on GitHub. Corporate certificates, proxy URLs, and VPN settings for the work profile must never be committed in plaintext. The mechanism:
+This repository is public on GitHub. Corporate certificates, proxy URLs, and VPN settings for the work profile must never be committed in plaintext. Rather than a single hardcoded `work.nix` file, the whole `~/.config/darwin-secrets/` directory is treated as an auto-discovered drop-in location:
 
 ```nix
 # nix/darwin/profiles/work.nix
 { lib, config, ... }:
 let
-  secretsPath = "${config.home.homeDirectory}/.config/darwin-secrets/work.nix";
-  hasSecrets = builtins.pathExists secretsPath;
+  secretsDir = "${config.home.homeDirectory}/.config/darwin-secrets";
+  secretsFile = "${secretsDir}/work.nix";
+  hasSecrets = builtins.pathExists secretsFile;
+
+  # Auto-discover any .crt/.pem files dropped in the same directory —
+  # no per-file registration needed, just place the file and rebuild.
+  certFiles =
+    if builtins.pathExists secretsDir then
+      lib.mapAttrsToList (name: _: "${secretsDir}/${name}")
+        (lib.filterAttrs
+          (name: type:
+            type == "regular" && (lib.hasSuffix ".crt" name || lib.hasSuffix ".pem" name))
+          (builtins.readDir secretsDir))
+    else
+      [ ];
 in {
-  imports = lib.optional hasSecrets secretsPath;
+  imports = lib.optional hasSecrets secretsFile;
+  security.pki.certificateFiles = certFiles;
   warnings = lib.optional (!hasSecrets)
-    "profile=work but no secrets file found at ${secretsPath} — corporate certs/proxy config will be missing.";
+    "profile=work but no secrets file found at ${secretsFile} — corporate certs/proxy config will be missing.";
 }
 ```
 
-- The secrets file (`~/.config/darwin-secrets/work.nix`) lives entirely outside the git repository — never committed, never in git history
-- It is a plain Nix module (attrset), manually placed on the work machine by the user (out of band — password manager export, private note, AirDrop, etc.)
-- `profiles/work.nix` conditionally imports it if present, via `builtins.pathExists`
-- If `profile == "work"` and the file is absent, a `warnings` entry is emitted — nix-darwin surfaces this as a build-time warning in `darwin-rebuild switch` output, but the build does **not** fail
+- `~/.config/darwin-secrets/` lives entirely outside the git repository — never committed, never in git history (the directory itself does not exist in the repo; only `profiles/work.nix.example` is committed, as a template)
+- `work.nix` inside that directory is a plain Nix module (attrset) for proxy/VPN/misc settings, manually placed on the work machine by the user (out of band — password manager export, private note, AirDrop, etc.)
+- Any `.crt`/`.pem` files dropped in the same directory are auto-discovered via `builtins.readDir` and fed into `security.pki.certificateFiles` — no need to individually reference each cert file path in Nix
+- `profiles/work.nix` conditionally imports `work.nix` if present, via `builtins.pathExists`
+- If `profile == "work"` and `work.nix` is absent, a `warnings` entry is emitted — nix-darwin surfaces this as a build-time warning in `darwin-rebuild switch` output, but the build does **not** fail (missing cert files simply result in an empty `certificateFiles` list, no warning needed for those since they're purely additive)
 - The `personal` profile never references this path and never warns
+- `profiles/work.nix.example` (committed) documents this directory convention directly in its header comment: drop `work.nix` (Nix module) plus any `.crt`/`.pem` cert files into `~/.config/darwin-secrets/` and they are picked up automatically on the next `darwin-rebuild switch --flake ".#work"` — no other registration step required
 
-**Alternative considered:** agenix or sops-nix for encrypted secrets committed to the repo. **Rejected** — heavier tooling than needed for the stated requirement; introduces new dependencies (age/SOPS keys, encryption workflow) for a need that's fully met by keeping the file out of git entirely. Can be revisited later if secrets need to be shared across multiple people/machines.
+**Alternative considered:** agenix or sops-nix for encrypted secrets committed to the repo. **Rejected** — heavier tooling than needed for the stated requirement; introduces new dependencies (age/SOPS keys, encryption workflow) for a need that's fully met by keeping the directory out of git entirely. Can be revisited later if secrets need to be shared across multiple people/machines.
 
-### Decision 6: Aerospace directory-based with shared + per-profile TOML diffs, merged via `lib.recursiveUpdate`
+
+### Decision 6: Aerospace directory-based with shared + per-profile TOML diffs, merged via `lib.recursiveUpdate` (with a targeted array-concat exception for `on-window-detected`)
 
 ```
 aerospace/
@@ -142,7 +159,14 @@ let
     if builtins.pathExists profileOverridePath
     then builtins.fromTOML (builtins.readFile profileOverridePath)
     else { };
-  merged = lib.recursiveUpdate main profileOverrides;
+  merged = lib.recursiveUpdate main profileOverrides // {
+    # `lib.recursiveUpdate` replaces arrays wholesale rather than merging
+    # elements, which would silently drop main.toml's shared app-routing
+    # rules whenever a profile defines its own `on-window-detected` entries.
+    # This one array-typed key is concatenated explicitly instead.
+    on-window-detected = (main.on-window-detected or [ ])
+      ++ (profileOverrides.on-window-detected or [ ]);
+  };
 in {
   config.programs.aerospace = {
     enable = true;
@@ -153,7 +177,9 @@ in {
 }
 ```
 
-`lib.recursiveUpdate` is a stock, battle-tested nixpkgs `lib` function — no custom merge logic is written. Since aerospace diffs are mostly workspace name changes or layout overrides, the shared base covers the vast majority of the file, making per-profile TOMLs very small.
+`lib.recursiveUpdate` is a stock, battle-tested nixpkgs `lib` function used for all scalar/attrset keys — no general-purpose custom merge logic is written. The one deliberate, narrowly-scoped exception is the `on-window-detected` array: since aerospace diffs are mostly workspace name changes or layout overrides, the shared base covers the vast majority of the file, making per-profile TOMLs very small — except for the case (introduced by this change) where a profile needs to add new app-routing rules (e.g. `work.toml` routing Teams/Outlook/Edge to a new `F` "Focus" workspace) without losing the shared rules for Ghostty/Xcode/Android Studio/Music/Dia/floating-window handling.
+
+**Alternative considered:** Require `work.toml`/`personal.toml` to duplicate the full `on-window-detected` array (including all shared entries) whenever they need to add new routing rules, keeping `lib.recursiveUpdate` fully generic with zero exceptions. **Rejected** — this reintroduces the exact drift risk being avoided for aerospace in the first place (the array would need to be kept in sync by hand across `main.toml` and every profile override that touches it), for a cost of only a 2-line special case in `default.nix`.
 
 **Alternative considered:** Full separate TOML per profile (no shared base, like tuna). **Rejected** because aerospace differs by a small number of sections — maintaining two near-identical files wastes effort and introduces drift risk. Using `main.toml` as the anchor keeps diffs small and explicit.
 
@@ -225,6 +251,27 @@ The resolver resolves files via path existence checks. **Edge case:** ambiguous 
 ### [Trade-off] Tuna uses full configs vs partial merge
 Tuna's near-duplicate pattern means two files to maintain instead of one shared base plus diffs. This is justified because: (a) tuna differences are in deeply nested arrays that `lib.recursiveUpdate` cannot cleanly merge; (b) tuna config should remain editable as plain TOML — editing a partial diff would require understanding Nix attrset merge semantics for arrays, which is more error-prone than editing two complete files.
 
+### Decision 10: Shared `pkgs` exposed as `darwinConfigurations.pkgs`, not a separate `darwinPackages` output
+
+The current (pre-change) `flake.nix` exposes `darwinPackages = self.darwinConfigurations."<hostname>".pkgs;` as a convenience output for tooling/`nix repl` access to the resolved package set (with the `unstable`/`zjstatus` overlays applied). With two named profiles, this single-hostname reference becomes stale.
+
+Since `darwinConfigurations` is a plain attrset, a `pkgs` key can be added as a sibling of `personal`/`work` without conflicting with `darwin-rebuild switch --flake ".#personal"` / `".#work"` (nix-darwin only inspects the specific named key targeted; an extra sibling attribute is inert):
+
+```nix
+outputs = { ... }:
+  let
+    configs = import ./darwin { ... };  # { personal = ...; work = ...; }
+  in {
+    darwinConfigurations = configs // {
+      pkgs = configs.personal.pkgs;  # identical overlays on both profiles
+    };
+  };
+```
+
+This gives `self.darwinConfigurations.pkgs` directly and removes the separate `darwinPackages` output entirely. Since both profiles apply identical `nixpkgs.overlays`, sourcing this from `configs.personal.pkgs` vs `configs.work.pkgs` is functionally equivalent — purely a naming/access-path convenience, with zero effect on which profile's `profiles/*.nix`, aerospace/tuna/fish configs, etc. are selected during an actual `darwin-rebuild switch` for either profile.
+
+**Alternative considered:** Keep a separate top-level `darwinPackages` output (e.g. `darwinPackages = configs.personal.pkgs;`). **Rejected** per user preference for a flatter, more general access path (`self.darwinConfigurations.pkgs` instead of a differently-named sibling output).
+
 ### [Trade-off] Per-profile brew casks append vs replace
 Per-profile modules append rather than replace brew casks — both machines' shared apps stay installed on each. If exclusives are ever needed (e.g., "only on work: install corporate VPN, remove zed"), `lib.mkForce` syntax would be required. **Mitigation:** Document in `defaults.nix` that all entries in `personal.nix`/`work.nix` are additive by default.
 
@@ -236,7 +283,7 @@ Per-profile modules append rather than replace brew casks — both machines' sha
 4. Create `nix/darwin/profiles/work.nix` — work-only appends, plus external secrets conditional import + warning
 5. Update `nix/flake.nix` — replace the single `darwinConfigurations."Adiels-MacBook-Pro"` with `darwinConfigurations.personal` and `darwinConfigurations.work`, both built from the same base module list plus their respective `profiles/*.nix`
 6. Update `nix/darwin/default.nix` — accept a `profile` parameter (passed from `flake.nix`, not CLI), thread it through to home-manager's `extraSpecialArgs` and to any module needing it (aerospace, tuna)
-7. Restructure `nix/modules/home/aerospace/` — create directory with `main.toml` + per-profile TOMLs; rewrite `aerospace.nix` as `aerospace/default.nix` using `lib.recursiveUpdate`
+7. Restructure `nix/modules/home/aerospace/` — create directory with `main.toml` + per-profile TOMLs; rewrite `aerospace.nix` as `aerospace/default.nix` using `lib.recursiveUpdate` (with the `on-window-detected` array-concat exception, see Decision 6)
 8. Restructure `nix/modules/home/tuna/` — create directory with shared base module + per-profile full configs; rewrite `tuna.nix` as `tuna/default.nix` resolving the active config by profile
 9. Split fish into `fish.nix` (base, unchanged name) + `fish-personal.bindings`/`fish-work.bindings` (profiles)
 10. Update `nix/darwin/home.nix` — replace hardcoded imports with resolver calls where profile-dependent

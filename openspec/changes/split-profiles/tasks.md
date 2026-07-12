@@ -7,8 +7,8 @@
 
 - [ ] 2.1 Create `nix/darwin/profiles/defaults.nix` — move shared brew casks, system packages, and settings from `default.nix` here
 - [ ] 2.2 Create `nix/darwin/profiles/personal.nix` — personal-only additions (no repetition of defaults)
-- [ ] 2.3 Create `nix/darwin/profiles/work.nix` — work-only additions (corporate tools), plus conditional import of `~/.config/darwin-secrets/work.nix` with a `warnings` fallback if absent
-- [ ] 2.4 Create `nix/darwin/profiles/work.nix.example` (or a documented template) showing the expected attrset shape for the external secrets file, with no real values, committed to the repo
+- [ ] 2.3 Create `nix/darwin/profiles/work.nix` — work-only additions (corporate tools), plus conditional import of `~/.config/darwin-secrets/work.nix` with a `warnings` fallback if absent, and auto-discovery of any `.crt`/`.pem` files in that same directory fed into `security.pki.certificateFiles`
+- [ ] 2.4 Create `nix/darwin/profiles/work.nix.example` — documented template showing the expected attrset shape for the external secrets file (no real values), committed to the repo, with a header comment explaining the `~/.config/darwin-secrets/` directory convention (drop `work.nix` + any `.crt`/`.pem` files there for automatic discovery)
 
 ## 3. Convert flake.nix and default.nix to named, profile-keyed outputs
 
