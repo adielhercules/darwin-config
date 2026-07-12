@@ -1,0 +1,5 @@
+''
+  function hi
+      echo "Hi personal"
+  end
+''

@@ -2,6 +2,14 @@
 nix_flags := "--extra-experimental-features 'nix-command flakes'"
 darwin_rebuild := "/nix/var/nix/profiles/system/sw/bin/darwin-rebuild"
 
+# Selected deployment profile (personal|work), targeting a named flake
+# output — see nix/flake.nix. Set automatically by `./init.sh --personal`
+# or `./init.sh --work`; do not edit by hand unless you know what you're
+# doing. Left as "<not_initialized>" so a `just deploy` run before ever
+# running init.sh fails clearly instead of silently deploying nothing/the
+# wrong profile.
+flake_target := "<not_initialized>"
+
 # List all commands
 [private]
 default:
@@ -14,17 +22,17 @@ default:
 # Standard deploy
 [group('build')]
 deploy: && optimise
-  sudo {{darwin_rebuild}} switch --flake ./nix --impure
+  sudo {{darwin_rebuild}} switch --flake {{flake_target}} --impure
 
 # Standard deploy with extended debug enabled
 [group('build')]
 verbose:
-  sudo {{darwin_rebuild}} switch --flake ./nix --impure --show-trace --verbose
+  sudo {{darwin_rebuild}} switch --flake {{flake_target}} --impure --show-trace --verbose
 
 # Dry run. Makes it easy to catch errors without generating a new profile
 [group('build')]
 check:
-  sudo {{darwin_rebuild}} check --flake ./nix --impure
+  sudo {{darwin_rebuild}} check --flake {{flake_target}} --impure
 
 # List all current available generations
 [group('info')]

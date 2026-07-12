@@ -107,15 +107,38 @@ The system SHALL support an external, non-committed directory at `~/.config/darw
 - THEN no check for `~/.config/darwin-secrets/work.nix` occurs and no related warning is possible
 
 ### Requirement: init.sh convenience helpers
-The system SHALL provide `deploy_personal` and `deploy_work` functions in `init.sh` that invoke `darwin-rebuild switch` targeting the corresponding named flake output. The obsolete `run_hostname_sed` bootstrap step SHALL be removed, since darwinConfigurations are no longer keyed by hostname.
+The system SHALL provide `deploy_personal` and `deploy_work` functions in `init.sh` that persist the selected profile and deploy it. The obsolete `run_hostname_sed` bootstrap step SHALL be removed, since darwinConfigurations are no longer keyed by hostname. `init.sh` SHALL be the only mechanism for initial deployment and for switching between profiles; it is not intended for repeated day-to-day use.
 
 #### Scenario: deploy_personal targets the personal flake output
 - WHEN the user runs `./init.sh --personal` or calls `deploy_personal`
-- THEN `darwin-rebuild switch --flake ".#personal" --impure` is executed
+- THEN the `flake_target` variable in `Justfile` is set to `./nix#personal`, and `just deploy` is then invoked to perform the actual `darwin-rebuild switch`
 
 #### Scenario: deploy_work targets the work flake output
 - WHEN the user runs `./init.sh --work` or calls `deploy_work`
-- THEN `darwin-rebuild switch --flake ".#work" --impure` is executed
+- THEN the `flake_target` variable in `Justfile` is set to `./nix#work`, and `just deploy` is then invoked to perform the actual `darwin-rebuild switch`
+
+### Requirement: Persisted profile selection for `just deploy`
+The system SHALL persist the profile selected via `init.sh --personal`/`--work` into `Justfile`'s `flake_target` variable, so that subsequent `just deploy`/`just verbose`/`just check` invocations target the correct named flake output without requiring the user to specify a profile each time. `init.sh` SHALL be the only mechanism for initial deployment and for switching between profiles; day-to-day deploys SHALL use `just deploy`. `Justfile`'s `flake_target` SHALL default to a placeholder value (`<not_initialized>`) that does not resolve to any valid flake output, so that running `just deploy` before ever running `init.sh` fails clearly rather than silently deploying the wrong profile or falling back to a bare/default target.
+
+#### Scenario: Selecting personal profile updates Justfile and deploys
+- WHEN the user runs `./init.sh --personal`
+- THEN `flake_target := "./nix#personal"` is set in `Justfile` (replacing whatever value was there before), and `just deploy` is run immediately afterward
+
+#### Scenario: Selecting work profile updates Justfile and deploys
+- WHEN the user runs `./init.sh --work`
+- THEN `flake_target := "./nix#work"` is set in `Justfile`, and `just deploy` is run immediately afterward
+
+#### Scenario: Subsequent `just deploy` reuses the selected profile
+- WHEN the user runs `just deploy` directly (without `init.sh`) after either of the above has run at least once
+- THEN the same profile (`personal` or `work`) is targeted, since `flake_target` persists locally in `Justfile` until changed again
+
+#### Scenario: Switching profiles later
+- WHEN a machine previously deployed with `./init.sh --work` later runs `./init.sh --personal` (or vice versa)
+- THEN `flake_target` is updated to the new profile and `just deploy` redeploys under the new profile
+
+#### Scenario: `just deploy` before ever running init.sh
+- WHEN `Justfile`'s `flake_target` is still the default `<not_initialized>` placeholder (init.sh has never been run) and the user runs `just deploy`
+- THEN the command fails with a clear error, since `./nix#<not_initialized>` does not resolve to any `darwinConfigurations` attribute
 
 #### Scenario: run_hostname_sed no longer exists
 - WHEN inspecting `init.sh` after this change

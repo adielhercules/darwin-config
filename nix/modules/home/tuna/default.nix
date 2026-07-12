@@ -1,14 +1,25 @@
-{ config, lib, ... }:
+{ config, lib, profile, ... }:
 
 let
   backupExt = ".backup";
   targetPath =
     "${config.home.homeDirectory}/Library/Application Support/Tuna/config.toml";
   backup = "${targetPath}${backupExt}";
+
+  # Tuna's per-profile diffs live in deeply nested [[comboMode.bindings]]
+  # arrays; `lib.recursiveUpdate` cannot selectively merge individual array
+  # elements (it replaces arrays wholesale), so — unlike aerospace — tuna
+  # uses full, independently-maintained per-profile configs rather than a
+  # partial merge. `config.shared.toml` is kept only as a human-authoring
+  # reference/diff anchor; it is not read or merged programmatically.
+  activeConfig = if profile == "work" then
+    ./work/config.toml
+  else
+    ./personal/config.toml;
 in {
   # 1) Install the managed file
   home.file."Library/Application Support/Tuna/config.toml" = {
-    source = ./tuna/config.toml;
+    source = activeConfig;
     # Use a symlink by default; for a real file copy, set `copy = true;`
     # copy = true;
   };

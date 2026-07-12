@@ -275,6 +275,30 @@ This gives `self.darwinConfigurations.pkgs` directly and removes the separate `d
 ### [Trade-off] Per-profile brew casks append vs replace
 Per-profile modules append rather than replace brew casks — both machines' shared apps stay installed on each. If exclusives are ever needed (e.g., "only on work: install corporate VPN, remove zed"), `lib.mkForce` syntax would be required. **Mitigation:** Document in `defaults.nix` that all entries in `personal.nix`/`work.nix` are additive by default.
 
+### Decision 11: `init.sh` for bootstrap/profile-switch only; `Justfile` for day-to-day deploys
+
+This repo already uses `just deploy` (via `Justfile`) as the day-to-day deploy entrypoint — `init.sh` is a separate, older script originally meant only for first-time bootstrap (setting `rootPath`, activating git hooks, running `nix run ... darwin-rebuild -- switch` once). Prior to this change, `Justfile`'s `deploy`/`verbose`/`check` recipes hardcoded `--flake ./nix --impure` (bare, no profile) — which breaks entirely under named profile outputs, since no bare/default `darwinConfigurations` attribute exists (see Decision 1's trade-off).
+
+Rather than have every `just` recipe require a `profile` parameter (breaking the simple `just deploy` muscle-memory workflow), the profile selection is persisted as a `Justfile` variable, set once by `init.sh`:
+
+```just
+# Justfile
+flake_target := "<not_initialized>"
+...
+deploy: && optimise
+  sudo {{darwin_rebuild}} switch --flake {{flake_target}} --impure
+```
+
+`init.sh --personal` / `--work` `sed`-replace `flake_target := "..."` with `./nix#personal` / `./nix#work` (the same locally-mutated-but-uncommitted convention already used for `rootPath` in `flake.nix` — see the `gitskip`/`gitunskip` aliases in `darwin/default.nix`), then immediately invoke `just deploy` to perform the actual switch. This keeps `darwin_rebuild`/`optimise` invocation logic in exactly one place (`Justfile`), rather than duplicating it in `init.sh`.
+
+The default value `"<not_initialized>"` is deliberately not a valid flake output reference — `just deploy` run before ever running `init.sh` fails clearly (`./nix#<not_initialized>` doesn't resolve to any `darwinConfigurations` attribute) rather than silently falling back to some default profile or a stale bare target.
+
+**Division of responsibility going forward:**
+- `init.sh --personal` / `--work`: initial deploy, or switching a machine's profile — run rarely
+- `just deploy` / `just verbose` / `just check`: regular day-to-day deploys — reuse whichever profile was last selected
+
+**Alternative considered:** Have `init.sh` fully own deploys (keep `just deploy` targeting a hardcoded default profile, or remove `just deploy` in favor of always using `init.sh`). **Rejected** — the user's existing daily workflow already relies on `just deploy` (with its `optimise`-chained cleanup step, `check`/`verbose` variants, and the broader `sanitize-all`/`update` recipe chains); changing that muscle memory has more cost than persisting one variable via `sed`.
+
 ## Migration Plan
 
 1. Create `nix/lib/resolve-module.nix` — profile-aware resolver function
@@ -287,11 +311,12 @@ Per-profile modules append rather than replace brew casks — both machines' sha
 8. Restructure `nix/modules/home/tuna/` — create directory with shared base module + per-profile full configs; rewrite `tuna.nix` as `tuna/default.nix` resolving the active config by profile
 9. Split fish into `fish.nix` (base, unchanged name) + `fish-personal.bindings`/`fish-work.bindings` (profiles)
 10. Update `nix/darwin/home.nix` — replace hardcoded imports with resolver calls where profile-dependent
-11. Update `init.sh` — remove `run_hostname_sed`; add `deploy_personal`/`deploy_work` helpers targeting the named flake outputs
-12. Create `~/.config/darwin-secrets/work.nix.example` template (committed, no real secrets) documenting the expected shape for the real file
-13. Verify: `darwin-rebuild switch --flake ".#personal" --dry-build`, then `--flake ".#work" --dry-build` (this can be tested entirely from the personal machine, since profile selection is explicit and not hostname-gated)
+11. Update `init.sh` — remove `run_hostname_sed`; add `deploy_personal`/`deploy_work` helpers that persist the profile into `Justfile`'s `flake_target` and delegate to `just deploy`
+12. Update `Justfile` — add `flake_target := "<not_initialized>"`; update `deploy`/`verbose`/`check` to use `--flake {{flake_target}} --impure`
+13. Create `~/.config/darwin-secrets/work.nix.example` template (committed, no real secrets) documenting the expected shape for the real file
+14. Verify: `darwin-rebuild switch --flake ".#personal" --dry-build`, then `--flake ".#work" --dry-build` (this can be tested entirely from the personal machine, since profile selection is explicit and not hostname-gated); verify `just deploy` correctly reuses a persisted profile and fails clearly with the `<not_initialized>` default
 
-**Rollback:** Revert `default.nix`, `home.nix`, `flake.nix`, and `init.sh`. Remove the `profiles/` directory and new modules. Move shared configs back from subdirectories to their original flat locations. All existing modules (ghostty, helix, neovim, zellij, oh_my_posh) remain untouched — no rollback risk there. Restore `run_hostname_sed` from git history if reverting fully.
+**Rollback:** Revert `default.nix`, `home.nix`, `flake.nix`, `init.sh`, and `Justfile`. Remove the `profiles/` directory and new modules. Move shared configs back from subdirectories to their original flat locations. All existing modules (ghostty, helix, neovim, zellij, oh_my_posh) remain untouched — no rollback risk there. Restore `run_hostname_sed` from git history if reverting fully.
 
 ## Open Questions
 

@@ -9,17 +9,24 @@ let
   files = "${rootPath}/dotfiles";
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
-  specialArgs = {
-    inherit self files inputs nixPath username rootPath paths;
+
+  mkDarwinConfig = profile:
+    nix-darwin.lib.darwinSystem {
+      modules = mkModules profile;
+      specialArgs = mkSpecialArgs profile;
+    };
+
+  mkSpecialArgs = profile: {
+    inherit self files inputs nixPath username rootPath paths profile;
     libFiles = "${rootPath}/lib";
     lcars = lcarsConfig.lcars;
   };
 
-in {
-  "<hostname>" = nix-darwin.lib.darwinSystem {
-    modules = [
-      ../options/default.nix
-      ../features.nix
+  mkModules = profile: [
+    ../options/default.nix
+    ../features.nix
+    ../darwin/profiles/defaults.nix
+    (../darwin/profiles + "/${profile}.nix")
       # overlays and modules
       {
         nixpkgs.overlays = [
@@ -42,18 +49,6 @@ in {
       # The main Darwin configuration, now as a module
       ({ lib, pkgs, lcars, ... }: {
         system.primaryUser = username;
-        environment.systemPackages = with pkgs; [
-          comma
-          unstable.devenv
-          bat
-          curl
-          neovim
-          lazygit
-          nodejs_22
-          (lua5_1.withPackages (ps: with ps; [ luarocks ]))
-          bun
-          # vscode
-        ];
 
         environment.shellAliases = {
           klingon = ''say -v Xander "QgaplA"'';
@@ -69,63 +64,10 @@ in {
           ",," = ", -d ";
         };
 
-        homebrew = {
-          enable = true;
-
-          onActivation = {
-            autoUpdate = true;
-            upgrade = true;
-            cleanup = "zap";
-          };
-
-          global = {
-            autoUpdate = true;
-            brewfile = true;
-          };
-          
-          brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" "rtk" ];
-          taps = [];
-          casks = [
-            "mouseless"
-            "ghostty"
-            "font-monaspace"
-            "alcove"
-            "postman"
-            "herd"
-            "zed"
-          ];
-          masApps = { };
-        };
-
-        system.defaults = {
-          controlcenter.BatteryShowPercentage = true;
-          dock.autohide = true;
-          finder = {
-            _FXSortFoldersFirst = true;
-            AppleShowAllExtensions = true;
-            AppleShowAllFiles = true;
-            FXDefaultSearchScope = "SCcf";
-            FXEnableExtensionChangeWarning = false;
-            FXPreferredViewStyle = "clmv";
-            NewWindowTarget = "Home";
-            QuitMenuItem = true;
-            ShowPathbar = true;
-            ShowStatusBar = true;
-          };
-          loginwindow.GuestEnabled = false;
-          NSGlobalDomain = {
-            AppleICUForce24HourTime = true;
-            AppleInterfaceStyle = "Dark";
-          };
-        };
-
-        fonts.packages = with pkgs; [
-          nerd-fonts.fira-code
-          nerd-fonts.jetbrains-mono
-        ];
-
         security = {
-          # pki.certificateFiles = [ "/etc/ssl/certs/corporate.crt" ];
+          # Corporate certificates are auto-discovered from
+          # ~/.config/darwin-secrets/ for the work profile — see
+          # profiles/work.nix.
           pam.services.sudo_local.touchIdAuth = true;
         };
 
@@ -178,11 +120,11 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.${username} = import ./home.nix;
-        home-manager.extraSpecialArgs = inputs // specialArgs;
+        home-manager.extraSpecialArgs = inputs // (mkSpecialArgs profile);
         home-manager.backupFileExtension = "backup";
       }
     ];
-
-    specialArgs = specialArgs;
-  };
+in {
+  personal = mkDarwinConfig "personal";
+  work = mkDarwinConfig "work";
 }

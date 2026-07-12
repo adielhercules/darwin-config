@@ -1,0 +1,5 @@
+''
+  function hi
+      echo "Hi work"
+  end
+''

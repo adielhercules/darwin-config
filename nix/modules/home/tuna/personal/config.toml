@@ -1,0 +1,540 @@
+schemaVersion = 1
+
+[catalogs]
+sortOrders = []
+
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'Tuna.EffectsCatalog'
+    mode = 'none'
+    selectedItemKeys = []
+
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'TunaEmoji.EmojiCatalog'
+    mode = 'none'
+    selectedItemKeys = []
+
+[[comboMode.bindings]]
+iconPath = 'apple.terminal'
+key = 'c'
+label = 'Commands'
+
+    [[comboMode.bindings.children]]
+    key = 'l'
+    label = 'Lock'
+    url = 'tuna://run/TunaAutomation.SystemTasksCatalog.Lock%20Screen/TunaCore.CommonActionsCatalog.Run'
+
+[[comboMode.bindings]]
+iconPath = 'arrowshape.turn.up.right.circle'
+key = 'o'
+label = ' Open'
+
+    [[comboMode.bindings.children]]
+    key = 'g'
+    url = 'tuna://run/path.%252FApplications%252FGhostty.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'm'
+    url = 'tuna://run/path.%252FSystem%252FApplications%252FMusic.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'f'
+    url = 'tuna://run/path.%252FApplications%252FFigma.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 's'
+    url = 'tuna://run/path.%252FSystem%252FVolumes%252FPreboot%252FCryptexes%252FApp%252FSystem%252FApplications%252FSafari.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'c'
+    url = 'tuna://run/path.%252FApplications%252FVisual%2520Studio%2520Code.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'w'
+    url = 'tuna://run/path.%252FApplications%252FWarp.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'e'
+    url = 'tuna://run/path.%252FApplications%252FMicrosoft%2520Edge.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'd'
+    url = 'tuna://run/path.%252FApplications%252FDia.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'z'
+    url = 'tuna://run/path.%252FApplications%252FZed.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'n'
+    url = 'tuna://run/path.%252FApplications%252FObsidian.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'a'
+    url = 'tuna://run/path.%252FUsers%252Fadielhercules%252FApplications%252FAndroid%2520Studio.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'r'
+    label = 'Sublime Me(r)ge'
+    url = 'tuna://run/path.%252FApplications%252FSublime%2520Merge.app/Open'
+
+    [[comboMode.bindings.children]]
+    key = 'x'
+    url = 'tuna://run/path.%252FApplications%252FXcode.app/Open'
+
+[[comboMode.bindings]]
+iconPath = 'rectangle.grid.2x2'
+key = 'a'
+label = 'Aerospace'
+
+    [[comboMode.bindings.children]]
+    key = 'c'
+    label = 'Communications'
+    url = 'tuna://run/text.aerospace%2520workspace%2520C/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'b'
+    label = 'Browsing'
+    url = 'tuna://run/text.aerospace%2520workspace%2520B/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 't'
+    label = 'Terminals'
+    url = 'tuna://run/text.aerospace%2520workspace%2520T/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'i'
+    label = 'IDEs'
+    url = 'tuna://run/text.aerospace%2520workspace%2520I/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'd'
+    label = 'Dev / Simulators'
+    url = 'tuna://run/text.aerospace%2520workspace%2520D/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'm'
+    label = 'Music'
+    url = 'tuna://run/text.aerospace%2520workspace%2520M/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = '1'
+    label = 'misc'
+    url = 'tuna://run/text.aerospace%2520workspace%25201/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'e'
+    label = 'Focus window'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Left'
+        url = 'tuna://run/text.aerospace%2520focus%2520left/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Right'
+        url = 'tuna://run/text.aerospace%2520focus%2520right/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Down'
+        url = 'tuna://run/text.aerospace%2520focus%2520down/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Up'
+        url = 'tuna://run/text.aerospace%2520focus%2520up/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = '`'
+        label = 'Focus last window'
+        url = 'tuna://run/text.aerospace%2520focus-back-and-forth/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = '`'
+    label = 'Focus last workspace'
+    url = 'tuna://run/text.aerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'f'
+    label = 'Fullscreen'
+    url = 'tuna://run/text.aerospace%2520fullscreen/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'F'
+    label = 'Flatten workspace tree'
+    url = 'tuna://run/text.aerospace%2520flatten-workspace-tree/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'g'
+    label = 'Screens'
+
+        [[comboMode.bindings.children.children]]
+        key = 'f'
+        label = 'Focus screen'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left'
+            url = 'tuna://run/text.aerospace%2520focus-monitor%2520left/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right'
+            url = 'tuna://run/text.aerospace%2520focus-monitor%2520right/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down'
+            url = 'tuna://run/text.aerospace%2520focus-monitor%2520down/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up'
+            url = 'tuna://run/text.aerospace%2520focus-monitor%2520up/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'w'
+        label = 'Move window'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left'
+            url = 'tuna://run/text.aerospace%2520move-node-to-monitor%2520--focus-follows-window%2520left/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right'
+            url = 'tuna://run/text.aerospace%2520move-node-to-monitor%2520--focus-follows-window%2520right/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down'
+            url = 'tuna://run/text.aerospace%2520move-node-to-monitor%2520--focus-follows-window%2520down/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up'
+            url = 'tuna://run/text.aerospace%2520move-node-to-monitor%2520--focus-follows-window%2520up/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 's'
+        label = 'Move workspace'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left'
+            url = 'tuna://run/text.aerospace%2520move-workspace-to-monitor%2520left/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right'
+            url = 'tuna://run/text.aerospace%2520move-workspace-to-monitor%2520right/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down'
+            url = 'tuna://run/text.aerospace%2520move-workspace-to-monitor%2520down/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up'
+            url = 'tuna://run/text.aerospace%2520move-workspace-to-monitor%2520up/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'j'
+    label = 'Join with'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Left'
+        url = 'tuna://run/text.aerospace%2520join-with%2520left/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Right'
+        url = 'tuna://run/text.aerospace%2520join-with%2520right/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Down'
+        url = 'tuna://run/text.aerospace%2520join-with%2520down/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Up'
+        url = 'tuna://run/text.aerospace%2520join-with%2520up/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'l'
+    label = 'Layout'
+
+        [[comboMode.bindings.children.children]]
+        key = 'a'
+        label = 'Accordion'
+        url = 'tuna://run/text.aerospace%2520layout%2520accordion%2520horizontal%2520vertical/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'f'
+        label = 'Floating'
+        url = 'tuna://run/text.aerospace%2520layout%2520floating%2520tiling/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 't'
+        label = 'Tiles'
+        url = 'tuna://run/text.aerospace%2520layout%2520tiles%2520vertical%2520horizontal/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    iconPath = 'window.awning'
+    key = 's'
+    label = 'Send window to'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Directions'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left'
+            url = 'tuna://run/text.aerospace%2520move%2520left/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right'
+            url = 'tuna://run/text.aerospace%2520move%2520right/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down'
+            url = 'tuna://run/text.aerospace%2520move%2520down/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up'
+            url = 'tuna://run/text.aerospace%2520move%2520up/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'w'
+        label = 'Workspaces'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'C'
+            label = 'Communications'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520C/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'c'
+            label = 'Communications'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520C%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'B'
+            label = 'Browsing'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520B/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'b'
+            label = 'Browsing'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520B%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'T'
+            label = 'Terminals'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520T/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 't'
+            label = 'Terminals'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520T%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'I'
+            label = 'IDEs'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520I/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'i'
+            label = 'IDEs'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520I%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'D'
+            label = 'Dev / Simulators'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520D/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Dev / Simulators'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520D%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'M'
+            label = 'Music'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520M/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'm'
+            label = 'Music'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%2520M%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '!'
+            label = 'misc'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%25201/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '1'
+            label = 'misc'
+            url = 'tuna://run/text.aerospace%2520move-node-to-workspace%25201%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'R'
+    label = 'Reload config'
+    url = 'tuna://run/text.aerospace%2520reload-config/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'r'
+    label = 'Mode resize'
+    url = 'tuna://run/text.aerospace%2520mode%2520resize/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'z'
+    label = 'Center'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+[[comboMode.bindings]]
+key = "'"
+label = 'Last window or workspace'
+url = 'tuna://run/text.aerospace%2520focus-back-and-forth%2520%257C%257C%2520aerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
+
+[[comboMode.bindings]]
+key = 'z'
+label = 'Center Window'
+url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+[[comboMode.bindings]]
+iconPath = 'uiwindow.split.2x1'
+key = 'w'
+label = 'Window'
+
+    [[comboMode.bindings.children]]
+    key = 'a'
+    label = 'Comfortable'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Almost%20Maximize/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 't'
+    label = 'Thirds'
+
+        [[comboMode.bindings.children.children]]
+        key = 'e'
+        label = 'Two thirds'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'h'
+            label = 'First two thirds'
+            url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run%20in%20Background'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Last two thirds'
+            url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run%20in%20Background'
+
+        [[comboMode.bindings.children.children]]
+        key = 'c'
+        label = 'Center third'
+        url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
+
+        [[comboMode.bindings.children.children]]
+        key = 'h'
+        label = 'First third'
+        url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Last third'
+        url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
+
+    [[comboMode.bindings.children]]
+    key = 'c'
+    label = 'Center'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'f'
+    label = 'Full screen'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Maximize/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'h'
+    label = 'Left'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Left%20Half/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'H'
+    label = 'Max height'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Maximize%20Height/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'l'
+    label = 'Right'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Right%20Half/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'n'
+    label = 'First third'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Third/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 'o'
+    label = 'Last two thirds'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 's'
+    label = 'sssslide'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Move%20Right/TunaCore.CommonActionsCatalog.Run'
+
+[[comboMode.bindings]]
+key = 'n'
+url = 'tuna://run/TunaSystem.AllWindowsSearchCatalog.Windows/TunaCore.CommonActionsCatalog.Browse'
+
+[[comboMode.bindings]]
+key = 'enter'
+url = 'tuna://run/TunaCore.ApplicationsCatalog.Ghostty/TunaCore.CommonActionsCatalog.Open'
+
+[hotkeys]
+custom = []
+
+    [hotkeys.app.activate]
+    carbonKeyCode = 49
+    carbonModifiers = 256
+
+    [hotkeys.app.comboMode]
+    carbonKeyCode = 15
+    carbonModifiers = 2048
+
+    [hotkeys.app.dictation]
+    carbonKeyCode = 5
+    carbonModifiers = 6912
+
+    [hotkeys.app.textMode]
+    carbonKeyCode = 9
+    carbonModifiers = 6912
+
+[settings]
+backspaceBehavior = 'deleteCharacters'
+clipboardHistoryEnabled = false
+comboModeBackspaceBehavior = 'stepBack'
+comboModeCheatsheetDelayMS = 1000
+dictationWindowPosition = 'topCenter'
+shelfCatalogEnabled = false
+talkModeDoublePressTrigger = 'rightCommand'
+talkModeModifierTrigger = 'hyper'
+themeIdentifier = 'com.brnbw.tuna.themes.nuggets'
+
+[[catalogSettings]]
+catalogIdentifier = 'TunaCore.TextActionsCatalog'
+
+    [catalogSettings.values]
+    TextActionsFileExtension = 'txt'

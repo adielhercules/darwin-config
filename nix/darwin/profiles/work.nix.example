@@ -1,0 +1,36 @@
+# Template for ~/.config/darwin-secrets/work.nix
+#
+# ────────────────────────────────────────────────────────────────────────
+# HOW TO USE (auto-discovery convention):
+#   1. mkdir -p ~/.config/darwin-secrets
+#   2. Copy this file to ~/.config/darwin-secrets/work.nix and fill in real
+#      values. That directory lives OUTSIDE this git repo and is never
+#      committed — safe for corporate certs/proxy/VPN settings.
+#   3. Drop any corporate certificate files (*.crt / *.pem) into the SAME
+#      directory (~/.config/darwin-secrets/). They are auto-discovered via
+#      `builtins.readDir` and fed into `security.pki.certificateFiles`
+#      automatically — no Nix code changes required.
+#   4. Deploy with: darwin-rebuild switch --flake ".#work" --impure
+#      (or `deploy_work` from init.sh)
+#
+# If ~/.config/darwin-secrets/work.nix is missing when deploying the work
+# profile, the build still succeeds but emits a soft `warnings` entry.
+# ────────────────────────────────────────────────────────────────────────
+{ ... }: {
+  # Example: corporate proxy environment variables
+  # environment.variables = {
+  #   HTTP_PROXY = "http://proxy.corp.example.com:8080";
+  #   HTTPS_PROXY = "http://proxy.corp.example.com:8080";
+  #   NO_PROXY = "localhost,127.0.0.1,.corp.example.com";
+  # };
+
+  # Example: nix-level substituter/proxy configuration
+  # nix.settings = {
+  #   substituters = [ "https://corp-cache.example.com" ];
+  #   netrc-file = "/Users/adielhercules/.config/darwin-secrets/netrc";
+  # };
+
+  # Note: certificate files (*.crt / *.pem) do NOT need to be referenced
+  # here — just place them in ~/.config/darwin-secrets/ alongside this file
+  # and they are auto-discovered (see profiles/work.nix).
+}

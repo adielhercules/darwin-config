@@ -1,0 +1,27 @@
+# Work-profile-only aerospace overrides.
+#
+# Aerospace workspaces are created implicitly by reference (there is no
+# separate "declare workspace" section) — using workspace letter "F" here
+# is sufficient to introduce the new "Focus" workspace. "F" does not clash
+# with any existing workspace letters (B, C, D, M, T, 1) or active
+# keybindings (native workspace-switch keybindings in main.toml are
+# currently all commented out/unused; workspace switching is driven from
+# Tuna instead — see nix/modules/home/tuna/).
+#
+# NOTE: `on-window-detected` is merged via array-concatenation with
+# main.toml's array (not `lib.recursiveUpdate`, which would replace the
+# whole array) — see aerospace/default.nix and design.md Decision 6.
+# Teams/Outlook/Edge are installed manually on the work machine (not
+# managed via Homebrew), per the corresponding tuna work-profile "Open"
+# group entries.
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = 'move-node-to-workspace F'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = 'move-node-to-workspace F'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.edgemac'
+run = 'move-node-to-workspace F'

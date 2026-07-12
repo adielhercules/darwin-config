@@ -48,17 +48,23 @@
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin
     , homebrew-bundle, homebrew-cask, homebrew-core, homebrew-xcodesorg
     , nix-homebrew, ... }:
-    let paths = { rootPath = "<init-required>"; };
-    in {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#simple
-      darwinConfigurations = (import ./darwin {
+    let
+      paths = { rootPath = "/Users/adielhercules/darwin-config"; };
+      configs = (import ./darwin {
         inherit self inputs nix-darwin nixpkgs nixpkgs-unstable nix-homebrew
           home-manager homebrew-bundle homebrew-cask homebrew-core
           homebrew-xcodesorg paths;
       });
-
-      # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."<hostname>".pkgs;
+    in {
+      # Build darwin flake using:
+      # $ darwin-rebuild switch --flake ".#personal"
+      # $ darwin-rebuild switch --flake ".#work"
+      #
+      # Profile selection is always explicit — there is no bare `--flake .`
+      # target and no hostname-based auto-resolution. `configs.pkgs` exposes
+      # the shared package set (identical overlays across both profiles) as
+      # `self.darwinConfigurations.pkgs`, for tooling/`nix repl` convenience
+      # only — it has no effect on which profile's modules are built.
+      darwinConfigurations = configs // { pkgs = configs.personal.pkgs; };
     };
 }
