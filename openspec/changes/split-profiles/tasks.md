@@ -1,63 +1,66 @@
-## 1. Resolve module resolver helper
+## 1. Create the profile-aware module resolver
 
-- [ ] 1.1 Create nix/lib/resolve-module.nix with profile-aware file path resolution (suffix pattern fallback)
-- [ ] 1.2 Verify resolver returns correct paths for: existing profile variant, missing profile variant (fallback), and multi-file directory modules
+- [ ] 1.1 Create `nix/lib/resolve-module.nix` with profile-aware file path resolution (suffix pattern fallback: `<module>.<profile>.<ext>` → fallback `<module>.<ext>`)
+- [ ] 1.2 Write a small `nix-instantiate --eval` or `nix eval` smoke test confirming: (a) resolver returns the profile-specific file when it exists, (b) resolver falls back to the shared file when no profile variant exists
 
 ## 2. Create profiles directory with shared + per-profile layers
 
-- [ ] 2.1 Create nix/darwin/profiles/defaults.nix — move shared brew casks, system packages, and settings from default.nix here
-- [ ] 2.2 Create nix/darwin/profiles/personal.nix — personal-only additions (no repetition of defaults)
-- [ ] 2.3 Create nix/darwin/profiles/work.nix — work-only additions (corporate tools, certs)
+- [ ] 2.1 Create `nix/darwin/profiles/defaults.nix` — move shared brew casks, system packages, and settings from `default.nix` here
+- [ ] 2.2 Create `nix/darwin/profiles/personal.nix` — personal-only additions (no repetition of defaults)
+- [ ] 2.3 Create `nix/darwin/profiles/work.nix` — work-only additions (corporate tools), plus conditional import of `~/.config/darwin-secrets/work.nix` with a `warnings` fallback if absent
+- [ ] 2.4 Create `nix/darwin/profiles/work.nix.example` (or a documented template) showing the expected attrset shape for the external secrets file, with no real values, committed to the repo
 
-## 3. Update flake and default.nix for profile parameter
+## 3. Convert flake.nix and default.nix to named, profile-keyed outputs
 
-- [ ] 3.1 Add `profile` argument to nix/flake.nix outputs function signature
-- [ ] 3.2 Forward profile parameter through specialArgs to darwinSystem modules
-- [ ] 3.3 Update nix/darwin/default.nix to accept profile parameter
-- [ ] 3.4 Import profiles/defaults.nix, then personal.nix or work.nix (based on profile) in default.nix module list
+- [ ] 3.1 Replace the single `darwinConfigurations."Adiels-MacBook-Pro"` in `nix/flake.nix` with two named outputs: `darwinConfigurations.personal` and `darwinConfigurations.work`
+- [ ] 3.2 Ensure both outputs share the same base module list, differing only in which `profiles/*.nix` file is imported
+- [ ] 3.3 Update `nix/darwin/default.nix` to accept a `profile` parameter (passed internally, not from CLI) and import `profiles/defaults.nix` plus the matching `profiles/{personal,work}.nix`
+- [ ] 3.4 Thread the `profile` value through `specialArgs`/`extraSpecialArgs` so home-manager modules (aerospace, tuna, fish) can access it
 
-## 4. Restructure aerospace config into directory with shared + per-profile diffs
+## 4. Restructure aerospace config into directory with shared + merged per-profile diffs
 
-- [ ] 4.1 Create nix/modules/home/aerospace/ directory
-- [ ] 4.2 Move existing aerospace settings to aerospace/main.toml as the shared base
-- [ ] 4.3 Create aerospace/personal.toml for personal workspace name diffs (or leave empty/identical to main)
-- [ ] 4.4 Create aerospace/work.toml for work workspace name diffs
-- [ ] 4.5 Rewrite nix/modules/home/aerospace.nix as directory-based module that resolves active config via resolver
-- [ ] 4.6 Verify aerospace config renders correctly for both profiles (nix build check)
+- [ ] 4.1 Create `nix/modules/home/aerospace/` directory
+- [ ] 4.2 Move existing aerospace settings to `aerospace/main.toml` as the shared base
+- [ ] 4.3 Create `aerospace/personal.toml` for personal workspace name diffs (only the differing keys, may be empty/omitted if no diff exists)
+- [ ] 4.4 Create `aerospace/work.toml` for work workspace name diffs (only the differing keys)
+- [ ] 4.5 Rewrite `nix/modules/home/aerospace.nix` as `aerospace/default.nix`, parsing `main.toml` and the profile-specific override, merging via `lib.recursiveUpdate`
+- [ ] 4.6 Verify aerospace config renders correctly for both profiles via `nix eval` or `--dry-build`
 
-## 5. Restructure tuna config into directory with shared module + per-profile full configs
+## 5. Restructure tuna config into directory with shared reference + full per-profile configs
 
-- [ ] 5.1 Create nix/modules/home/tuna/ directory structure
-- [ ] 5.2 Identify and extract the ~80% shared base from current tuna/config.toml → tuna/config.shared.toml
-- [ ] 5.3 Create tuna/personal/config.toml — full tuna config with personal app combo shortcuts (~50 lines diff)
-- [ ] 5.4 Create tuna/work/config.toml — full tuna config with corporate app combos
-- [ ] 5.5 Rewrite nix/modules/home/tuna.nix as module that resolves profile-specific config file and symlinks it
+- [ ] 5.1 Create `nix/modules/home/tuna/` directory structure
+- [ ] 5.2 Copy the current `tuna/config.toml` to `tuna/config.shared.toml` as a documented human-authoring reference (not programmatically merged)
+- [ ] 5.3 Create `tuna/personal/config.toml` — full tuna config with personal app combo shortcuts
+- [ ] 5.4 Create `tuna/work/config.toml` — full tuna config with corporate app combos
+- [ ] 5.5 Rewrite `nix/modules/home/tuna.nix` as `tuna/default.nix`, resolving `home.file` source to the active profile's config file
 
 ## 6. Split fish into shared base + per-profile bindings
 
-- [ ] 6.1 Rename current fish plugin definitions from fish.nix to fish.config (base)
-- [ ] 6.2 Extract personal shell aliases/hooks into nix/modules/home/fish-personal.bindings
-- [ ] 6.3 Extract work proxy/corporate settings into nix/modules/home/fish-work.bindings
-- [ ] 6.4 Update fish module to load base config + resolve per-profile bindings file
+- [ ] 6.1 Keep `nix/modules/home/fish.nix` as the shared base (plugins, interactiveShellInit skeleton) — no rename
+- [ ] 6.2 Extract personal shell aliases/hooks into `nix/modules/home/fish-personal.bindings`
+- [ ] 6.3 Extract work proxy/corporate settings into `nix/modules/home/fish-work.bindings`
+- [ ] 6.4 Update the fish import in `home.nix` to load `fish.nix` unconditionally plus the resolved per-profile bindings file, merged via `lib.mkMerge` on `shellInit`
 
-## 7. Update home.nix to use the resolver for all imports
+## 7. Wire the resolver into home.nix
 
-- [ ] 7.1 Import resolve-module.nix helper in nix/darwin/home.nix
-- [ ] 7.2 Replace hardcoded aerespace/nix/modules/home/aerospace.nix import with resolver call
-- [ ] 7.3 Replace hardcodetuna module import with resolver call
-- [ ] 7.4 Replace the fish.nix import with resolver call
-- [ ] 7.5 Verify no hardcoded module paths remain that should use the resolver
+- [ ] 7.1 Import `nix/lib/resolve-module.nix` in `nix/darwin/home.nix`
+- [ ] 7.2 Replace the hardcoded `../modules/home/aerospace.nix` import with a resolver call pointing at the `aerospace/` directory
+- [ ] 7.3 Replace the hardcoded tuna module import with a resolver call pointing at the `tuna/` directory
+- [ ] 7.4 Replace the `fish.nix` import with the resolver call described in task 6.4
+- [ ] 7.5 Confirm ghostty, helix, neovim, zellij, and oh_my_posh imports remain unconditional and untouched
 
-## 8. Update init.sh — add deploy helpers, remove hostname detection
+## 8. Update init.sh
 
-- [ ] 8.1 Add deploy_personal function → darwin-rebuild switch --flake ".#" --argstr profile personal --impure
-- [ ] 8.2 Add deploy_work function → darwin-rebuild switch --flake ".#" --argstr profile work --impure
-- [ ] 8.3 Remove any existing hostname detection logic from init.sh
+- [ ] 8.1 Remove the `run_hostname_sed` function entirely (obsolete — darwinConfigurations are no longer hostname-keyed)
+- [ ] 8.2 Add `deploy_personal` function → `darwin-rebuild switch --flake ".#personal" --impure`
+- [ ] 8.3 Add `deploy_work` function → `darwin-rebuild switch --flake ".#work" --impure`
+- [ ] 8.4 Update the CLI dispatch section (`--paths`, `--bootstrap`, etc.) to remove any reference to the removed hostname step and document the new `--personal`/`--work` flags
 
-## 9. Verify deployments for both profiles
+## 9. Verify both profiles build and deploy correctly
 
-- [ ] 9.1 Run darwin-rebuild switch --flake ".#" --argstr profile personal --dry-build — check it succeeds
-- [ ] 9.2 Verify personal.nix is loaded (personal brew casks + packages present)
-- [ ] 9.3 Run darwin-rebuild switch --flake ".#" --argstr profile work --dry-build — check it succeeds
-- [ ] 9.4 Verify work.nix is loaded (work-only brew casks + packages present)
-- [ ] 9.5 Confirm default profile still works (no profile arg → personal)
+- [ ] 9.1 Run `darwin-rebuild switch --flake ".#personal" --dry-build` — confirm it succeeds
+- [ ] 9.2 Verify personal-only brew casks/packages are present in the dry-build output, and work-only entries are absent
+- [ ] 9.3 Run `darwin-rebuild switch --flake ".#work" --dry-build` — confirm it succeeds (this can be tested from the personal machine, since profile selection is explicit)
+- [ ] 9.4 Verify work-only brew casks/packages are present, and personal-only entries are absent
+- [ ] 9.5 Temporarily rename `~/.config/darwin-secrets/work.nix` (if present) and re-run the work dry-build to confirm the missing-secrets warning appears without failing the build
+- [ ] 9.6 Confirm `darwin-rebuild switch --flake "." --impure` (bare, no profile target) now fails as expected, validating that hostname-based auto-resolution has been fully removed

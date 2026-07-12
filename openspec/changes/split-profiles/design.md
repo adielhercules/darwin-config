@@ -2,41 +2,57 @@
 
 The darwin-config repo manages a macOS development machine declaratively via Nix + nix-darwin + Home Manager + nix-homebrew. The current architecture is monolithic: `nix/flake.nix` exports a single `darwinConfigurations."Adiels-MacBook-Pro"` that imports all modules, brew entries, and settings in one pass. Deployment uses `sudo darwin-rebuild switch --flake "./nix" --impure` and `init.sh`.
 
-You've been using two machines — a personal laptop and a work laptop — and differences are emerging: different Homebrew casks (zed/herd/postman vs vscodium/corporate VPN clients), corporate certificates, different applications in tuna shortcuts, and different aerospace workspace names. Currently no mechanism exists to deploy machine-specific configs from the same repo without manual patching or hostname-based detection inside `init.sh`.
+You've been using two machines — a personal laptop and a work laptop — and differences are emerging: different Homebrew casks (zed/herd/postman vs vscodium/corporate VPN clients), corporate certificates, different applications in tuna shortcuts, and different aerospace workspace names. Currently no mechanism exists to deploy machine-specific configs from the same repo.
 
 The existing module structure in `nix/modules/home/` follows a flat per-tool pattern (`ghostty.nix`, `helix.nix`, `neovim.nix`, etc.), each with its own inline config or referenced TOML. Nix-darwin's deep-merge model naturally supports list-appending for brew casks and system packages across merged modules.
+
+`init.sh` today has a `run_hostname_sed` bootstrap step that substitutes a `<hostname>` placeholder in `flake.nix`/`default.nix` with the machine's actual `scutil` hostname, one time, when first cloning onto a new Mac. This exists because nix-darwin's `darwin-rebuild switch --flake .` (no explicit `#<name>` target) auto-resolves the darwinConfiguration by matching the current machine's hostname to a `darwinConfigurations.<hostname>` key. This is unrelated to profile selection — it is purely how the flake's single configuration got its name to enable that auto-resolution convenience.
+
+Nix flakes evaluate `outputs` as a pure function of `inputs` only — there is no mechanism to pass extra CLI arguments (`--argstr`, etc.) into a flake's output evaluation the way `nix-build`/`nix-instantiate` support for non-flake expressions. This means profile selection cannot be a CLI flag layered on top of a single flake output; it must be encoded as the flake output name itself, or read impurely via an environment variable inside an `--impure` build. This repo already deploys with `--impure`, but named flake outputs were chosen as the cleaner, more idiomatic mechanism (see Decision 1).
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Enable explicit profile-based deployment via `--argstr profile personal` or `--argstr profile work` at CLI time — no hostname detection, no side-channel overrides
+- Enable explicit profile-based deployment via named flake outputs: `darwin-rebuild switch --flake ".#personal"` or `".#work"` — always explicit, no hostname-based auto-resolution, no environment variables
 - Define a shared default layer (`profiles/defaults.nix`) so brew casks and system packages are not repeated across profiles
 - Create a tiny profile-aware module resolver (`nix/lib/resolve-module.nix`) that falls back to shared modules via suffix pattern matching (e.g., `fish-personal.bindings` or `ghostty.nix`)
-- Restructure aerospace config into directory with shared base (`main.toml`) + per-profile diffs (`personal.toml`, `work.toml`) — no TOML merge logic needed, separate resolved files loaded from Nix
+- Restructure aerospace config into directory with shared base (`main.toml`) + per-profile diffs (`personal.toml`, `work.toml`), merged via `lib.recursiveUpdate` on the parsed TOML attrsets — no custom merge logic, no text-replacement hacks
 - Restructure tuna config into directory with shared base module + near-duplicate profile configs (`personal/config.toml`, `work/config.toml` containing full config with ~20% app combo diffs)
 - Split fish plugin/base configuration from per-profile bindings into separate files
-- Add convenience helpers in `init.sh` that pass explicit profile flags — no hostname detection
+- Provide a safe, non-committed mechanism for work-only secrets (corporate certificates, proxy settings) via an external file path, with a soft build-time warning if it's missing when deploying the work profile
+- Add convenience helpers in `init.sh` that wrap the named-flake-output deploy commands
+- Remove the now-obsolete `run_hostname_sed` bootstrap step from `init.sh`
 
 **Non-Goals:**
-- No hostname detection at all (per user's decision to remove it entirely)
-- No TOML merge logic or library — aerospace uses separate resolved TOMLs, tuna uses full per-profile configs rather than partial merges
+- No CLI-argument-based profile selection (`--argstr`) — this does not work with flakes and is explicitly not attempted
+- No hostname-based auto-resolution of the darwinConfiguration — giving this up is an accepted trade-off of moving to named, profile-keyed outputs
+- No TOML partial-merge logic for tuna — tuna uses full near-duplicate per-profile configs rather than partial merges, because its diffs live in deeply nested arrays that don't merge cleanly
 - No change to ghostty, helix, neovim, zellij, or oh_my_posh modules — these are confirmed identical between machines and remain as single shared files in their current locations
+- No secrets-management tooling (agenix, sops-nix) — the external file mechanism is sufficient for the stated need and avoids adding new dependencies
 - No restructure of non-profile-related module organization
 
 ## Decisions
 
-### Decision 1: CLI-only profile selection via `--argstr profile` (no hostname detection)
+### Decision 1: Named flake outputs (`darwinConfigurations.personal` / `.work`), not `--argstr`
 
-The profile is selected EXPLICITLY via `darwin-rebuild switch --flake ".#" --argstr profile <name>`. Convenience functions in `init.sh` (`deploy_personal`, `deploy_work`) encode the flag for convenience, but no builtins-based hostname detection or automatic path checks are used. This eliminates any risk of silent config switching when moving between machines.
+`darwin-rebuild switch --flake ".#personal"` and `".#work"` are two independent flake outputs sharing the same base modules. Profile selection is baked into which output you target — there is no CLI flag, environment variable, or side-channel involved.
 
-**Alternative considered**: Automatic hostname detection via `builtins.readFile "/tmp/hostname"` or checking `/etc/work-machine`. **Rejected** because: (a) adds edge-case bugs on first boot, SSH, or shared environments; (b) violates the principle of explicit deployment — you should always know which config is being deployed; (c) complicates CI/dry-run workflows.
+**Alternative considered**: `--argstr profile <name>`. **Rejected — not viable.** Flake outputs are evaluated as a pure function of `inputs`; there is no CLI-argument-passing mechanism into flake output evaluation (unlike `nix-build --argstr` for legacy non-flake expressions). Any design relying on `--argstr` with a flake-based `darwin-rebuild switch --flake` command would silently ignore the flag.
 
-### Decision 2: Profile-aware module resolver (`nix/lib/resolve-module.nix`)
+**Alternative considered**: `builtins.getEnv "DARWIN_PROFILE"` combined with `--impure` (already used by this repo for deployment). **Rejected** in favor of named outputs — while technically workable, it's less discoverable (`darwin-rebuild switch --flake .#personal` is self-documenting; an env var requires reading `init.sh` or docs to discover) and named outputs are the more idiomatic flake pattern for this use case.
+
+**Trade-off accepted**: `darwin-rebuild switch --flake .` (bare, no target) no longer auto-resolves via hostname matching. Every deploy now requires an explicit `--flake ".#personal"` or `".#work"`. This is intentional — explicitness was preferred over convenience per prior discussion.
+
+### Decision 2: Remove `run_hostname_sed` from `init.sh`
+
+Since darwinConfigurations are now keyed by profile name (not hostname), the `run_hostname_sed` bootstrap step — which substituted a `<hostname>` placeholder with `scutil --get LocalHostName` — no longer serves any purpose and is removed entirely from `init.sh`. The `run_paths` function (rootPath substitution + git hooks activation) is retained; only the hostname substitution sub-step is dropped.
+
+### Decision 3: Profile-aware module resolver (`nix/lib/resolve-module.nix`)
 
 Instead of scattering `lib.optional` / conditional imports throughout `home.nix`, a single helper function encapsulates the resolution logic:
 
 ```
-resolver path { profile, moduleName }:
+resolver { profile, moduleName }:
   if <module>.<profile>.<ext> exists → return it
   else → return <module>.<ext> (shared)
 ```
@@ -44,21 +60,21 @@ resolver path { profile, moduleName }:
 This is ~12 lines of Nix using `builtins.pathExists` on resolved paths. It's called from `home.nix`:
 
 ```nix
-{ profile ? "personal", ... }: {
+{ profile, ... }: {
   imports = [
     (resolveModule { inherit profile; module = "aerospace"; })     # → aerospace/ dir (always)
-    (resolveModule { inherit profile; module = "fish"; })           # → fish-personal.bindings or fish.config
-    (resolveModule { inherit profile; module = "tuna"; })          # → tuna/personal/config.toml via module
-    (if builtins.pathExists ./ghostty.nix then ./ghostty.nix else {})  # no suffix variant exists
+    (resolveModule { inherit profile; module = "fish"; })           # → fish-personal.bindings or fish.nix
+    (resolveModule { inherit profile; module = "tuna"; })          # → tuna/ dir, resolves personal/work config internally
+    ./ghostty.nix   # no suffix variant exists — imported directly, unconditionally
   ] ++ ...
 }
 ```
 
-For modules with multi-file structures (aerospace, tuna), the resolution returns the directory or default module file. For flat per-profile diff files (fish bindings), it resolves to the appropriate `.bindings` file.
+For modules with multi-file structures (aerospace, tuna), the resolution returns the directory's `default.nix`, which internally resolves which TOML/config to load. For flat per-profile diff files (fish bindings), the resolver returns the appropriate `.bindings` file directly.
 
 **Rationale:** Minimizes conditional logic in `home.nix`, centralizes the pattern matching in one place, and makes adding new profile-specific modules predictable. Without this resolver, every new module with a profile variant requires manual `lib.optional ... pathExists` boilerplate scattered across the imports list.
 
-### Decision 3: Profiles directory for brew/system packages (`nix/darwin/profiles/defaults.nix`)
+### Decision 4: Profiles directory for brew/system packages (`nix/darwin/profiles/defaults.nix`)
 
 All brew casks and system packages defined in `nix/darwin/default.nix` move to `profiles/defaults.nix`. Per-profile modules (`personal.nix`, `work.nix`) contain only list-appending entries — they add to the defaults, never replace them.
 
@@ -69,7 +85,6 @@ homebrew.casks   = [ "mouseless" "ghostty" "font-monaspace" "alcove" "postman" "
 environment.systemPackages = with pkgs; [ comma bat curl neovim lazygit nodejs_22 lua5_1 bun ];
 
 # profiles/personal.nix (appends):
-homebrew.casks   = [ "yazi" ];       # ← appends (or duplicates if already in defaults — nix-darwin de-dupes lists)
 environment.systemPackages = with pkgs; [ obsidian ];  # ← just extra
 
 # profiles/work.nix (appends):
@@ -77,66 +92,109 @@ homebrew.casks   = [ "vscodium" "corporate-vpn" ];
 environment.systemPackages = with pkgs; [ work-crlf-cli ];
 ```
 
-Note: Nix-darwin deep-merges these as module inputs — list entries accumulate. If you want per-profile exclusives (not appends), use `lib.mkForce` but this will rarely be needed since brew casks typically need to be additive rather than exclusive.
+Note: Nix-darwin deep-merges these as module inputs — list entries accumulate. If exclusives are ever needed (not appends), use `lib.mkForce`, though this should rarely be necessary since brew casks are additive by nature.
 
 **Alternative considered:** Per-profile full lists replacing defaults entirely. **Rejected** because it creates a maintenance burden — every new shared package must be added to both profiles individually, violating DRY.
 
-### Decision 4: Aerospace directory-based with shared + per-profile TOML diffs
+### Decision 5: External secrets file for work-only sensitive values
+
+This repository is public on GitHub. Corporate certificates, proxy URLs, and VPN settings for the work profile must never be committed in plaintext. The mechanism:
+
+```nix
+# nix/darwin/profiles/work.nix
+{ lib, config, ... }:
+let
+  secretsPath = "${config.home.homeDirectory}/.config/darwin-secrets/work.nix";
+  hasSecrets = builtins.pathExists secretsPath;
+in {
+  imports = lib.optional hasSecrets secretsPath;
+  warnings = lib.optional (!hasSecrets)
+    "profile=work but no secrets file found at ${secretsPath} — corporate certs/proxy config will be missing.";
+}
+```
+
+- The secrets file (`~/.config/darwin-secrets/work.nix`) lives entirely outside the git repository — never committed, never in git history
+- It is a plain Nix module (attrset), manually placed on the work machine by the user (out of band — password manager export, private note, AirDrop, etc.)
+- `profiles/work.nix` conditionally imports it if present, via `builtins.pathExists`
+- If `profile == "work"` and the file is absent, a `warnings` entry is emitted — nix-darwin surfaces this as a build-time warning in `darwin-rebuild switch` output, but the build does **not** fail
+- The `personal` profile never references this path and never warns
+
+**Alternative considered:** agenix or sops-nix for encrypted secrets committed to the repo. **Rejected** — heavier tooling than needed for the stated requirement; introduces new dependencies (age/SOPS keys, encryption workflow) for a need that's fully met by keeping the file out of git entirely. Can be revisited later if secrets need to be shared across multiple people/machines.
+
+### Decision 6: Aerospace directory-based with shared + per-profile TOML diffs, merged via `lib.recursiveUpdate`
 
 ```
 aerospace/
-  default.nix     ← module: enable, package, home.file symlink resolution
+  default.nix     ← module: enable, package, home.file symlink resolution, TOML merge
   main.toml       ← shared workspace rules, layout options (same on both machines)
   personal.toml   ← only sections that differ from main.toml (e.g., workspace name labels)
   work.toml       ← only sections that differ from main.toml
 ```
 
-In the Nix module (`aerospace/default.nix`), `main.toml` is always loaded and parsed into an attrset. The per-profile TOML (if one differs from main) is merged via `builtins.mapAttrs` or simple text replacement. Since aerospace diffs are mostly workspace name changes or layout overrides, the shared base covers 90%+ of the file, making this approach very lightweight.
+In `aerospace/default.nix`:
 
-**Alternative considered:** Full separate toml per profile (no shared base). **Rejected** because aerospace differs by a small number of sections — maintaining two near-identical files wastes capacity and introduces drift risk. Using `main.toml` as the anchor means diffs are clear via `diff main.toml work.toml`.
+```nix
+{ pkgs, lib, profile, ... }:
+let
+  main = builtins.fromTOML (builtins.readFile ./main.toml);
+  profileOverridePath = ./. + "/${profile}.toml";
+  profileOverrides =
+    if builtins.pathExists profileOverridePath
+    then builtins.fromTOML (builtins.readFile profileOverridePath)
+    else { };
+  merged = lib.recursiveUpdate main profileOverrides;
+in {
+  config.programs.aerospace = {
+    enable = true;
+    launchd.enable = true;
+    package = pkgs.unstable.aerospace;
+    settings = merged;
+  };
+}
+```
 
-### Decision 5: Tuna directory-based with shared module + near-duplicate profiles
+`lib.recursiveUpdate` is a stock, battle-tested nixpkgs `lib` function — no custom merge logic is written. Since aerospace diffs are mostly workspace name changes or layout overrides, the shared base covers the vast majority of the file, making per-profile TOMLs very small.
+
+**Alternative considered:** Full separate TOML per profile (no shared base, like tuna). **Rejected** because aerospace differs by a small number of sections — maintaining two near-identical files wastes effort and introduces drift risk. Using `main.toml` as the anchor keeps diffs small and explicit.
+
+### Decision 7: Tuna directory-based with shared module + near-duplicate profiles (no merge)
 
 ```
 tuna/
-  default.nix     ← module: symlinks, activation steps (shared)
-  config.shared.toml  ← base settings (catalogs, hotkeys, settings — ~80% of file)
+  default.nix     ← module: symlinks, activation steps (shared), resolves active config by profile
+  config.shared.toml  ← base settings (catalogs, hotkeys, settings — the majority of the file)
   personal/
-    config.toml   ← full tuna config with personal app combo shortcuts (~50 diffs from shared)
+    config.toml   ← full tuna config with personal app combo shortcuts
   work/
     config.toml   ← full tuna config with corporate app combos
 ```
 
-Since tuna is ~540 lines of deeply nested TOML and the diffs are in `[[comboMode.bindings]]` arrays (which are Nix `builtins.fromTOML` parseable but hard to merge at a key-level), near-duplicate configs per profile are more maintainable than trying to define partial TOML merges in Nix. The shared base (`config.shared.toml`) is documented as the anchor — when adding new settings, both configs stay identical on top of it, and only combo bindings diverge.
+Since tuna is ~540 lines of deeply nested TOML and the diffs are in `[[comboMode.bindings]]` arrays (arrays of objects, sometimes 3-4 levels deep), attempting a partial merge (as with aerospace) is fragile — `lib.recursiveUpdate` replaces arrays wholesale rather than merging them element-by-element, so array-based diffs don't compose the way flat key diffs do. Near-duplicate full configs per profile are more maintainable here.
 
-The `default.nix` module resolves which config file to use based on profile:
+`default.nix` resolves which config file to use based on profile:
 
 ```nix
+{ profile, ... }:
 let activeConfig = if profile == "work" then ./work/config.toml else ./personal/config.toml; in {
   home.file."Library/Application Support/Tuna/config.toml".source = activeConfig;
 }
 ```
 
-**Alternative considered:** Shared base + partial merge via Nix TOML parsing. **Rejected** because: (a) nested array-of-arrays merging in Nix attrsets is fragile and error-prone; (b) diffs between personal/work are ~50 lines of TOML — small enough to maintain two files without drift but too large for a clean partial merge pattern.
+**Alternative considered:** Shared base + partial merge via Nix TOML parsing (same pattern as aerospace). **Rejected** because: (a) tuna's diffs are inside nested arrays, where `lib.recursiveUpdate` cannot selectively merge individual array elements — it replaces the whole array; (b) the shared base is documented as an authoring anchor (`config.shared.toml`) for humans to diff against manually, even though it isn't programmatically merged.
 
-### Decision 6: Fish split into base config + per-profile bindings shellInit additions
+### Decision 8: Fish split into base config + per-profile bindings shellInit additions
 
 ```
-fish.config           ← base module with all plugins, interactiveShellInit greeting, PATH setup
-fish-personal.bindings  ← personal alias additions (shellInit content)  
-fish-work.bindings    ← work corporate proxy settings (shellInit content)
+fish.nix                ← base module with all plugins, interactiveShellInit greeting, PATH setup (unchanged file, unchanged name)
+fish-personal.bindings  ← personal alias additions (shellInit content)
+fish-work.bindings      ← work corporate proxy settings (shellInit content)
 ```
 
-In `home.nix`, fish is loaded as a single resolved module. The base config always loads; the per-profile bindings file appends to `interactiveShellInit`:
+`fish.nix` keeps its existing `.nix` extension (a Nix module must be `.nix` or a directory with `default.nix` to be importable — the earlier draft's `fish.config` name was corrected). In `home.nix`, fish is loaded as: the base `fish.nix` unconditionally, plus the resolved per-profile bindings file appended to `interactiveShellInit` via `lib.mkMerge`.
 
-```nix
-# fish-nix-module handles: programs.fish.plugins + shared interactiveShellInit
-# bindings file provides just shellInit content appended via lib.mkMerge
-```
+This is simpler than a directory-based split because fish's config is primarily Nix expressions (plugin definitions, PATH settings) with small inline shell strings for aliases/proxies. The diff between personal and work is minimal (roughly a dozen alias lines).
 
-This is simpler than separate per-directory configs because fish's config is primarily Nix expressions (plugin definitions, PATH settings) with a small amounts of inline shell strings for aliases/proxies. The diff between personal and work is minimal (a dozen alias lines).
-
-### Decision 7: Ghostty, helix, neovim, zellij, oh_my_posh remain as shared-only (no suffix variants)
+### Decision 9: Ghostty, helix, neovim, zellij, oh_my_posh remain as shared-only (no suffix variants)
 
 Confirmed identical between machines via user confirmation:
 - Ghostty — font-family/theme/background settings are the same
@@ -145,43 +203,51 @@ Confirmed identical between machines via user confirmation:
 - Zellij — kdl layout/theme same
 - Oh My Posh — `simple.omp.json` shared
 
-These stay as single files in their current flat locations under `nix/modules/home/`. The resolver will naturally fall back to them when no profile-specific variant exists.
+These stay as single files in their current flat locations under `nix/modules/home/`. The resolver naturally falls back to them when no profile-specific variant exists.
 
 ## Risks / Trade-offs
 
+### [Risk] Loss of hostname-based auto-resolution
+Every deploy now requires an explicit `--flake ".#personal"` or `".#work"` target — running bare `darwin-rebuild switch --flake .` will fail (no default darwinConfiguration matches). **Mitigation:** `init.sh`'s `deploy_personal`/`deploy_work` helpers encode the correct flag so this is rarely typed manually; document clearly in README/comments.
+
 ### [Risk] Nix homebrew.casks list-appending behavior
-Nix-darwin's Homebrew module uses `lib.optionals` and list operations for `casks`. Per-profile modules appending to casks is well-supported in upstream nix-darwin — all brew cask lists from merged modules accumulate. **Mitigation:** Test with a dry-run (`--dry-build --show-trace`) before first deploy; if appends cause duplicates, switch to `lib.mkForce` + manual lists for specific profiles (rare).
+Nix-darwin's Homebrew module uses list operations for `casks`. Per-profile modules appending to casks is well-supported in upstream nix-darwin — all brew cask lists from merged modules accumulate. **Mitigation:** Test with `--dry-build` before first real deploy; if appends cause duplicates, switch to `lib.mkForce` + manual lists for specific profiles (rare).
+
+### [Risk] Missing work secrets file silently degrading config
+If `~/.config/darwin-secrets/work.nix` is absent when deploying the work profile, corporate certs/proxy settings are simply missing — the build still succeeds (by design, soft warning only). **Mitigation:** The `warnings` mechanism surfaces this clearly in `darwin-rebuild switch` output; the file's expected schema should be documented (e.g., a `work.nix.example` template committed to the repo, showing the expected attrset shape without real values).
 
 ### [Risk] Tuna drift between per-profile configs
-Near-duplicate TOML config files can drift apart over time. **Mitigation:** Document the shared anchor (`config.shared.toml`) clearly in module comments; keep diffs bounded to `[[comboMode.bindings]]` sections only — never change catalog settings, hotkeys, or base settings across profiles.
+Near-duplicate TOML config files can drift apart over time since they are not programmatically merged. **Mitigation:** Document the shared anchor (`config.shared.toml`) clearly in module comments for human reference; keep diffs bounded to `[[comboMode.bindings]]` sections only — never change catalog settings, hotkeys, or base settings independently across profiles.
 
 ### [Risk] Resolver edge cases
-The resolver resolves files via path resolution. **Edge case:** a new module name accidentally matches the suffix pattern (e.g., `tuna.personal.toml` resolving to `tuna.personal` when it should resolve as `tuna` → no fallback needed). **Mitigation:** The resolver function returns an error or warning if multiple partial paths match, and the fallback is always unambiguous because it checks for file existence before falling back.
+The resolver resolves files via path existence checks. **Edge case:** ambiguous naming could cause an unintended file to match a suffix pattern. **Mitigation:** the resolver's fallback logic is unambiguous — it checks for the exact profile-suffixed path first, and only falls back to the shared path if that specific file does not exist; no partial/fuzzy matching is used.
 
 ### [Trade-off] Tuna uses full configs vs partial merge
-Tuna's near-duplicate pattern means two files to maintain instead of one shared base plus diffs. However, this trade-off is justified because: (a) tuna differences are in deeply nested arrays that are hard to merge cleanly; (b) the diffs are bounded to ~50 lines (combo bindings only); (c) tuna config should be editable as TOML — editing a partial diff requires knowledge of Nix attrset structure.
+Tuna's near-duplicate pattern means two files to maintain instead of one shared base plus diffs. This is justified because: (a) tuna differences are in deeply nested arrays that `lib.recursiveUpdate` cannot cleanly merge; (b) tuna config should remain editable as plain TOML — editing a partial diff would require understanding Nix attrset merge semantics for arrays, which is more error-prone than editing two complete files.
 
 ### [Trade-off] Per-profile brew casks append vs replace
-Per-profile modules append rather than replace brew casks. This is desired by default (you want both sets of apps on each machine). However, if you ever need exclusives (e.g., "only on work: install corporate VPN, remove zed"), you'd need `lib.mkForce` syntax. **Mitigation:** Add a comment in `defaults.nix` explaining that all entries in personal/work/nix are additive by default; use `homebrew.casks = lib.mkForce [...]` only for exclusive app lists.
+Per-profile modules append rather than replace brew casks — both machines' shared apps stay installed on each. If exclusives are ever needed (e.g., "only on work: install corporate VPN, remove zed"), `lib.mkForce` syntax would be required. **Mitigation:** Document in `defaults.nix` that all entries in `personal.nix`/`work.nix` are additive by default.
 
 ## Migration Plan
 
 1. Create `nix/lib/resolve-module.nix` — profile-aware resolver function
 2. Create `nix/darwin/profiles/defaults.nix` — move shared brew casks/system packages from `default.nix` here
-3. Create `nix/darwin/profiles/personal.nix` and `work.nix` — per-profile appends only
-4. Update `nix/flake.nix` — add `profile` parameter to outputs, forward to darwinConfigurations
-5. Update `nix/darwin/default.nix` — accept profile param, import profiles/ modules in order (defaults then personal/work)
-6. Restructure `nix/modules/home/aerospace/` — create directory with main.toml + per-profile TOMLs; update `aerospace.nix` to read from resolved config
-7. Restructure `nix/modules/home/tuna/` — create directory with shared base module + per-profile full configs; update `tuna.nix` to resolve and symlink profile-specific config
-8. Split fish into `fish.config` (base) + `fish-personal.bindings`/`fish-work.bindings` (profiles)  
-9. Update `nix/darwin/home.nix` — replace all hardcoded imports with calls to the resolver; remove or bypass any hostname detection remnants
-10. Update `init.sh` — add `deploy_personal` and `deploy_work` helpers with explicit `--argstr profile` flags, remove any hostname detection
-11. Verify: run `darwin-rebuild switch --flake ".#" --argstr profile personal --impure` then confirm correct brew casks/packages; repeat for work
+3. Create `nix/darwin/profiles/personal.nix` — personal-only appends
+4. Create `nix/darwin/profiles/work.nix` — work-only appends, plus external secrets conditional import + warning
+5. Update `nix/flake.nix` — replace the single `darwinConfigurations."Adiels-MacBook-Pro"` with `darwinConfigurations.personal` and `darwinConfigurations.work`, both built from the same base module list plus their respective `profiles/*.nix`
+6. Update `nix/darwin/default.nix` — accept a `profile` parameter (passed from `flake.nix`, not CLI), thread it through to home-manager's `extraSpecialArgs` and to any module needing it (aerospace, tuna)
+7. Restructure `nix/modules/home/aerospace/` — create directory with `main.toml` + per-profile TOMLs; rewrite `aerospace.nix` as `aerospace/default.nix` using `lib.recursiveUpdate`
+8. Restructure `nix/modules/home/tuna/` — create directory with shared base module + per-profile full configs; rewrite `tuna.nix` as `tuna/default.nix` resolving the active config by profile
+9. Split fish into `fish.nix` (base, unchanged name) + `fish-personal.bindings`/`fish-work.bindings` (profiles)
+10. Update `nix/darwin/home.nix` — replace hardcoded imports with resolver calls where profile-dependent
+11. Update `init.sh` — remove `run_hostname_sed`; add `deploy_personal`/`deploy_work` helpers targeting the named flake outputs
+12. Create `~/.config/darwin-secrets/work.nix.example` template (committed, no real secrets) documenting the expected shape for the real file
+13. Verify: `darwin-rebuild switch --flake ".#personal" --dry-build`, then `--flake ".#work" --dry-build` (this can be tested entirely from the personal machine, since profile selection is explicit and not hostname-gated)
 
-**Rollback:** Revert all changes to `default.nix`, `home.nix`, `flake.nix`, and `init.sh`. Remove the profiles/ directory and new modules. Move shared configs back from subdirectories to their original flat locations. All existing modules (ghostty, helix, neovim, zellij, oh_my_posh) remain untouched — no rollback risk there.
+**Rollback:** Revert `default.nix`, `home.nix`, `flake.nix`, and `init.sh`. Remove the `profiles/` directory and new modules. Move shared configs back from subdirectories to their original flat locations. All existing modules (ghostty, helix, neovim, zellij, oh_my_posh) remain untouched — no rollback risk there. Restore `run_hostname_sed` from git history if reverting fully.
 
 ## Open Questions
 
-- Should aerospace per-profile diffs be in separate TOML files (personal.toml + work.toml as complete replacement of main.toml sections), or are they truly just overrides for specific keys? Currently designed as section-level overrides that merge on top of main.toml's parsed attrset.
-- Does the work machine have any nix-specific requirements (nix-certificate paths, nix.conf settings like `extra-ca-file`)? If so, those should also go in profiles/work.nix rather than being handled ad-hoc.
-- Could new machines be added later? The design supports adding a third profile easily (e.g., `profiles/remote.nix`) — the resolver function does not hardcode to two profiles.
+- Does the work machine require nix-level substituter/proxy configuration (`nix.settings.substituters`, `netrc-file`) in addition to app-level certs? If so, these values also belong in the external `~/.config/darwin-secrets/work.nix` file, not hardcoded in the repo.
+- Could a third profile be added later (e.g., a shared "remote"/server profile)? The resolver and profiles/ pattern both support this without structural changes — just add `profiles/remote.nix` and a corresponding `darwinConfigurations.remote` output.
+- Should the `work.nix.example` template be validated (e.g., a Nix module `options` block with `mkOption` declarations) so a malformed real secrets file fails clearly at eval time rather than silently omitting settings?
