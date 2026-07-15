@@ -24,15 +24,19 @@ let
   #   3. Drop any corporate .crt/.pem certificate files into the same
   #      directory — they are picked up automatically, no Nix changes needed.
   #   4. Re-run `darwin-rebuild switch --flake ".#work" --impure`.
-  certFiles = if builtins.pathExists secretsDir then
-    map (name: "${secretsDir}/${name}") (builtins.attrNames
-      (lib.filterAttrs (name: type:
-        type == "regular"
-        && (lib.hasSuffix ".crt" name || lib.hasSuffix ".pem" name))
-        (builtins.readDir secretsDir)))
-  else
-    [ ];
-in {
+  certFiles =
+    if builtins.pathExists secretsDir then
+      map (name: "${secretsDir}/${name}") (
+        builtins.attrNames (
+          lib.filterAttrs (
+            name: type: type == "regular" && (lib.hasSuffix ".crt" name || lib.hasSuffix ".pem" name)
+          ) (builtins.readDir secretsDir)
+        )
+      )
+    else
+      [ ];
+in
+{
   homebrew.casks = [ "visual-studio-code" ];
 
   imports = lib.optional hasSecrets secretsFile;

@@ -5,13 +5,13 @@
 let
   name = "<work-name-required>";
   email = "<work-email-required>";
-in {
+in
+{
   programs.git.settings.user = { inherit name email; };
 
-  warnings = lib.optional (name == "<work-name-required>"
-    || email == "<work-email-required>") ''
-      profile=work git user.name/email are still placeholders in
-      nix/modules/home/git-work.nix — update them with your real corporate
-      identity before making commits under this profile.
-    '';
+  warnings = lib.optional (name == "<work-name-required>" || email == "<work-email-required>") ''
+    profile=work git user.name/email are still placeholders in
+    nix/modules/home/git-work.nix — update them with your real corporate
+    identity before making commits under this profile.
+  '';
 }

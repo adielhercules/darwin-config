@@ -20,10 +20,17 @@
 #     -> ../modules/home/fish-personal.bindings (if it exists)
 { }:
 {
-  resolveModule = { profile, base, ext ? ".nix", sep ? "." }:
+  resolveModule =
+    {
+      profile,
+      base,
+      ext ? ".nix",
+      sep ? ".",
+    }:
     let
       baseStr = toString base;
       profilePath = "${baseStr}${sep}${profile}${ext}";
       sharedPath = "${baseStr}${ext}";
-    in if builtins.pathExists profilePath then profilePath else sharedPath;
+    in
+    if builtins.pathExists profilePath then profilePath else sharedPath;
 }

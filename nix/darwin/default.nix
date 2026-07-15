@@ -1,5 +1,14 @@
-{ self, paths, inputs, nix-darwin, nix-homebrew, nixpkgs, nixpkgs-unstable
-, home-manager, ... }:
+{
+  self,
+  paths,
+  inputs,
+  nix-darwin,
+  nix-homebrew,
+  nixpkgs,
+  nixpkgs-unstable,
+  home-manager,
+  ...
+}:
 
 let
   system = "aarch64-darwin";
@@ -10,14 +19,24 @@ let
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
 
-  mkDarwinConfig = profile:
+  mkDarwinConfig =
+    profile:
     nix-darwin.lib.darwinSystem {
       modules = mkModules profile;
       specialArgs = mkSpecialArgs profile;
     };
 
   mkSpecialArgs = profile: {
-    inherit self files inputs nixPath username rootPath paths profile;
+    inherit
+      self
+      files
+      inputs
+      nixPath
+      username
+      rootPath
+      paths
+      profile
+      ;
     libFiles = "${rootPath}/lib";
     lcars = lcarsConfig.lcars;
   };
@@ -27,27 +46,33 @@ let
     ../features.nix
     ../darwin/profiles/defaults.nix
     (../darwin/profiles + "/${profile}.nix")
-      # overlays and modules
-      {
-        nixpkgs.overlays = [
-          (final: _prev: {
-            unstable = import nixpkgs-unstable {
-              inherit (final) config;
-              system = final.stdenv.hostPlatform.system;
-            };
-          })
-          (_final: prev: {
-            zjstatus =
-              inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
-          })
-        ];
-      }
-      inputs.stylix.darwinModules.stylix
-      nix-homebrew.darwinModules.nix-homebrew
-      home-manager.darwinModules.home-manager
+    # overlays and modules
+    {
+      nixpkgs.overlays = [
+        (final: _prev: {
+          unstable = import nixpkgs-unstable {
+            inherit (final) config;
+            system = final.stdenv.hostPlatform.system;
+          };
+        })
+        (_final: prev: {
+          zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
+        })
+      ];
+    }
+    inputs.stylix.darwinModules.stylix
+    nix-homebrew.darwinModules.nix-homebrew
+    home-manager.darwinModules.home-manager
 
-      # The main Darwin configuration, now as a module
-      ({ lib, pkgs, lcars, ... }: {
+    # The main Darwin configuration, now as a module
+    (
+      {
+        lib,
+        pkgs,
+        lcars,
+        ...
+      }:
+      {
         system.primaryUser = username;
 
         environment.shellAliases = {
@@ -74,8 +99,7 @@ let
         nix.settings.experimental-features = "nix-command flakes";
         programs.fish.enable = lcars.shell.fish.enable;
 
-        system.configurationRevision =
-          if (self ? rev) then self.rev else self.dirtyRev;
+        system.configurationRevision = if (self ? rev) then self.rev else self.dirtyRev;
         system.stateVersion = 6;
         nixpkgs.hostPlatform = system;
         nixpkgs.config.allowUnfree = true;
@@ -113,18 +137,20 @@ let
           StandardOutPath = "/var/log/nix-darwin-activate.log";
           StandardErrorPath = "/var/log/nix-darwin-activate.log";
         };
-      })
-
-      # Home-manager user configuration
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.${username} = import ./home.nix;
-        home-manager.extraSpecialArgs = inputs // (mkSpecialArgs profile);
-        home-manager.backupFileExtension = "backup";
       }
-    ];
-in {
+    )
+
+    # Home-manager user configuration
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${username} = import ./home.nix;
+      home-manager.extraSpecialArgs = inputs // (mkSpecialArgs profile);
+      home-manager.backupFileExtension = "backup";
+    }
+  ];
+in
+{
   personal = mkDarwinConfig "personal";
   work = mkDarwinConfig "work";
 }

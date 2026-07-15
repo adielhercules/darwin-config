@@ -1,11 +1,17 @@
-{ pkgs, lib, profile, ... }:
+{
+  pkgs,
+  lib,
+  profile,
+  ...
+}:
 let
   main = builtins.fromTOML (builtins.readFile ./main.toml);
   profileOverridePath = ./. + "/${profile}.toml";
-  profileOverrides = if builtins.pathExists profileOverridePath then
-    builtins.fromTOML (builtins.readFile profileOverridePath)
-  else
-    { };
+  profileOverrides =
+    if builtins.pathExists profileOverridePath then
+      builtins.fromTOML (builtins.readFile profileOverridePath)
+    else
+      { };
 
   # `lib.recursiveUpdate` replaces arrays wholesale rather than merging
   # elements, which would silently drop main.toml's shared app-routing rules
@@ -13,10 +19,11 @@ let
   # array-typed key is concatenated explicitly instead — see design.md
   # Decision 6.
   merged = lib.recursiveUpdate main profileOverrides // {
-    on-window-detected = (main.on-window-detected or [ ])
-      ++ (profileOverrides.on-window-detected or [ ]);
+    on-window-detected =
+      (main.on-window-detected or [ ]) ++ (profileOverrides.on-window-detected or [ ]);
   };
-in {
+in
+{
   config = {
     programs.aerospace = {
       enable = true;

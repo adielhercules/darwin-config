@@ -2,10 +2,10 @@
 
 let
   backupExt = ".backup";
-  targetPath =
-    "${config.home.homeDirectory}/Library/Application Support/Leader Key/config.json";
+  targetPath = "${config.home.homeDirectory}/Library/Application Support/Leader Key/config.json";
   backup = "${targetPath}${backupExt}";
-in {
+in
+{
   # 1) Install the managed file
   home.file."Library/Application Support/Leader Key/config.json" = {
     source = ./leader_key/config.json;
@@ -14,26 +14,25 @@ in {
   };
 
   # 2) Activation step to create a backup of any pre-existing target
-  home.activation.backupLeaderKeyConfig =
-    lib.hm.dag.entryBefore [ "linkGeneration" ] ''
-      set -euo pipefail
+  home.activation.backupLeaderKeyConfig = lib.hm.dag.entryBefore [ "linkGeneration" ] ''
+    set -euo pipefail
 
-      target="${targetPath}"
-      backup="${targetPath}${backupExt}"
+    target="${targetPath}"
+    backup="${targetPath}${backupExt}"
 
-      # If the target exists and isn't already the exact content we're linking,
-      # move it aside to a backup extension.
-      if [ -e "$target" ] && [ ! -L "$target" ]; then
-        # Avoid overwriting an existing backup; add numeric suffix if needed.
-        if [ -e "$backup" ]; then
-          i=1
-          while [ -e "${backup}.$i" ]; do
-            i=$((i+1))
-          done
-          mv "$target" "${backup}.$i"
-        else
-          mv "$target" "$backup"
-        fi
+    # If the target exists and isn't already the exact content we're linking,
+    # move it aside to a backup extension.
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+      # Avoid overwriting an existing backup; add numeric suffix if needed.
+      if [ -e "$backup" ]; then
+        i=1
+        while [ -e "${backup}.$i" ]; do
+          i=$((i+1))
+        done
+        mv "$target" "${backup}.$i"
+      else
+        mv "$target" "$backup"
       fi
-    '';
+    fi
+  '';
 }

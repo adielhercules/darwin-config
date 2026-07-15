@@ -1,4 +1,5 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+{
   config = {
     programs = {
       helix = {
@@ -16,15 +17,21 @@
               normal = "block";
               select = "underline";
             };
-            indent-guides = { render = true; };
+            indent-guides = {
+              render = true;
+            };
             # Diagnostics
             end-of-line-diagnostics = "hint";
-            inline-diagnostics = { cursor-line = "warning"; };
+            inline-diagnostics = {
+              cursor-line = "warning";
+            };
             # Usability tunings
             jump-label-alphabet = "ntesiroahdmgcxzlpufywqjbkv";
             # Input setup
             mouse = false;
-            lsp = { display-inlay-hints = true; };
+            lsp = {
+              display-inlay-hints = true;
+            };
           };
           keys = {
             normal = {
@@ -38,18 +45,31 @@
               #   ":open /tmp/files2open"
               #   "select_all"
               #   "split_selection_on_newline"
-                # "goto_file"
+              # "goto_file"
               #   ":buffer-close! /tmp/files2open"
               # ];
-              "C-e" = ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
-              "C-l" =
-                [ ":new" ":insert-output lazygit" ":buffer-close!" ":reload-all" ];
-              "C-a" =
-                [ ":new" ":insert-output opencode" ":buffer-close!" ":reload-all" ];
+              "C-e" =
+                ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
+              "C-l" = [
+                ":new"
+                ":insert-output lazygit"
+                ":buffer-close!"
+                ":reload-all"
+              ];
+              "C-a" = [
+                ":new"
+                ":insert-output opencode"
+                ":buffer-close!"
+                ":reload-all"
+              ];
               "tab" = ":buffer-next";
               "S-tab" = ":buffer-previous";
-              "]" = { b = ":buffer-next"; };
-              "[" = { b = ":buffer-previous"; };
+              "]" = {
+                b = ":buffer-next";
+              };
+              "[" = {
+                b = ":buffer-previous";
+              };
               space = {
                 q = ":quit";
                 Q = ":quit!";
@@ -70,7 +90,9 @@
       };
     };
 
-    home.sessionVariables = { EDITOR = "hx"; };
+    home.sessionVariables = {
+      EDITOR = "hx";
+    };
     xdg.configFile = {
       "helix/themes/lcars.toml".text = ''
         inherits = 'stylix'

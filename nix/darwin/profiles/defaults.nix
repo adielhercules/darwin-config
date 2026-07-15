@@ -6,7 +6,8 @@
 # options (`homebrew.brews`, `homebrew.casks`, `environment.systemPackages`,
 # etc.) across all merged modules, so appends from any profile module
 # accumulate automatically.
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     comma
     unstable.devenv
@@ -33,7 +34,15 @@
       brewfile = true;
     };
 
-    brews = [ "mas" "xcodes" "aria2" "just" "opencode" "yazi" "rtk" ];
+    brews = [
+      "mas"
+      "xcodes"
+      "aria2"
+      "just"
+      "opencode"
+      "yazi"
+      "rtk"
+    ];
     taps = [ ];
     casks = [
       "mouseless"

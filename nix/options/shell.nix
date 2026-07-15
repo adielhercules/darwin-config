@@ -1,4 +1,5 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+{
   options.lcars.shell.fish = lib.mkOption {
     type = lib.types.submodule {
       options = {
@@ -21,4 +22,3 @@
     description = "Fish shell configuration options for LCARS.";
   };
 }
-

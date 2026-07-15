@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   config = {
 
     xdg.configFile = { };
@@ -44,4 +45,3 @@
     };
   };
 }
-

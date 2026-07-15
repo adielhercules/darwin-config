@@ -42,20 +42,49 @@
       flake = false;
     };
 
-    zjstatus = { url = "github:dj95/zjstatus"; };
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin
-    , homebrew-bundle, homebrew-cask, homebrew-core, homebrew-xcodesorg
-    , nix-homebrew, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      nix-darwin,
+      homebrew-bundle,
+      homebrew-cask,
+      homebrew-core,
+      homebrew-xcodesorg,
+      nix-homebrew,
+      ...
+    }:
     let
-      paths = { rootPath = "/Users/adielhercules/darwin-config"; };
-      configs = (import ./darwin {
-        inherit self inputs nix-darwin nixpkgs nixpkgs-unstable nix-homebrew
-          home-manager homebrew-bundle homebrew-cask homebrew-core
-          homebrew-xcodesorg paths;
-      });
-    in {
+      paths = {
+        rootPath = "/Users/adielhercules/darwin-config";
+      };
+      configs = (
+        import ./darwin {
+          inherit
+            self
+            inputs
+            nix-darwin
+            nixpkgs
+            nixpkgs-unstable
+            nix-homebrew
+            home-manager
+            homebrew-bundle
+            homebrew-cask
+            homebrew-core
+            homebrew-xcodesorg
+            paths
+            ;
+        }
+      );
+    in
+    {
       # Build darwin flake using:
       # $ darwin-rebuild switch --flake ".#personal"
       # $ darwin-rebuild switch --flake ".#work"
@@ -65,6 +94,10 @@
       # the shared package set (identical overlays across both profiles) as
       # `self.darwinConfigurations.pkgs`, for tooling/`nix repl` convenience
       # only — it has no effect on which profile's modules are built.
-      darwinConfigurations = configs // { pkgs = configs.personal.pkgs; };
+      darwinConfigurations = configs // {
+        pkgs = configs.personal.pkgs;
+      };
+
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
     };
 }

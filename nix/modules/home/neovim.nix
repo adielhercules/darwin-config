@@ -1,4 +1,10 @@
-{ config, lib, files, pkgs, ... }:
+{
+  config,
+  lib,
+  files,
+  pkgs,
+  ...
+}:
 
 {
 
@@ -18,7 +24,8 @@
       source = config.lib.file.mkOutOfStoreSymlink "${files}/nvim.astro-v5";
     };
   };
-  home.activation.nvim = with config.lib.stylix.colors.withHashtag;
+  home.activation.nvim =
+    with config.lib.stylix.colors.withHashtag;
     let
       theme = ''
         --DO NOT EDIT. Auto generated from current stylix theme during deploy
@@ -78,7 +85,8 @@
           end
         })
       '';
-    in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       run echo "${theme}" > "${config.home.homeDirectory}/.config/nvim/colors/stylix.lua"
     '';
 }
