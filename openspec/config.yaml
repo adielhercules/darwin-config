@@ -1,20 +1,30 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Project: darwin-config — a Nix-Darwin macOS system configuration flake.
+  Tech stack: nix-darwin, home-manager, nixpkgs (26.05-darwin), stylix (theming),
+  nix-homebrew (Homebrew via Nix), devenv, zjstatus.
+  Two deployment profiles: "personal" and "work", selected explicitly via
+  `./init.sh --personal|--work` (see nix/flake.nix). No hostname-based
+  auto-resolution — profile is always explicit.
+  Build/deploy via `darwin-rebuild switch --flake ./nix#<profile>`, wrapped by
+  the Justfile (`just deploy`, `just check` for dry-run, `just verbose`).
+  Layout:
+    - nix/flake.nix, nix/features.nix — flake inputs/outputs and feature flags
+    - nix/darwin/ — profiles (personal.nix, work.nix), home.nix, default.nix
+    - nix/modules/home/ — home-manager modules (fish, helix, zellij, ghostty,
+      opencode, neovim, git, oh_my_posh, rtk, headroom, etc.)
+    - nix/options/, nix/lib/, nix/paths/ — custom option declarations, helper
+      libs, and path definitions
+  Shell commands should be prefixed with `rtk` for token-efficient output
+  (see AGENTS.md).
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  general:
+    - "Nix only evaluates git-tracked files as part of a flake. Before
+       verifying any change (e.g. `just check`, `darwin-rebuild check`), files
+       under nix/ that were added or modified MUST be staged with `git add`
+       first, or the flake build will silently ignore them."
+    - "Never run `git commit`, `git push`, or otherwise commit changes on your
+       own initiative. Only commit when the user has explicitly asked for it
+       and confirmed the commit."
