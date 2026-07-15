@@ -51,6 +51,7 @@ in
     ../modules/home/helix.scripts-manager.nix
     aerospaceModule
     ../modules/home/rtk.nix
+    ../modules/home/opencode.nix
     gitProfileModule
     #../modules/home/darwin # this can be for aerospace
   ]
