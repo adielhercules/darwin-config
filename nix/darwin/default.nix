@@ -21,6 +21,10 @@ let
 
   mkDarwinConfig =
     profile:
+    assert nixpkgs.lib.assertMsg (builtins.elem profile [
+      "personal"
+      "work"
+    ]) "Unknown darwin profile '${profile}': expected one of \"personal\" or \"work\".";
     nix-darwin.lib.darwinSystem {
       modules = mkModules profile;
       specialArgs = mkSpecialArgs profile;
