@@ -52,6 +52,7 @@ in
     aerospaceModule
     ../modules/home/rtk.nix
     ../modules/home/opencode.nix
+    ../modules/home/headroom.nix
     gitProfileModule
     #../modules/home/darwin # this can be for aerospace
   ]
