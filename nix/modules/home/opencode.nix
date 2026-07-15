@@ -77,22 +77,25 @@ let
     };
   };
 
-  # Session-start greeting plugin: shows a "Hi Adiel" toast every time a new
-  # opencode session is created. OpenCode has no config/plugin primitive for
-  # a persistent custom TUI sidebar section, so a session-start toast via
-  # `client.tui.showToast` is the closest supported mechanism. Kept as a
-  # separate plugin file from `rtk.ts` (managed by `rtk.nix`'s activation
-  # script) since OpenCode loads all files in the plugins directory
-  # independently.
-  hiAdielPlugin = ''
-    export const HiAdielPlugin = async ({ client }) => {
+  # Subagent-launch toast plugin: shows a toast every time a subagent session
+  # is created (i.e. a session launched via the Task tool on behalf of a
+  # primary agent), naming the subagent type/name that was launched.
+  # OpenCode has no dedicated "task launched" event — subagent sessions are
+  # regular `session.created` events whose `info.parentID` is set (unlike
+  # root/user sessions) and whose `info.agent` carries the resolved subagent
+  # name. Kept as a separate plugin file from `rtk.ts` (managed by `rtk.nix`'s
+  # activation script) since OpenCode loads all files in the plugins
+  # directory independently.
+  subagentLaunchPlugin = ''
+    export const SubagentLaunchPlugin = async ({ client }) => {
       return {
         event: async ({ event }) => {
-          if (event.type === "session.created") {
-            await client.tui.showToast({
-              body: { message: "Hi Adiel", variant: "info" },
-            })
-          }
+          if (event.type !== "session.created") return
+          const info = event.properties?.info ?? event.properties
+          if (!info?.parentID) return
+          await client.tui.showToast({
+            body: { message: `''${info.agent ?? "Subagent"} Subagent launched`, variant: "info" },
+          })
         },
       }
     }
@@ -100,5 +103,5 @@ let
 in
 {
   xdg.configFile."opencode/opencode.jsonc".text = builtins.toJSON opencodeConfig;
-  xdg.configFile."opencode/plugins/hi-adiel.ts".text = hiAdielPlugin;
+  xdg.configFile."opencode/plugins/subagent-launch.ts".text = subagentLaunchPlugin;
 }

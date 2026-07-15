@@ -96,26 +96,35 @@ subagents instead of performing them inline.
   denies all other subagents by default (`"*": "deny"`), matching
   `agent.build.permission.task`
 
-### Requirement: Session-start greeting toast
-The system MUST show a personalized "Hi Adiel" toast notification via a
-global opencode plugin every time a new session is created, since OpenCode
-has no config or plugin primitive for a persistent custom TUI sidebar
-section.
+### Requirement: Subagent-launch toast
+The system MUST show a toast notification via a global opencode plugin every
+time a subagent session is created (i.e. a session launched by the Task
+tool on behalf of a primary agent), since OpenCode has no config or plugin
+primitive for a persistent custom TUI sidebar section.
 
-#### Scenario: Toast fires on new session creation
-- **WHEN** a new opencode session is created (e.g. via `/new` or a fresh
-  `opencode` launch)
-- **THEN** the `hi-adiel` plugin's `session.created` event handler calls
-  `client.tui.showToast({ body: { message: "Hi Adiel", variant: "info" } })`
+#### Scenario: Toast fires on subagent session creation
+- **WHEN** a subagent session is created (e.g. a primary agent invokes the
+  Task tool, such as `explore`, `scout`, `general`, or `web-research`)
+- **THEN** the plugin's `session.created` event handler detects the
+  session's `info.parentID` is set (indicating a child/subagent session)
+  and calls `client.tui.showToast({ body: { message: "<agent-id> Subagent
+  launched", variant: "info" } })`, where `<agent-id>` is the raw subagent
+  type/name (`info.agent`), e.g. `"explore Subagent launched"`
 
-#### Scenario: Toast fires on every session, not deduplicated
-- **WHEN** multiple new sessions are created in sequence (e.g. repeated
-  `/new` commands)
-- **THEN** the toast is shown again for each new session, with no
-  once-per-day or once-ever deduplication
+#### Scenario: Toast does not fire on root/user session creation
+- **WHEN** a new root opencode session is created (e.g. via `/new` or a
+  fresh `opencode` launch, not originating from the Task tool)
+- **THEN** the session's `info.parentID` is unset, and the plugin's
+  `session.created` handler does not call `client.tui.showToast`
 
-#### Scenario: Greeting plugin coexists with rtk's plugin
-- **WHEN** both `~/.config/opencode/plugins/hi-adiel.ts` (managed by
+#### Scenario: Toast fires on every subagent launch, not deduplicated
+- **WHEN** multiple subagent sessions are launched in sequence (e.g. several
+  Task tool calls within one conversation)
+- **THEN** the toast is shown again for each subagent session created, with
+  no once-per-day or once-ever deduplication
+
+#### Scenario: Subagent-launch plugin coexists with rtk's plugin
+- **WHEN** both `~/.config/opencode/plugins/subagent-launch.ts` (managed by
   `opencode.nix`) and `~/.config/opencode/plugins/rtk.ts` (managed by
   `rtk.nix`'s activation script) are present
 - **THEN** both plugins load independently without conflict, since OpenCode
