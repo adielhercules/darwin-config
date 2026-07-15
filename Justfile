@@ -68,10 +68,6 @@ up:
 [group('maintenance')]
 up-unstable-to hash:
   nix {{nix_flags}} flake lock --update-input nixpkgs-unstable --override-input nixpkgs-unstable github:nixos/nixpkgs/{{hash}}?shallow=1 ./nix
-# Update secrets. Remember to redeploy
-[group('maintenance')]
-up-secrets:
-  nix {{nix_flags}} flake update secrets --flake ./nix
 
 # Check if git status is clean before deploying
 [private]

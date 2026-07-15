@@ -45,7 +45,6 @@ in
     ../modules/home/neovim.nix
     ../modules/home/oh_my_posh.nix
     ../modules/home/zellij.nix
-    # ../modules/home/leader_key.nix
     tunaModule
     ../modules/home/helix.nix
     ../modules/home/helix.scripts-manager.nix
@@ -54,7 +53,6 @@ in
     ../modules/home/opencode.nix
     ../modules/home/headroom.nix
     gitProfileModule
-    #../modules/home/darwin # this can be for aerospace
   ]
   ++ (lib.optional lcars.shell.fish.enable fishModule)
   ++ (lib.optional (lcars.shell.fish.enable && hasFishBindings) {
@@ -137,23 +135,6 @@ in
         display = "inline";
       };
     };
-    # zsh = {
-    #   enable = true;
-    #   autocd = true;
-    #   enableCompletion = true;
-    #   history = {
-    #     ignoreDups = true;
-    #     ignoreSpace = true;
-    #   };
-    #   #oh-my-zsh = {
-    #   #  enable = true;
-    #   #  plugins = [ "git" ];
-    #   #};
-    #   syntaxHighlighting = {
-    #     enable = true;
-    #     highlighters = [ "brackets" ];
-    #   };
-    # };
     fzf = {
       enable = true;
     };
