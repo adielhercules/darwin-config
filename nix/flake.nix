@@ -107,6 +107,9 @@
         pkgs = configs."Adiels-MacBook-Pro".pkgs;
       };
 
-      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
+      formatter = {
+        aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
+        x86_64-linux = nixpkgs-unstable.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      };
     };
 }
