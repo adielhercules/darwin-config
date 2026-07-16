@@ -21,8 +21,8 @@ jobs:
       - name: nix flake check
         run: nix flake check --no-build
 
-      - name: Check formatting (nix fmt)
-        run: nix fmt -- --check .
+      - name: Check formatting (treefmt)
+        run: nix run nixpkgs#nixfmt-tree -- --ci
 
       - name: deadnix
         run: nix run nixpkgs#deadnix -- --fail .
