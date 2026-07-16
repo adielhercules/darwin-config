@@ -1,0 +1,8 @@
+disabled = [
+  # W08 "useless_parens" conflicts with W20 "repeated_keys" for attrset
+  # assignments like `programs = { zellij.enable = true; ... }` — there is
+  # no valid Nix syntax that satisfies both lints.  All legitimate useless-
+  # parentheses issues have been addressed; only the false-positive
+  # attrset-vs-dotted-path conflict remains.
+  "useless_parens"
+]

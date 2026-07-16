@@ -147,14 +147,9 @@ in
     };
 
     programs = {
-      zellij = {
-        enable = true;
-        package = pkgs.unstable.zellij;
-      };
-
-      fish = {
-        interactiveShellInit = "${config.programs.zellij.package}/bin/zellij setup --generate-completion fish | source";
-      };
+      zellij.enable = true;
+      zellij.package = pkgs.unstable.zellij;
+      fish.interactiveShellInit = "${config.programs.zellij.package}/bin/zellij setup --generate-completion fish | source";
     };
   };
 }

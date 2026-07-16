@@ -23,7 +23,7 @@ let
       envUser
     else
       builtins.abort "ERROR: Cannot determine username. Neither SUDO_USER nor USER environment variable is set.";
-  rootPath = paths.rootPath;
+  inherit (paths) rootPath;
   nixPath = "${rootPath}/nix";
   files = "${rootPath}/dotfiles";
   pkgs = import nixpkgs { inherit system; };
@@ -52,7 +52,7 @@ let
       profile
       ;
     libFiles = "${rootPath}/lib";
-    lcars = lcarsConfig.lcars;
+    inherit (lcarsConfig) lcars;
   };
 
   # Keyed by `scutil --get LocalHostName` (the value darwin-rebuild's
@@ -94,7 +94,11 @@ let
         ...
       }:
       {
-        system.primaryUser = username;
+        system = {
+          primaryUser = username;
+          configurationRevision = if (self ? rev) then self.rev else self.dirtyRev;
+          stateVersion = 6;
+        };
 
         environment.shellAliases = {
           klingon = ''say -v Xander "QgaplA"'';
@@ -120,8 +124,6 @@ let
         nix.settings.experimental-features = "nix-command flakes";
         programs.fish.enable = lcars.shell.fish.enable;
 
-        system.configurationRevision = if (self ? rev) then self.rev else self.dirtyRev;
-        system.stateVersion = 6;
         nixpkgs.hostPlatform = system;
         nixpkgs.config.allowUnfree = true;
 
@@ -163,12 +165,14 @@ let
 
     # Home-manager user configuration
     {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.${username} = import ./home.nix;
-      home-manager.extraSpecialArgs = inputs // (mkSpecialArgs profile);
-      home-manager.backupFileExtension = "backup";
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        users.${username} = import ./home.nix;
+        extraSpecialArgs = inputs // (mkSpecialArgs profile);
+        backupFileExtension = "backup";
+      };
     }
   ];
 in
-nixpkgs.lib.mapAttrs (_hostname: profile: mkDarwinConfig profile) hostProfiles
+nixpkgs.lib.mapAttrs (_hostname: mkDarwinConfig) hostProfiles

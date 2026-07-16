@@ -69,24 +69,22 @@
       paths = {
         rootPath = "/Users/adielhercules/darwin-config";
       };
-      configs = (
-        import ./darwin {
-          inherit
-            self
-            inputs
-            nix-darwin
-            nixpkgs
-            nixpkgs-unstable
-            nix-homebrew
-            home-manager
-            homebrew-bundle
-            homebrew-cask
-            homebrew-core
-            homebrew-xcodesorg
-            paths
-            ;
-        }
-      );
+      configs = import ./darwin {
+        inherit
+          self
+          inputs
+          nix-darwin
+          nixpkgs
+          nixpkgs-unstable
+          nix-homebrew
+          home-manager
+          homebrew-bundle
+          homebrew-cask
+          homebrew-core
+          homebrew-xcodesorg
+          paths
+          ;
+      };
     in
     {
       # Build darwin flake using:

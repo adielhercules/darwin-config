@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 let
   targetPath = "helix/yazi-picker.sh";

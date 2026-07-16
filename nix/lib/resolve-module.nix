@@ -18,8 +18,7 @@
 #
 #   resolveModule { profile = "personal"; base = ../modules/home/fish; ext = ".bindings"; sep = "-"; }
 #     -> ../modules/home/fish-personal.bindings (if it exists)
-{ }:
-{
+_: {
   resolveModule =
     {
       profile,
