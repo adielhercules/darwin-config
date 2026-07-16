@@ -45,6 +45,14 @@ let
     lcars = lcarsConfig.lcars;
   };
 
+  # Keyed by `scutil --get LocalHostName` (the value darwin-rebuild's
+  # built-in hostname-based flake-attr resolution actually reads) — NOT the
+  # mDNS/Bonjour `.local`-suffixed name returned by `hostname`.
+  hostProfiles = {
+    "Adiels-MacBook-Pro" = "personal";
+    "MPCE-MBP-RWF4347WJP" = "work";
+  };
+
   mkModules = profile: [
     ../options/default.nix
     ../features.nix
@@ -154,7 +162,4 @@ let
     }
   ];
 in
-{
-  personal = mkDarwinConfig "personal";
-  work = mkDarwinConfig "work";
-}
+nixpkgs.lib.mapAttrs (_hostname: profile: mkDarwinConfig profile) hostProfiles

@@ -39,32 +39,6 @@ run_bootstrap() {
 
 run_deploy() {
   echo "Running deploy..."
-  echo "NOTE: a bare, profile-less deploy is no longer supported." >&2
-  echo "Use --personal or --work to select/switch a profile once, then use" >&2
-  echo "'just deploy' for regular day-to-day deploys." >&2
-  return 1
-}
-
-# Persists the selected profile into Justfile's flake_target variable (the
-# same local-only, uncommitted convention used for rootPath in
-# nix/flake.nix — see the gitskip/gitunskip aliases in nix/darwin/default.nix),
-# then delegates the actual deploy to `just deploy` so darwin_rebuild/
-# optimise invocation logic lives in exactly one place (the Justfile).
-set_profile() {
-  local profile="$1"
-  echo "Selecting profile: $profile"
-  sed -i '' -E "s|^flake_target := \".*\"|flake_target := \"./nix#${profile}\"|" \
-    "$SCRIPT_DIR/Justfile"
-  echo "flake_target set to: ./nix#${profile}"
-}
-
-deploy_personal() {
-  set_profile "personal"
-  (cd "$SCRIPT_DIR" && just deploy)
-}
-
-deploy_work() {
-  set_profile "work"
   (cd "$SCRIPT_DIR" && just deploy)
 }
 
@@ -73,10 +47,10 @@ run_all() {
   run_bootstrap
   echo "" >&2
   echo "Bootstrap and path setup complete. Deploy your machine's profile with:" >&2
-  echo "  ./init.sh --personal   # or" >&2
-  echo "  ./init.sh --work" >&2
+  echo "  ./init.sh --deploy   # or" >&2
+  echo "  just deploy" >&2
   echo "" >&2
-  echo "After that, use 'just deploy' for regular day-to-day deploys." >&2
+  echo "Profile selection is automatic, based on this machine's hostname." >&2
 }
 
 # ─── CLI Dispatch ─────────────────────────────────────────────────────────────
@@ -94,32 +68,23 @@ case "${1:-}" in
   --deploy)
     run_deploy
     ;;
-  --personal)
-    deploy_personal
-    ;;
-  --work)
-    deploy_work
-    ;;
   --all | "")
     run_all
     ;;
   *)
-    echo "Usage: $0 [--paths|--git|--bootstrap|--deploy|--personal|--work|--all]" >&2
+    echo "Usage: $0 [--paths|--git|--bootstrap|--deploy|--all]" >&2
     echo "" >&2
     echo "  --paths      Set rootPath in nix/flake.nix and activate git hooks" >&2
     echo "  --git        Activate git hooks only" >&2
     echo "  --bootstrap  Run initial nix-darwin bootstrap (nix run)" >&2
-    echo "  --deploy     (removed) — use --personal/--work, then 'just deploy'" >&2
-    echo "  --personal   Select/switch to the personal profile and deploy once" >&2
-    echo "               (sets Justfile's flake_target to './nix#personal')" >&2
-    echo "  --work       Select/switch to the work profile and deploy once" >&2
-    echo "               (sets Justfile's flake_target to './nix#work')" >&2
+    echo "  --deploy     Run 'just deploy' (profile auto-selected by hostname)" >&2
     echo "  --all        Run all stages in order (default) — bootstrap only," >&2
-    echo "               does NOT deploy; run --personal/--work afterward" >&2
+    echo "               does NOT deploy; run --deploy afterward" >&2
     echo "" >&2
     echo "After initial setup, use 'just deploy' (or 'just verbose'/'just check')" >&2
     echo "for regular day-to-day deploys — init.sh is only for first-time" >&2
-    echo "bootstrap and for switching between profiles." >&2
+    echo "bootstrap. Profile selection is automatic, based on the machine's" >&2
+    echo "hostname." >&2
     exit 1
     ;;
 esac

@@ -2,13 +2,11 @@
 nix_flags := "--extra-experimental-features 'nix-command flakes'"
 darwin_rebuild := "/nix/var/nix/profiles/system/sw/bin/darwin-rebuild"
 
-# Selected deployment profile (personal|work), targeting a named flake
-# output — see nix/flake.nix. Set automatically by `./init.sh --personal`
-# or `./init.sh --work`; do not edit by hand unless you know what you're
-# doing. Left as "<not_initialized>" so a `just deploy` run before ever
-# running init.sh fails clearly instead of silently deploying nothing/the
-# wrong profile.
-flake_target := "<not_initialized>"
+# Flake target — profile selection is automatic, based on the machine's
+# hostname (see `hostProfiles` in nix/darwin/default.nix). No per-profile
+# suffix is needed; darwin-rebuild resolves the matching
+# darwinConfigurations attribute for the current hostname.
+flake_target := "./nix"
 
 # List all commands
 [private]

@@ -1,11 +1,3 @@
 #!/bin/bash
 
-if git diff --cached --name-only | grep -q 'Justfile'; then
-  if ! git show :Justfile | grep -q 'flake_target := "<not_initialized>"'; then
-    echo "ERROR: Justfile staged without 'flake_target := \"<not_initialized>\"' placeholder."
-    echo "A selected profile (personal/work) may be committed. Restore the placeholder before staging Justfile."
-    exit 1
-  fi
-fi
-
 exit 0

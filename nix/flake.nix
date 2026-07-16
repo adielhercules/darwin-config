@@ -90,16 +90,21 @@
     in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild switch --flake ".#personal"
-      # $ darwin-rebuild switch --flake ".#work"
+      # $ darwin-rebuild switch --flake .
       #
-      # Profile selection is always explicit — there is no bare `--flake .`
-      # target and no hostname-based auto-resolution. `configs.pkgs` exposes
-      # the shared package set (identical overlays across both profiles) as
-      # `self.darwinConfigurations.pkgs`, for tooling/`nix repl` convenience
-      # only — it has no effect on which profile's modules are built.
+      # Profile selection is automatic: `darwinConfigurations` is keyed by
+      # each machine's `scutil --get LocalHostName` value (see
+      # `hostProfiles` in `nix/darwin/default.nix`), and `darwin-rebuild`'s
+      # built-in hostname-based resolution picks the matching attribute for
+      # the machine it's run on when no `#attr` suffix is given. An explicit
+      # override remains available via `--flake ".#<hostname>"`, e.g.
+      # `--flake ".#MPCE-MBP-RWF4347WJP"`.
+      # `configs.pkgs` exposes the shared package set (identical overlays
+      # across both profiles) as `self.darwinConfigurations.pkgs`, for
+      # tooling/`nix repl` convenience only — it has no effect on which
+      # profile's modules are built.
       darwinConfigurations = configs // {
-        pkgs = configs.personal.pkgs;
+        pkgs = configs."Adiels-MacBook-Pro".pkgs;
       };
 
       formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
