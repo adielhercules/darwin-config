@@ -1,1 +1,0 @@
-{ outputs = { ... }: { rootPath = "/Users/adielhercules"; }; }
