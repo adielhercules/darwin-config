@@ -51,6 +51,7 @@
       "alcove"
       "postman"
       "zed"
+      "copilot-cli"
     ];
     masApps = { };
   };

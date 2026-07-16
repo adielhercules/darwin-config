@@ -3,4 +3,5 @@
 { ... }:
 {
   homebrew.casks = [ "herd" ];
+  homebrew.brews = [ "glow" ];
 }
