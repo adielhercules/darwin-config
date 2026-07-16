@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 let
   # OpenCode agent-oriented configuration.

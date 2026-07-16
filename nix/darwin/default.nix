@@ -89,7 +89,6 @@ let
     # The main Darwin configuration, now as a module
     (
       {
-        lib,
         pkgs,
         lcars,
         ...
