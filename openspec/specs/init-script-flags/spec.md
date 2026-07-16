@@ -22,38 +22,51 @@
 - **THEN** `nix run nix-darwin/master#darwin-rebuild ... -- switch` SHALL be executed
 - **AND** no sed substitution or git config change SHALL occur
 
-### Requirement: init.sh --deploy flag is a stub that always fails
-`init.sh` SHALL accept a `--deploy` flag, but it SHALL always fail (non-zero exit) and print a message directing the user to `--personal`/`--work` and then `just deploy`, since a bare, profile-less deploy is no longer supported.
+### Requirement: init.sh accepts --deploy flag
+`init.sh` SHALL accept a `--deploy` flag that runs `just deploy` (which
+resolves the deploy target profile automatically from the machine's
+hostname via `hostProfiles` in `nix/darwin/default.nix` — no explicit
+profile argument is needed). This stage SHALL require a non-empty
+`.local/git-email` file (see `git-email-config` capability), exiting
+non-zero with guidance if it is missing, before invoking `just deploy`.
 
-#### Scenario: --deploy flag always fails with guidance
-- **WHEN** user runs `init.sh --deploy`
-- **THEN** the script SHALL exit non-zero without performing any deploy
-- **AND** it SHALL print a message directing the user to use `--personal` or `--work` to select a profile, then `just deploy` for subsequent day-to-day deploys
+#### Scenario: --deploy flag runs just deploy
+- **WHEN** user runs `init.sh --deploy` with `.local/git-email` already set
+- **THEN** `just deploy` SHALL be invoked, which resolves and deploys the
+  profile matching the current machine's hostname
 
-### Requirement: init.sh accepts --personal flag
-`init.sh` SHALL accept a `--personal` flag that persists `personal` as the selected profile into `Justfile`'s `flake_target` variable (setting it to `./nix#personal`) and then invokes `just deploy` to perform the actual `darwin-rebuild switch`.
+#### Scenario: --deploy blocked without git email set
+- **WHEN** user runs `init.sh --deploy` and `.local/git-email` is missing or
+  empty
+- **THEN** the script SHALL exit non-zero before invoking `just deploy`,
+  printing guidance to run `./init.sh --email you@example.com` first
 
-#### Scenario: --personal flag sets flake_target and deploys
-- **WHEN** user runs `init.sh --personal`
-- **THEN** `Justfile`'s `flake_target` SHALL be set to `./nix#personal`
-- **AND** `just deploy` SHALL be invoked immediately afterward
+### Requirement: init.sh accepts --email flag
+`init.sh` SHALL accept an `--email <address>` flag/argument pair, parsed
+independently of positional stage flags so it may appear standalone or
+combined with any other flag in the same invocation (e.g.
+`./init.sh --email you@example.com`, `./init.sh --all --email you@example.com`).
+When present, it SHALL write the given address to `.local/git-email` before
+any other requested stage runs.
 
-### Requirement: init.sh accepts --work flag
-`init.sh` SHALL accept a `--work` flag that persists `work` as the selected profile into `Justfile`'s `flake_target` variable (setting it to `./nix#work`) and then invokes `just deploy` to perform the actual `darwin-rebuild switch`.
+#### Scenario: --email flag recognized standalone
+- **WHEN** user runs `./init.sh --email you@example.com`
+- **THEN** `.local/git-email` SHALL be written with that address
+- **AND** no other stage SHALL run
 
-#### Scenario: --work flag sets flake_target and deploys
-- **WHEN** user runs `init.sh --work`
-- **THEN** `Justfile`'s `flake_target` SHALL be set to `./nix#work`
-- **AND** `just deploy` SHALL be invoked immediately afterward
+#### Scenario: --email flag combined with a stage flag
+- **WHEN** user runs `./init.sh --all --email you@example.com`
+- **THEN** `.local/git-email` SHALL be written first
+- **AND** the `--all` stage sequence SHALL then proceed
 
 ### Requirement: init.sh accepts --all flag
-`init.sh` SHALL accept an `--all` flag that runs the paths stage (sed + git hooks) and the bootstrap stage, in order. It SHALL NOT perform any profile-specific deploy; instead it SHALL print instructions directing the user to run `init.sh --personal` or `init.sh --work` next.
+`init.sh` SHALL accept an `--all` flag that runs the paths stage (sed + git hooks) and the bootstrap stage, in order. It SHALL NOT perform any profile-specific deploy; instead it SHALL print instructions directing the user to run `init.sh --deploy` next.
 
 #### Scenario: --all flag bootstraps only, does not deploy
 - **WHEN** user runs `init.sh --all`
 - **THEN** the paths stage (sed substitution, git hook activation) and the bootstrap stage SHALL run in order
 - **AND** no `darwin-rebuild switch` targeting a profile SHALL be triggered
-- **AND** the script SHALL print guidance to run `--personal` or `--work` next
+- **AND** the script SHALL print guidance to run `--deploy` next
 
 ### Requirement: init.sh defaults to --all when no flag is given
 `init.sh` SHALL run all stages when invoked with no arguments, preserving backwards-compatible behaviour.

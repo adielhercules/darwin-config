@@ -10,8 +10,10 @@
 #      directory (~/.config/darwin-secrets/). They are auto-discovered via
 #      `builtins.readDir` and fed into `security.pki.certificateFiles`
 #      automatically — no Nix code changes required.
-#   4. Deploy with: darwin-rebuild switch --flake ".#work" --impure
-#      (or `deploy_work` from init.sh)
+#   4. Deploy with: darwin-rebuild switch --flake "./nix" --impure
+#      (profile is auto-selected from this machine's hostname — see
+#      `hostProfiles` in nix/darwin/default.nix — or run `./init.sh --deploy`
+#      / `just deploy`)
 #
 # If ~/.config/darwin-secrets/work.nix is missing when deploying the work
 # profile, the build still succeeds but emits a soft `warnings` entry.
@@ -27,7 +29,7 @@
   # Example: nix-level substituter/proxy configuration
   # nix.settings = {
   #   substituters = [ "https://corp-cache.example.com" ];
-  #   netrc-file = "/Users/adielhercules/.config/darwin-secrets/netrc";
+  #   netrc-file = "/Users/<username>/.config/darwin-secrets/netrc";
   # };
 
   # Note: certificate files (*.crt / *.pem) do NOT need to be referenced

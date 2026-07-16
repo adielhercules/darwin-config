@@ -70,7 +70,7 @@ label = ' Open'
 
     [[comboMode.bindings.children]]
     key = 'a'
-    url = 'tuna://run/path.%252FUsers%252Fadielhercules%252FApplications%252FAndroid%2520Studio.app/Open'
+    url = 'tuna://run/path.%252FUsers%252F<user>%252FApplications%252FAndroid%2520Studio.app/Open'
 
     [[comboMode.bindings.children]]
     key = 'r'

@@ -1,7 +1,7 @@
-{ ... }:
+{ rootPath, lib, ... }:
 {
   programs.git.settings.user = {
     name = "Adiel Hercules";
-    email = "me@adielhercules.com";
+    email = import ../../lib/git-email.nix { inherit rootPath lib; };
   };
 }

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   config = {
     programs = {
@@ -20,7 +20,7 @@
           # Launch fish via the stable home-manager-managed path.
           # This avoids depending on /run/current-system being set up before
           # Ghostty opens (which isn't guaranteed at login time).
-          command = "/etc/profiles/per-user/adielhercules/bin/fish";
+          command = "/etc/profiles/per-user/${config.home.username}/bin/fish";
           confirm-close-surface = false;
           #macos-option-as-alt = true;
           #keybind = [ ] ++ lib.optionals pkgs.stdenv.isDarwin [

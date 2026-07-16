@@ -5,11 +5,11 @@
 # corporate certificates / proxy / VPN settings. See work.nix.example for
 # the expected shape, and the comment below for the auto-discovery
 # convention.
-{ lib, ... }:
+{ lib, username, ... }:
 let
-  # NOTE: hardcoded to match the single-user convention used elsewhere in
-  # this repo (see `username` in darwin/default.nix).
-  secretsDir = "/Users/adielhercules/.config/darwin-secrets";
+  # Derived from the dynamically resolved `username` (see darwin/default.nix)
+  # rather than a hardcoded literal, so this works for any user/machine.
+  secretsDir = "/Users/${username}/.config/darwin-secrets";
   secretsFile = "${secretsDir}/work.nix";
   hasSecrets = builtins.pathExists secretsFile;
 

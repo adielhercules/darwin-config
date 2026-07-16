@@ -1,0 +1,3 @@
+# Local-only, machine-specific state — never committed.
+# See init.sh --email and nix/lib/git-email.nix.
+.local/
