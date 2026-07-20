@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, files, ... }:
 
 let
   # OpenCode agent-oriented configuration.
@@ -7,15 +7,15 @@ let
   #   - Agent config (opencode.jsonc): generated inline as a Nix attrset,
   #     serialized with `builtins.toJSON`. Comments live here since JSONC
   #     loses them on serialization.
-  #   - Plugins (.ts files): sourced from nix/modules/home/opencode/plugins/
+  #   - Plugins (.ts files): sourced from config/opencode/plugins/
   #     and deployed via xdg.configFile. Edit the source files directly —
   #     Nix just copies them to ~/.config/opencode/plugins/.
-  #   - Agents (.md files): sourced from nix/modules/home/opencode/agents/
+  #   - Agents (.md files): sourced from config/opencode/agents/
   #     and deployed via xdg.configFile. Each file defines one subagent
   #     with frontmatter (model, permissions) and a prompt body.
   #
   # Source directory layout:
-  #   nix/modules/home/opencode/
+  #   config/opencode/
   #   ├── plugins/
   #   │   ├── subagent-launch.ts   — toast on subagent launch
   #   │   └── notifications.ts     — macOS system notifications
@@ -24,7 +24,7 @@ let
   #       ├── code-reviewer.md     — tech-specific code reviewer
   #       └── research-summarizer.md — research consolidation subagent
 
-  opencodeSource = ./opencode;
+  opencodeSource = "${files}/opencode";
 
   # Shared delegation prompt, applied to both `build` and `plan` primary
   # agents so their delegation behavior stays in sync without duplicating
@@ -140,7 +140,7 @@ in
   xdg.configFile."opencode/opencode.jsonc".text = builtins.toJSON opencodeConfig;
 
   # Plugins — deployed from source files. Edit the .ts files in
-  # nix/modules/home/opencode/plugins/ directly; Nix copies them on build.
+  # config/opencode/plugins/ directly; Nix copies them on build.
   xdg.configFile."opencode/plugins/subagent-launch.ts".source =
     "${opencodeSource}/plugins/subagent-launch.ts";
   xdg.configFile."opencode/plugins/notifications.ts".source =

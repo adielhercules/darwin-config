@@ -1,4 +1,4 @@
-_:
+{ files, ... }:
 
 let
   targetPath = "helix/yazi-picker.sh";
@@ -6,7 +6,7 @@ in
 {
   # 1) Install the managed file
   home.file.".config/${targetPath}" = {
-    source = ./helix/yazi-picker.sh;
+    source = "${files}/helix/yazi-picker.sh";
     # Use a symlink by default; for a real file copy, set `copy = true;`
     # copy = true;
   };

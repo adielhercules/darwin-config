@@ -25,7 +25,7 @@ let
       builtins.abort "ERROR: Cannot determine username. Neither SUDO_USER nor USER environment variable is set.";
   inherit (paths) rootPath;
   nixPath = "${rootPath}/nix";
-  files = "${rootPath}/dotfiles";
+  files = "${rootPath}/config";
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
 
@@ -130,7 +130,7 @@ let
         stylix = {
           enable = true;
           polarity = "dark";
-          base16Scheme = "${files}/lcars.yaml";
+          base16Scheme = "${files}/stylix/lcars.yaml";
           fonts = {
             monospace = {
               package = pkgs.nerd-fonts.jetbrains-mono;

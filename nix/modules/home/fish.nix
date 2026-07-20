@@ -1,9 +1,14 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  files,
+  ...
+}:
 {
   config = {
 
     xdg.configFile = {
-      "fish/functions/zz.fish".source = ./fish/zz.fish;
+      "fish/functions/zz.fish".source = "${files}/fish/zz.fish";
     };
     programs = {
       fish = {

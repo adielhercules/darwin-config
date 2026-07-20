@@ -13,7 +13,6 @@
     unstable.devenv
     bat
     curl
-    neovim
     lazygit
     nodejs_22
     (lua5_1.withPackages (ps: with ps; [ luarocks ]))

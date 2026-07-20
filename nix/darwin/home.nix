@@ -42,7 +42,6 @@ in
 {
   imports = [
     ../modules/home/ghostty.nix
-    ../modules/home/neovim.nix
     ../modules/home/oh_my_posh.nix
     ../modules/home/zellij.nix
     tunaModule
@@ -71,12 +70,10 @@ in
     pyenv
     fd
     tldr
-    # TODO:More nvim
     nixd
     nixfmt
     deadnix
     statix
-    # /nvim
     obsidian
 
     # For rust
