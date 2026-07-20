@@ -1,13 +1,15 @@
 // macOS notification plugin for OpenCode.
 //
 // Sends system notifications via terminal-notifier (brew package) for events
-// that require user attention or signal completion. This complements the
-// in-app toasts with persistent system notifications that appear even when
-// the terminal is not in the foreground.
+// that require user attention or signal completion. Notifications include
+// project context (directory name) and session title for disambiguation
+// when running multiple OpenCode sessions.
 //
 // Notification triggers:
-//   - permission.asked  → "Question needs your answer"
-//   - session.idle      → "All tasks complete" (when no active subagents)
+//   - permission.asked  → "Question needs your answer in <session>"
+//   - session.created   → "<agentName> subagent launched in <session>"
+//   - question.asked    → "New question asked in <session>"
+//   - session.idle      → "All tasks complete in <session>" (root session only)
 
 import { execFile } from "child_process"
 import type { Plugin } from "@opencode-ai/plugin"
@@ -15,7 +17,7 @@ import type { Plugin } from "@opencode-ai/plugin"
 function sendNotification(title: string, message: string) {
   execFile(
     "terminal-notifier",
-    ["-title", title, "-message", message, "-sound", "default"],
+    ["-title", title, "-message", message, "-sound", "default", "-activate", "com.mitchellh.ghostty"],
     (err) => {
       if (err) {
         console.warn(`[notifications] failed to send notification: ${err.message}`)
@@ -24,9 +26,44 @@ function sendNotification(title: string, message: string) {
   )
 }
 
-export const NotificationsPlugin: Plugin = async () => {
+export const NotificationsPlugin: Plugin = async ({ directory, client }) => {
   // Track active subagent sessions to know when "all tasks are done".
   let activeSubagents = 0
+
+  // Track which sessions are subagents (have a parentID) so we only
+  // notify "All tasks complete" when the root/parent session goes idle,
+  // not when individual subagents finish.
+  const subagentSessions = new Set<string>()
+
+  // Cache session titles to avoid repeated API calls.
+  const sessionTitles = new Map<string, string>()
+
+  const dirname = directory.split("/").pop() ?? "OpenCode"
+
+  async function getSessionTitle(sessionID: string): Promise<string> {
+    const cached = sessionTitles.get(sessionID)
+    if (cached) return cached
+
+    try {
+      const res = await client.session.get({ path: { id: sessionID } })
+      const title = res.data?.title ?? "OpenCode"
+      sessionTitles.set(sessionID, title)
+      return title
+    } catch {
+      return "OpenCode"
+    }
+  }
+
+  function notify(sessionID: string | undefined, message: string) {
+    const title = `Agent - ${dirname}`
+    if (!sessionID) {
+      sendNotification(title, `${message} in OpenCode`)
+      return
+    }
+    getSessionTitle(sessionID).then((sessionName) => {
+      sendNotification(title, `${message} in ${sessionName}`)
+    })
+  }
 
   return {
     event: async ({ event }) => {
@@ -37,7 +74,8 @@ export const NotificationsPlugin: Plugin = async () => {
         // A permission question needs user input — notify so they notice
         // even if the terminal is not in the foreground.
         case "permission.asked": {
-          sendNotification("OpenCode", "Question needs your answer")
+          const sessionID = properties.sessionID as string | undefined
+          notify(sessionID, "Question needs your answer")
           break
         }
 
@@ -46,27 +84,47 @@ export const NotificationsPlugin: Plugin = async () => {
           const info = properties.info ?? properties
           if (info?.parentID) {
             activeSubagents++
+            subagentSessions.add(info.id)
+          }
+          // Cache session title from the event if available.
+          if (info?.id && info?.title) {
+            sessionTitles.set(info.id, info.title)
           }
           if (!info?.parentID) return
           const agentName = info.agent ?? "Subagent"
-          sendNotifiction(`${agentName} subagent launched`)
+          notify(info.id, `${agentName} subagent launched`)
+          break
+        }
+
+        // A question was asked by the agent.
+        case "question.asked": {
+          const sessionID = properties.sessionID as string | undefined
+          notify(sessionID, "New question asked")
           break
         }
 
         case "session.idle": {
-          // Only fire "all done" when the session goes idle AND there are
-          // no active subagents remaining.
-          if (activeSubagents > 0) {
-            activeSubagents = Math.max(0, activeSubagents - 1)
-          }
-          if (activeSubagents === 0) {
-            sendNotification("OpenCode", "All tasks complete")
+          const sessionID = properties.sessionID as string | undefined
+          if (sessionID && subagentSessions.has(sessionID)) {
+            // Subagent completed — just decrement, no notification.
+            subagentSessions.delete(sessionID)
+            if (activeSubagents > 0) {
+              activeSubagents--
+            }
+          } else {
+            // Root/parent session completed — notify if there were subagents.
+            if (activeSubagents > 0) {
+              activeSubagents = 0
+            }
+            notify(sessionID, "All tasks complete")
           }
           break
         }
 
         case "session.deleted": {
-          // Reset counter on session cleanup.
+          // Reset counter and clean up tracking on session cleanup.
+          const sessionID = properties.sessionID as string | undefined
+          if (sessionID) subagentSessions.delete(sessionID)
           if (activeSubagents > 0) {
             activeSubagents = Math.max(0, activeSubagents - 1)
           }

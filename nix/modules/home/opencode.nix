@@ -17,7 +17,6 @@ let
   # Source directory layout:
   #   config/opencode/
   #   ├── plugins/
-  #   │   ├── subagent-launch.ts   — toast on subagent launch
   #   │   └── notifications.ts     — macOS system notifications
   #   └── agents/
   #       ├── thinking.md          — deep reasoning subagent
@@ -141,8 +140,6 @@ in
 
   # Plugins — deployed from source files. Edit the .ts files in
   # config/opencode/plugins/ directly; Nix copies them on build.
-  xdg.configFile."opencode/plugins/subagent-launch.ts".source =
-    "${opencodeSource}/plugins/subagent-launch.ts";
   xdg.configFile."opencode/plugins/notifications.ts".source =
     "${opencodeSource}/plugins/notifications.ts";
 

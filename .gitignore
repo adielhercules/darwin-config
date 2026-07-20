@@ -12,3 +12,6 @@ devenv.local.nix
 # Nix build output
 result
 /tmp
+
+# macOS
+.DS_Store
