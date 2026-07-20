@@ -69,17 +69,14 @@ in
     #android-tools
     #python3
     pyenv
-    #fd
-    #tldr
+    fd
+    tldr
     # TODO:More nvim
     nixd
     nixfmt
     deadnix
     statix
-    #wget
-    #$imagemagickBig
     # /nvim
-    #unstable.kitty
     obsidian
 
     # For rust

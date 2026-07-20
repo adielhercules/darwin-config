@@ -42,6 +42,7 @@
       "opencode"
       "yazi"
       "rtk"
+      "terminal-notifier" # macOS notifications for OpenCode plugin & fish done
     ];
     taps = [ ];
     casks = [

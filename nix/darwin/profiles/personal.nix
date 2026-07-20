@@ -2,5 +2,8 @@
 # shared entries.
 _: {
   homebrew.casks = [ "herd" ];
-  homebrew.brews = [ "glow" ];
+  homebrew.brews = [
+    "glow"
+    "xcodegen"
+  ];
 }
