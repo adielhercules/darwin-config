@@ -1,12 +1,12 @@
-{ lib, pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   config = {
     programs = {
       helix = {
         enable = true;
         package = pkgs.unstable.helix;
-        settings = lib.mkForce {
-          theme = "lcars";
+        settings = {
+          theme = lib.mkDefault "lcars";
           editor = {
             # Editor appearance
             line-number = "relative";
@@ -37,17 +37,6 @@
             normal = {
               "C-y" = "copy_between_registers";
               "C-," = "command_mode";
-              # "C-e" = [
-              #   ":sh rm -f /tmp/files2open"
-              #   ''
-              #     :insert-output yazi "%{buffer_name}" --chooser-file=/tmp/files2open''
-              #   ":redraw"
-              #   ":open /tmp/files2open"
-              #   "select_all"
-              #   "split_selection_on_newline"
-              # "goto_file"
-              #   ":buffer-close! /tmp/files2open"
-              # ];
               "C-e" =
                 ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
               "C-l" = [

@@ -42,7 +42,7 @@ in
 {
   imports = [
     ../modules/home/ghostty.nix
-    ../modules/home/oh_my_posh.nix
+    ../modules/home/oh-my-posh.nix
     ../modules/home/zellij.nix
     tunaModule
     ../modules/home/helix.nix
@@ -61,12 +61,13 @@ in
     # definition set in fish.nix — no `lib.mkMerge` plumbing required here.
     programs.fish.interactiveShellInit = import fishBindingsPath;
   });
-  home.stateVersion = "25.05"; # Please read the comment before changing.
+  # home-manager stateVersion. Change only when upgrading nixpkgs major
+  # releases (24.05 -> 25.05, etc.). See:
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+  home.stateVersion = "25.05";
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    #android-tools
-    #python3
     pyenv
     fd
     tldr
@@ -79,15 +80,9 @@ in
     # For rust
     rustup # Rust toolchain installer
     ripgrep
-    fd
 
     # /Terminal tools
-    # Coding tools
-    unstable.devenv
   ];
-
-  # I prefer the default: vim
-  # home.sessionVariables = { EDITOR = "nvim"; };
 
   # Setup programs options
   programs = {
@@ -107,6 +102,7 @@ in
     git = {
       enable = true;
       signing.format = null;
+      includes = [ { path = "~/.config/git/config.local"; } ];
       settings = {
         difftool = {
           prompt = false;

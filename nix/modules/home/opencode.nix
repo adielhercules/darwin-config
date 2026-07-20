@@ -1,4 +1,4 @@
-{ pkgs, files, ... }:
+{ files, ... }:
 
 let
   # OpenCode agent-oriented configuration.
@@ -135,19 +135,18 @@ let
   };
 in
 {
-  # Agent config (JSONC) — generated from the Nix attrset above.
-  xdg.configFile."opencode/opencode.jsonc".text = builtins.toJSON opencodeConfig;
+  xdg.configFile = {
+    # Agent config (JSONC) — generated from the Nix attrset above.
+    "opencode/opencode.jsonc".text = builtins.toJSON opencodeConfig;
 
-  # Plugins — deployed from source files. Edit the .ts files in
-  # config/opencode/plugins/ directly; Nix copies them on build.
-  xdg.configFile."opencode/plugins/notifications.ts".source =
-    "${opencodeSource}/plugins/notifications.ts";
+    # Plugins — deployed from source files. Edit the .ts files in
+    # config/opencode/plugins/ directly; Nix copies them on build.
+    "opencode/plugins/notifications.ts".source = "${opencodeSource}/plugins/notifications.ts";
 
-  # Agent prompt files — deployed from source .md files. These define
-  # the system prompt and frontmatter for custom subagents.
-  xdg.configFile."opencode/agents/thinking.md".source = "${opencodeSource}/agents/thinking.md";
-  xdg.configFile."opencode/agents/code-reviewer.md".source =
-    "${opencodeSource}/agents/code-reviewer.md";
-  xdg.configFile."opencode/agents/research-summarizer.md".source =
-    "${opencodeSource}/agents/research-summarizer.md";
+    # Agent prompt files — deployed from source .md files. These define
+    # the system prompt and frontmatter for custom subagents.
+    "opencode/agents/thinking.md".source = "${opencodeSource}/agents/thinking.md";
+    "opencode/agents/code-reviewer.md".source = "${opencodeSource}/agents/code-reviewer.md";
+    "opencode/agents/research-summarizer.md".source = "${opencodeSource}/agents/research-summarizer.md";
+  };
 }

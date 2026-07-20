@@ -27,7 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Enable homebrew management through nix
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
       flake = false;
@@ -67,7 +70,7 @@
     }:
     let
       paths = {
-        rootPath = "/Users/adielhercules/darwin-config";
+        rootPath = self;
       };
       configs = import ./darwin {
         inherit
@@ -107,7 +110,6 @@
 
       formatter = {
         aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
-        x86_64-linux = nixpkgs-unstable.legacyPackages.x86_64-linux.nixfmt-tree;
       };
     };
 }

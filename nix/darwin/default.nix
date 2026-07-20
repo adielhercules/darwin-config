@@ -24,8 +24,8 @@ let
     else
       builtins.abort "ERROR: Cannot determine username. Neither SUDO_USER nor USER environment variable is set.";
   inherit (paths) rootPath;
-  nixPath = "${rootPath}/nix";
-  files = "${rootPath}/config";
+  nixPath = rootPath + "/nix";
+  files = rootPath + "/../config";
   pkgs = import nixpkgs { inherit system; };
   lcarsConfig = import ../features.nix { inherit pkgs; };
 
@@ -51,7 +51,7 @@ let
       paths
       profile
       ;
-    libFiles = "${rootPath}/lib";
+    libFiles = rootPath + "/lib";
     inherit (lcarsConfig) lcars;
   };
 
@@ -144,7 +144,14 @@ let
           users.${username} = {
             home = "/Users/${username}";
             name = "${username}";
-            uid = 501;
+            uid =
+              let
+                sudoUid = builtins.getEnv "SUDO_UID";
+              in
+              if sudoUid != "" then
+                builtins.fromJSON sudoUid
+              else
+                builtins.abort "ERROR: SUDO_UID not set. Run via sudo (e.g. `just deploy`).";
             # Login shell intentionally left as macOS default (/bin/zsh).
             # Fish is launched directly by Ghostty via its `command` setting,
             # using the stable home-manager path that doesn't depend on

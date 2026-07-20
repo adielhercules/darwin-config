@@ -86,11 +86,52 @@ just repl
 git status
 
 # Test flake integrity
-nix flake check ./nix
+nix flake check --no-build ./nix
 
 # Check Nix code formatting without modifying files
 nix fmt -- --fail-on-change
+
+# Find dead/unused Nix code
+deadnix --fail .
+
+# Static analysis for Nix best practices
+statix check .
 ```
+
+### Post-Apply Validation (Mandatory for openspec changes)
+
+After implementing ALL tasks in an openspec change, **always** run this validation
+sequence before marking the change complete. Do NOT skip steps.
+
+```bash
+# Step 1: Stage all Nix files (required — Nix only evaluates git-tracked files)
+git add nix/
+
+# Step 2: Flake integrity
+nix flake check --no-build ./nix
+
+# Step 3: Formatting (use nix fmt, NOT treefmt — not running in CI)
+nix fmt
+
+# Step 4: Static analysis — dead code detection
+deadnix --fail .
+
+# Step 5: Static analysis — Nix best practices
+statix check .
+```
+
+**If any step fails:**
+1. Fix the issue
+2. Re-run from Step 2 onward
+3. Do NOT proceed until all steps pass
+
+**Note:** `just check` (dry-run deploy) is a separate validation that tests the
+full darwin-rebuild evaluation. It should ALSO be run, but it requires `sudo` and
+is NOT part of the automated post-apply sequence. Run it manually when ready.
+
+**⚠️ IMPORTANT**: AI agents must **NEVER** call `just deploy` or `just verbose`.
+Only the validation steps above (which don't require sudo) should be run
+automatically. `just check` requires sudo and should only be run on explicit request.
 
 ## Code Style Guidelines
 
@@ -288,9 +329,11 @@ init.sh                       # Repo bootstrap/init script
 Before making changes:
 1. Run `just check` for dry-run validation
 2. Verify changes don't break imports
-3. Test configuration compiles with `nix flake check ./nix`
+3. Test configuration compiles with `nix flake check --no-build ./nix`
 4. Run `nix fmt -- --fail-on-change` to validate formatting
-5. Ensure git status is clean
+5. Run `deadnix --fail .` to find dead/unused code
+6. Run `statix check .` for static analysis
+7. Ensure git status is clean
 
 ## Additional Resources
 
@@ -302,7 +345,9 @@ Before making changes:
 
 - `just check`: Dry-run validation
 - `nix fmt -- --fail-on-change`: Nix code formatting validation
-- `nix flake check ./nix`: Flake integrity check
+- `nix flake check --no-build ./nix`: Flake integrity check
+- `deadnix --fail .`: Dead/unused code detection
+- `statix check .`: Static analysis for Nix best practices
 - `just tree`: View dependency tree
 
 <!-- headroom:rtk-instructions -->

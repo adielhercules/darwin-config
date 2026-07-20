@@ -31,6 +31,7 @@
             src = pkgs.fishPlugins.bang-bang.src;
           }
           {
+            # Not packaged in nixpkgs/fishPlugins — fetch from upstream directly.
             name = "fish-colored-man";
             src = pkgs.fetchFromGitHub {
               owner = "decors";

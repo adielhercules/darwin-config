@@ -28,3 +28,16 @@ rules:
     - "Never run `git commit`, `git push`, or otherwise commit changes on your
        own initiative. Only commit when the user has explicitly asked for it
        and confirmed the commit."
+
+  post-apply:
+    - "After implementing all tasks in a change, run this validation sequence
+       before marking tasks complete:
+       1. `git add nix/` (Nix only evaluates git-tracked files)
+       2. `nix flake check --no-build ./nix` (flake integrity)
+       3. `nix fmt` (formatting — using nix fmt, not treefmt since not in CI)
+       4. `deadnix --fail .` (find dead code)
+       5. `statix check .` (static analysis)
+       If any step fails, fix the issue and re-run from step 2."
+    - "Never run `just deploy` or `just verbose` — they require interactive sudo.
+       Only `just check` (also requires sudo, run only on user request) and the
+       non-sudo validation steps above are acceptable for AI agents."

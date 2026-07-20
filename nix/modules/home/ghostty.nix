@@ -22,12 +22,6 @@
           # Ghostty opens (which isn't guaranteed at login time).
           command = "/etc/profiles/per-user/${config.home.username}/bin/fish";
           confirm-close-surface = false;
-          #macos-option-as-alt = true;
-          #keybind = [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
-          # Fix for MacOS keys
-          #  "alt+left=unbind"
-          #  "alt+right=unbind"
-          #];
         };
       };
 

@@ -8,27 +8,15 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EMAIL_FILE="$SCRIPT_DIR/.local/git-email"
+GIT_LOCAL="$HOME/.config/git/config.local"
 SECRETS_DIR="$HOME/.config/darwin-secrets"
 
 # ─── Stage Functions ──────────────────────────────────────────────────────────
-
-run_paths_sed() {
-  echo "Initialising rootPath..."
-  sed -i '' "s|rootPath = \"<init-required>\"|rootPath = \"$SCRIPT_DIR\"|g" \
-    "$SCRIPT_DIR/nix/flake.nix"
-  echo "rootPath set to: $SCRIPT_DIR"
-}
 
 run_git() {
   echo "Activating git hooks..."
   git -C "$SCRIPT_DIR" config core.hooksPath .githooks
   echo "Git hooks activated (.githooks)"
-}
-
-run_paths() {
-  run_paths_sed
-  run_git
 }
 
 run_set_email() {
@@ -37,14 +25,16 @@ run_set_email() {
     echo "Usage: $0 --email you@example.com" >&2
     exit 1
   fi
-  mkdir -p "$(dirname "$EMAIL_FILE")"
-  printf '%s' "$email" >"$EMAIL_FILE"
-  chmod 600 "$EMAIL_FILE"
-  echo "Git email saved to $EMAIL_FILE"
+  mkdir -p "$(dirname "$GIT_LOCAL")"
+  cat > "$GIT_LOCAL" << EOF
+[user]
+	email = $email
+EOF
+  echo "Git email written to $GIT_LOCAL"
 }
 
 require_email() {
-  if [ ! -s "$EMAIL_FILE" ]; then
+  if [ ! -s "$GIT_LOCAL" ]; then
     echo "Git email not set. Run: $0 --email you@example.com" >&2
     exit 1
   fi
@@ -108,7 +98,7 @@ run_deploy() {
 }
 
 run_all() {
-  run_paths
+  run_git
   run_bootstrap
   echo "" >&2
   echo "Bootstrap and path setup complete. Deploy your machine's profile with:" >&2
@@ -157,9 +147,6 @@ set -- "${REMAINING[@]}"
 # ─── CLI Dispatch ─────────────────────────────────────────────────────────────
 
 case "${1:-}" in
-  --paths)
-    run_paths
-    ;;
   --git)
     run_git
     ;;
@@ -175,18 +162,17 @@ case "${1:-}" in
     fi
     ;;
   *)
-    echo "Usage: $0 [--paths|--git|--bootstrap|--deploy|--all] [--email <address>]" >&2
+    echo "Usage: $0 [--git|--bootstrap|--deploy|--all] [--email <address>]" >&2
     echo "" >&2
-    echo "  --paths      Set rootPath in nix/flake.nix and activate git hooks" >&2
     echo "  --git        Activate git hooks only" >&2
     echo "  --bootstrap  Run initial nix-darwin bootstrap (nix run)" >&2
     echo "  --deploy     Run 'just deploy' (profile auto-selected by hostname)" >&2
     echo "  --all        Run all stages in order (default) — bootstrap only," >&2
     echo "               does NOT deploy; run --deploy afterward" >&2
     echo "  --email <address>" >&2
-    echo "               Save the given address to .local/git-email, used as" >&2
-    echo "               git's user.email for both profiles. May be combined" >&2
-    echo "               with any other flag above, or used standalone." >&2
+    echo "               Write the given address to ~/.config/git/config.local" >&2
+    echo "               as git's user.email. May be combined with any other" >&2
+    echo "               flag above, or used standalone." >&2
     echo "" >&2
     echo "After initial setup, use 'just deploy' (or 'just verbose'/'just check')" >&2
     echo "for regular day-to-day deploys — init.sh is only for first-time" >&2
