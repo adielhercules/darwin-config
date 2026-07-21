@@ -47,17 +47,25 @@ Currently targets Apple Silicon (`aarch64-darwin`) only.
 4. **Work laptops only** — if this machine is on a corporate network with
    TLS interception, drop your corporate certificate(s) (`.crt`/`.pem`) into
    `~/.config/darwin-secrets/` *before* bootstrapping. `init.sh` auto-detects
-   them and trusts them for the initial fetch only; see
+   them and trusts them for the initial fetch only; it also automatically
+   creates `~/.config/darwin-secrets/work.nix` (if missing) and grants the
+   sandboxed Nix build users (`nixbld` group) traversal rights on your home
+   directory, both required for the build to read your certs — no manual
+   setup needed beyond dropping the cert file itself. See
    `nix/darwin/profiles/work.nix.example` for the full secrets-directory
-   convention (proxy settings, substituters, etc.).
+   convention (proxy settings, substituters, etc.) if you need to customize
+   the generated `work.nix`.
 5. Run the bootstrap:
    ```
    ./init.sh
    ```
-   (equivalent to `./init.sh --all`). This sets `rootPath` in
-   `nix/flake.nix`, activates the repo's git hooks, and runs the initial
-   `nix run nix-darwin/master#darwin-rebuild -- switch`. This step does
-   **not** perform a full profile deploy yet.
+   (equivalent to `./init.sh --all`). This activates the repo's git hooks and
+   runs the initial `darwin-rebuild switch` via `nix run
+   nix-darwin/master#darwin-rebuild`. The fetch/build phase runs as your
+   normal user (do **not** prefix this command with `sudo`); the final system
+   activation step escalates internally via `sudo` and will prompt for your
+   password at that point. This step does **not** perform a full profile
+   deploy yet.
 6. Finish the deploy:
    ```
    ./init.sh --deploy
@@ -103,6 +111,27 @@ See `nix/darwin/profiles/work.nix.example` for the expected shape and
 auto-discovery conventions (certs are picked up automatically by filename
 extension, no Nix changes required).
 
+## Troubleshooting
+
+**`.bashrc`/`.profile` "would be clobbered" during deploy** — if this
+machine previously used a manual (pre-Nix) dotfiles setup, `~/.bashrc` and
+`~/.profile` may exist as symlinks pointing outside the Nix store. Home
+Manager's `programs.bash` module (enabled in `nix/darwin/home.nix`) manages
+both paths with `force = true`, so they're overwritten automatically —
+no action needed. If you see this error for a *different* file, check
+whether the offending `home.file` entry needs a similar `force = true`
+(see `nix/darwin/home.nix` for existing examples), or use
+`home-manager switch -b backup` for a one-off manual backup instead.
+
+**"Permission denied" reading a corporate cert during bootstrap** — macOS
+home directories default to mode `700`, which blocks the sandboxed Nix build
+users (`_nixbld1..N`, members of the shared `nixbld` group) from traversing
+into `~/.config/darwin-secrets`. `init.sh --bootstrap` fixes this
+automatically (idempotent ACL grant). If you ever need to do it manually:
+```
+chmod +a "group:nixbld allow execute,readextattr,readattr,readsecurity" "$HOME"
+```
+
 ## Repository structure
 
 ```
@@ -120,7 +149,8 @@ extension, no Nix changes required).
 │   ├── options/               # Custom Nix option declarations
 │   └── lib/                   # Shared helper functions (module resolution,
 │                                git email, etc.)
-├── dotfiles/                 # Dotfiles deployed into the home directory
+├── config/                    # Static config files consumed via `files`
+│                                specialArg (fish, stylix, opencode, helix, ...)
 └── openspec/                 # Spec-driven change proposals (changes/, specs/)
 ```
 

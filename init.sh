@@ -50,6 +50,49 @@ current_hostname_is_work_profile() {
   [ -n "$hostname" ] && grep -q "\"$hostname\" = \"work\";" "$SCRIPT_DIR/nix/darwin/default.nix" 2>/dev/null
 }
 
+# Ensures ~/.config/darwin-secrets exists and is scaffolded with a default
+# work.nix (work profile only). Also fixes a macOS-specific permission
+# problem: home directories default to mode 700 (owner-only), which blocks
+# the sandboxed Nix build users (_nixbld1..N, all members of the shared
+# "nixbld" group) from traversing into ~/.config/darwin-secrets to read
+# corporate cert files during the build. We grant the "nixbld" group bare
+# traversal rights via an ACL (not a broad chmod o+x), idempotently — safe
+# to run on every bootstrap.
+ensure_secrets_dir() {
+  mkdir -p "$SECRETS_DIR"
+
+  if ! current_hostname_is_work_profile; then
+    return 0
+  fi
+
+  # Idempotent ACL fix: only add the nixbld traversal entry if it isn't
+  # already present on $HOME.
+  if ! ls -le "$HOME" 2>/dev/null | grep -q "group:nixbld"; then
+    if chmod +a "group:nixbld allow execute,readextattr,readattr,readsecurity" "$HOME" 2>/dev/null; then
+      echo "Granted 'nixbld' build group traversal rights on \$HOME (needed for corporate certs during sandboxed builds)."
+    else
+      echo "Warning: failed to set ACL on \$HOME for the 'nixbld' group." >&2
+      echo "If the build later fails with 'Permission denied' reading a cert file," >&2
+      echo "run manually: chmod +a \"group:nixbld allow execute,readextattr,readattr,readsecurity\" \"\$HOME\"" >&2
+    fi
+  fi
+
+  local work_nix="$SECRETS_DIR/work.nix"
+  if [ ! -e "$work_nix" ]; then
+    cat > "$work_nix" << 'EOF'
+{ ... }: {
+  # No corporate proxy or custom substituter needed currently.
+  # Corporate cert(s) are auto-discovered from *.crt/*.pem files in this
+  # same directory (see nix/darwin/profiles/work.nix) — no need to
+  # reference them here.
+}
+EOF
+    echo "Created default work.nix at $work_nix"
+  else
+    echo "work.nix already exists at $work_nix — leaving as-is."
+  fi
+}
+
 # Auto-discovers any *.crt/*.pem files already dropped into
 # ~/.config/darwin-secrets/ (the same convention profiles/work.nix reads
 # post-activation) and exports them as a temporary CA bundle for the
@@ -68,6 +111,7 @@ with_bootstrap_certs() {
     local cert_bundle
     cert_bundle="$(mktemp)"
     cat "${cert_files[@]}" >"$cert_bundle"
+    chmod 644 "$cert_bundle"
     trap 'rm -f "$cert_bundle"' EXIT
     export NIX_SSL_CERT_FILE="$cert_bundle"
     export SSL_CERT_FILE="$cert_bundle"
@@ -82,13 +126,18 @@ with_bootstrap_certs() {
 
 run_bootstrap() {
   require_email
+  ensure_secrets_dir
   with_bootstrap_certs
 
   echo "Running initial deploy (bootstrap)..."
-  nix run nix-darwin/master#darwin-rebuild \
+  sudo HOME="$HOME" \
+    NIX_SSL_CERT_FILE="$NIX_SSL_CERT_FILE" \
+    SSL_CERT_FILE="$SSL_CERT_FILE" \
+    CURL_CA_BUNDLE="$CURL_CA_BUNDLE" \
+    nix run nix-darwin/master#darwin-rebuild \
     --extra-experimental-features nix-command \
     --extra-experimental-features flakes \
-    -- switch
+    -- switch --flake "$SCRIPT_DIR/nix" --impure
 }
 
 run_deploy() {

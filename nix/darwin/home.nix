@@ -64,25 +64,36 @@ in
   # home-manager stateVersion. Change only when upgrading nixpkgs major
   # releases (24.05 -> 25.05, etc.). See:
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "25.05";
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = with pkgs; [
-    pyenv
-    fd
-    tldr
-    nixd
-    nixfmt
-    deadnix
-    statix
-    obsidian
+  home = {
+    stateVersion = "25.05";
+    # The home.packages option allows you to install Nix packages into your
+    # environment.
+    packages = with pkgs; [
+      pyenv
+      fd
+      tldr
+      nixd
+      nixfmt
+      deadnix
+      statix
+      obsidian
 
-    # For rust
-    rustup # Rust toolchain installer
-    ripgrep
+      # For rust
+      rustup # Rust toolchain installer
+      ripgrep
 
-    # /Terminal tools
-  ];
+      # /Terminal tools
+    ];
+
+    # Force-overwrite .bashrc/.profile: on machines migrated from a manual
+    # (pre-Nix) dotfiles setup, these paths may already be symlinks pointing
+    # elsewhere. Home Manager's backupFileExtension mechanism does not
+    # reliably back up existing symlinks (unlike regular files, e.g.
+    # .bash_profile), so activation fails with "would be clobbered" unless
+    # force is set explicitly for these two.
+    file.".bashrc".force = true;
+    file.".profile".force = true;
+  };
 
   # Setup programs options
   programs = {

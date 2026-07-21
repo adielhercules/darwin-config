@@ -17,6 +17,16 @@
 #
 # If ~/.config/darwin-secrets/work.nix is missing when deploying the work
 # profile, the build still succeeds but emits a soft `warnings` entry.
+#
+# macOS PERMISSIONS NOTE: home directories default to mode 700 (owner-only
+# traversal). Sandboxed Nix build users (_nixbld1..N, members of the shared
+# "nixbld" group) cannot read files under ~/.config/darwin-secrets during
+# the build unless that group can at least traverse $HOME. `./init.sh
+# --bootstrap` handles this automatically (idempotent ACL grant via
+# `chmod +a "group:nixbld allow execute,readextattr,readattr,readsecurity"
+# "$HOME"`) — no manual action needed on a normal bootstrap flow. If you
+# ever see "Permission denied" reading a cert file during a build, re-run
+# that command manually.
 # ────────────────────────────────────────────────────────────────────────
 { ... }: {
   # Example: corporate proxy environment variables

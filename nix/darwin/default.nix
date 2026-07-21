@@ -118,6 +118,7 @@ let
           # Corporate certificates are auto-discovered from
           # ~/.config/darwin-secrets/ for the work profile — see
           # profiles/work.nix.
+          # pki.certificateFiles = [ "/etc/ssl/certs/corporate.crt" ];
           pam.services.sudo_local.touchIdAuth = true;
         };
 
