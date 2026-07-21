@@ -19,6 +19,17 @@ appear in this file.
 - **THEN** evaluation SHALL abort with an error message stating that neither
   `SUDO_USER` nor `USER` is set
 
+### Requirement: UID resolved dynamically at eval time
+`nix/darwin/default.nix` SHALL resolve the `uid` value for the primary user by reading the `SUDO_UID` environment variable (set by macOS when running via sudo) and converting it with `builtins.fromJSON`, rather than using a hardcoded literal value.
+
+#### Scenario: UID from SUDO_UID
+- **WHEN** the flake is evaluated via `sudo` (e.g., `just deploy`)
+- **THEN** `uid` SHALL resolve to the value of `SUDO_UID` (the real user's UID)
+
+#### Scenario: SUDO_UID not set
+- **WHEN** the flake is evaluated without sudo
+- **THEN** evaluation SHALL abort with an error message instructing the user to run via sudo
+
 ### Requirement: work-profile secrets directory derived from dynamic username
 `nix/darwin/profiles/work.nix` SHALL derive `secretsDir` from the dynamically
 resolved `username`/home path passed in via `specialArgs`, rather than a

@@ -5,14 +5,31 @@
 // project context (directory name) and session title for disambiguation
 // when running multiple OpenCode sessions.
 //
+// Smart notification behavior:
+//   - If Ghostty is frontmost: suppress system notifications (user is already looking)
+//   - Exception: subagent launches always show a TUI toast for in-context awareness
+//
 // Notification triggers:
-//   - permission.asked  → "Question needs your answer in <session>"
-//   - session.created   → "<agentName> subagent launched in <session>"
-//   - question.asked    → "New question asked in <session>"
-//   - session.idle      → "All tasks complete in <session>" (root session only)
+//   - permission.asked  → "Question needs your answer in <session>" (system notification, only if Ghostty not focused)
+//   - session.created   → "<agentName> subagent launched" (TUI toast, always)
+//   - question.asked    → "New question asked in <session>" (system notification, only if Ghostty not focused)
+//   - session.idle      → "All tasks complete in <session>" (system notification, only if Ghostty not focused)
 
 import { execFile } from "child_process"
 import type { Plugin } from "@opencode-ai/plugin"
+
+/**
+ * Check if Ghostty is the frontmost application using osascript.
+ * Returns true if Ghostty has focus, false otherwise or on error.
+ */
+async function isGhosttyFrontmost(): Promise<boolean> {
+  try {
+    const result = await Bun.$`osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true'`
+    return result.stdout.toString().trim() === "Ghostty"
+  } catch {
+    return false
+  }
+}
 
 function sendNotification(title: string, message: string) {
   execFile(
@@ -24,6 +41,15 @@ function sendNotification(title: string, message: string) {
       }
     },
   )
+}
+
+/**
+ * Send a notification only if Ghostty is NOT the frontmost app.
+ * If Ghostty is focused, the user is already looking at the TUI.
+ */
+async function sendNotificationIfNotFocused(title: string, message: string) {
+  if (await isGhosttyFrontmost()) return
+  sendNotification(title, message)
 }
 
 export const NotificationsPlugin: Plugin = async ({ directory, client }) => {
@@ -54,15 +80,26 @@ export const NotificationsPlugin: Plugin = async ({ directory, client }) => {
     }
   }
 
+  /**
+   * Send a system notification, but only if Ghostty is not focused.
+   */
   function notify(sessionID: string | undefined, message: string) {
     const title = `Agent - ${dirname}`
     if (!sessionID) {
-      sendNotification(title, `${message} in OpenCode`)
+      sendNotificationIfNotFocused(title, `${message} in OpenCode`)
       return
     }
     getSessionTitle(sessionID).then((sessionName) => {
-      sendNotification(title, `${message} in ${sessionName}`)
+      sendNotificationIfNotFocused(title, `${message} in ${sessionName}`)
     })
+  }
+
+  /**
+   * Show a TUI toast message inside the terminal.
+   * Always shown regardless of Ghostty focus state.
+   */
+  function showToast(message: string) {
+    client.tui.showToast({ body: { message, variant: "info" } })
   }
 
   return {
@@ -91,8 +128,9 @@ export const NotificationsPlugin: Plugin = async ({ directory, client }) => {
             sessionTitles.set(info.id, info.title)
           }
           if (!info?.parentID) return
+          // Always show TUI toast for subagent launches (in-context awareness).
           const agentName = info.agent ?? "Subagent"
-          notify(info.id, `${agentName} subagent launched`)
+          showToast(`${agentName} subagent launched`)
           break
         }
 
