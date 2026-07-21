@@ -3,6 +3,7 @@
   lcars,
   lib,
   pkgs,
+  files,
   ...
 }:
 let
@@ -17,7 +18,7 @@ in
         sha256 = "sha256-MRlBRVGdvcEoaFtFb5cDdDePoZ/J2nQvvkoyG6zkSds=";
       };
       "zellij/layouts" = {
-        source = ./zellij/layouts;
+        source = "${files}/zellij/layouts";
         recursive = true;
       };
       "zellij/plugins/zjstatus-hints.wasm".source = pkgs.fetchurl {
