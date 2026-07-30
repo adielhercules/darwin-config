@@ -81,6 +81,7 @@ label = ' Open'
     key = 'x'
     url = 'tuna://run/path.%252FApplications%252FXcode.app/Open'
 
+# WM-GROUP-BEGIN:aerospace
 [[comboMode.bindings]]
 iconPath = 'rectangle.grid.2x2'
 key = 'a'
@@ -401,7 +402,630 @@ label = 'Aerospace'
     key = 'z'
     label = 'Center'
     url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+# WM-GROUP-END:aerospace
+# WM-GROUP-BEGIN:yabai
+[[comboMode.bindings]]
+iconPath = 'square.grid.3x3'
+key = 'y'
+label = 'Yabai'
 
+    [[comboMode.bindings.children]]
+    key = 'c'
+    label = 'Communications'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk1/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'b'
+    label = 'Browsing'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk6/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 't'
+    label = 'Terminals'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk4/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'i'
+    label = 'IDE'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk2/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'd'
+    label = 'Dev / Simulators'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk3/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'm'
+    label = 'Music'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520desk5/Run%20Text%20as%20Shell%20Command'
+
+    # See the "IDEs" comment above re: unlabeled placeholder space indices
+    # (8 here, mirroring aerospace's dynamically-created "1"/misc workspace).
+    [[comboMode.bindings.children]]
+    key = '1'
+    label = 'misc'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%25208/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'e'
+    label = 'Focus window'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Left'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520west/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Right'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520east/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Down'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520south/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Up'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520north/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = '`'
+        label = 'Focus last window'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520recent/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'n'
+        label = 'Stack next'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520stack.next/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'p'
+        label = 'Stack prev'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--focus%2520stack.prev/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = '`'
+    label = 'Focus last workspace'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--focus%2520recent/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'f'
+    label = 'Fullscreen'
+    url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520zoom-fullscreen/Run%20Text%20as%20Shell%20Command'
+
+    # yabai has no bsp-tree "flatten" equivalent in stack mode; resetting to
+    # `--layout stack` is the closest approximation (see design.md
+    # Decision 2).
+    [[comboMode.bindings.children]]
+    key = 'F'
+    label = 'Flatten workspace tree (reset stack layout)'
+    url = 'tuna://run/text.yabai%2520-m%2520space%2520--layout%2520stack/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'g'
+    label = 'Screens'
+
+        [[comboMode.bindings.children.children]]
+        key = 'f'
+        label = 'Focus screen'
+
+            # yabai's `display --focus` has no directional west/east/etc
+            # targets (only prev/next/recent/mouse/<index>) — next/prev are
+            # used as the closest approximation for left/right/down/up.
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520display%2520--focus%2520prev/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520display%2520--focus%2520next/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520display%2520--focus%2520next/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520display%2520--focus%2520prev/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'w'
+        label = 'Move window'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--display%2520prev%2520--focus/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--display%2520next%2520--focus/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--display%2520next%2520--focus/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--display%2520prev%2520--focus/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 's'
+        label = 'Move workspace'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--display%2520prev/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--display%2520next/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down (next)'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--display%2520next/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up (prev)'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--display%2520prev/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'j'
+    label = 'Join with'
+
+        # yabai's `--warp` is the closest bsp-style-join equivalent; no
+        # perfect match exists in stack mode (see design.md task 5 notes).
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Left'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--warp%2520west/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Right'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--warp%2520east/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Down'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--warp%2520south/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Up'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--warp%2520north/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'l'
+    label = 'Layout'
+
+        [[comboMode.bindings.children.children]]
+        key = 'a'
+        label = 'Accordion (stack)'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--layout%2520stack/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'f'
+        label = 'Floating (window)'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520float/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 't'
+        label = 'Tiles (bsp)'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--layout%2520bsp/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'o'
+        label = 'Floating (space)'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--layout%2520float/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Rotate'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '1'
+            label = '90°'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--rotate%252090/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '2'
+            label = '180°'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--rotate%2520180/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '3'
+            label = '270°'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--rotate%2520270/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'm'
+        label = 'Mirror'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'x'
+            label = 'X-axis'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--mirror%2520x-axis/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'y'
+            label = 'Y-axis'
+            url = 'tuna://run/text.yabai%2520-m%2520space%2520--mirror%2520y-axis/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'b'
+        label = 'Balance sizes'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--balance/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'e'
+        label = 'Equalize sizes'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--equalize/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 's'
+        label = 'Toggle split'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520split/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    iconPath = 'window.awning'
+    key = 's'
+    label = 'Send window to'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Directions'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'l'
+            label = 'Left'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--swap%2520west/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'r'
+            label = 'Right'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--swap%2520east/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Down'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--swap%2520south/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'u'
+            label = 'Up'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--swap%2520north/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'w'
+        label = 'Workspaces'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'C'
+            label = 'Communications'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk1/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'c'
+            label = 'Communications'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk1%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk1/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'B'
+            label = 'Browsing'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk6/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'b'
+            label = 'Browsing'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk6%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk6/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'T'
+            label = 'Terminals'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk4/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 't'
+            label = 'Terminals'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk4%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk4/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'I'
+            label = 'IDE'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk2/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'i'
+            label = 'IDE'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk2%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk2/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'D'
+            label = 'Dev / Simulators'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk3/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'd'
+            label = 'Dev / Simulators'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk3%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk3/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'M'
+            label = 'Music'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk5/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'm'
+            label = 'Music'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%2520desk5%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%2520desk5/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '!'
+            label = 'misc'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%25208/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = '1'
+            label = 'misc'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--space%25208%2520%2526%2526%2520yabai%2520-m%2520space%2520--focus%25208/Run%20Text%20as%20Shell%20Command'
+
+    # yabai has no "reload config" verb; the closest equivalent is
+    # restarting its launchd user agent. Label determined by reading
+    # nix-darwin's actual services.yabai module source (see
+    # nix/modules/darwin/yabai/default.nix's module-level comment).
+    [[comboMode.bindings.children]]
+    key = 'R'
+    label = 'Reload config'
+    url = 'tuna://run/text.launchctl%2520kickstart%2520-k%2520gui%252F%2524%2528id%2520-u%2529%252Forg.nixos.yabai/Run%20Text%20as%20Shell%20Command'
+
+    # yabai has no modal resize mode; fixed-step resize commands are used
+    # as a best-effort approximation (see tasks.md task 5, resize
+    # translation table).
+    [[comboMode.bindings.children]]
+    key = 'r'
+    label = 'Resize'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Grow right'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520right%253A50%253A0/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'R'
+        label = 'Shrink right'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520right%253A-50%253A0/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Grow left'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520left%253A-50%253A0/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'L'
+        label = 'Shrink left'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520left%253A50%253A0/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Grow up'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520top%253A0%253A-50/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'U'
+        label = 'Shrink up'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520top%253A0%253A50/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Grow down'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520bottom%253A0%253A50/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'D'
+        label = 'Shrink down'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--resize%2520bottom%253A0%253A-50/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = '+'
+        label = 'Ratio +'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--ratio%2520rel%253A0.05/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = '-'
+        label = 'Ratio -'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--ratio%2520rel%253A-0.05/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'z'
+    label = 'Center'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+    # yabai has no native window-stack verb distinct from bsp `--stack`; a
+    # dedicated submenu groups the directional stack-insert commands, kept
+    # separate from the Send-window-to ('s') and Layout ('l') submenus.
+    [[comboMode.bindings.children]]
+    key = 'x'
+    label = 'Stack'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Stack left'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--stack%2520west/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Stack right'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--stack%2520east/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Stack down'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--stack%2520south/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Stack up'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--stack%2520north/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'n'
+    label = 'Native fullscreen'
+    url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520native-fullscreen/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'w'
+    label = 'Window toggles'
+
+        [[comboMode.bindings.children.children]]
+        key = 's'
+        label = 'Sticky'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520sticky/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'p'
+        label = 'PIP'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520pip/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Shadow'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--toggle%2520shadow/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'm'
+        label = 'Minimize'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--minimize/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'M'
+        label = 'Deminimize'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--deminimize/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'o'
+        label = 'Opacity'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'o'
+            label = 'Opaque'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--opacity%25201.0/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 't'
+            label = 'Transparent'
+            url = 'tuna://run/text.yabai%2520-m%2520window%2520--opacity%25200.85/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'a'
+        label = 'Scratchpad assign'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--scratchpad%2520term/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'A'
+        label = 'Scratchpad recover'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--scratchpad%2520recover/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Raise'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--raise/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'b'
+        label = 'Lower'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--lower/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'p'
+    label = 'Placement'
+
+        [[comboMode.bindings.children.children]]
+        key = 'l'
+        label = 'Left half'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--grid%25201%253A2%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'r'
+        label = 'Right half'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--grid%25201%253A2%253A1%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'u'
+        label = 'Top half'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--grid%25202%253A1%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Bottom half'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--grid%25202%253A1%253A0%253A1%253A1%253A1/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'm'
+        label = 'Maximize'
+        url = 'tuna://run/text.yabai%2520-m%2520window%2520--grid%25201%253A1%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'N'
+    label = 'Space management'
+
+        [[comboMode.bindings.children.children]]
+        key = 'c'
+        label = 'Create space'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--create/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'd'
+        label = 'Destroy space'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--destroy/Run%20Text%20as%20Shell%20Command'
+
+    [[comboMode.bindings.children]]
+    key = 'O'
+    label = 'Order spaces'
+
+        [[comboMode.bindings.children.children]]
+        key = 'm'
+        label = 'Move prev'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--move%2520prev/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'M'
+        label = 'Move next'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--move%2520next/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 's'
+        label = 'Swap prev'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--swap%2520prev/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'S'
+        label = 'Swap next'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--swap%2520next/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'w'
+        label = 'Switch prev'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--switch%2520prev/Run%20Text%20as%20Shell%20Command'
+
+        [[comboMode.bindings.children.children]]
+        key = 'W'
+        label = 'Switch next'
+        url = 'tuna://run/text.yabai%2520-m%2520space%2520--switch%2520next/Run%20Text%20as%20Shell%20Command'
+# WM-GROUP-END:yabai
 [[comboMode.bindings]]
 key = "'"
 label = 'Last window or workspace'

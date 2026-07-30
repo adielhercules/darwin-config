@@ -2,6 +2,7 @@
   config,
   lib,
   profile,
+  lcars,
   ...
 }:
 
@@ -26,11 +27,67 @@ let
   templatedConfig = builtins.replaceStrings [ "<user>" ] [ config.home.username ] (
     builtins.readFile activeConfig
   );
+
+  # Only one of the two WM Tuna groups (`a`/Aerospace, `y`/Yabai) is ever
+  # meaningful, since `lcars.wm.active` (nix/options/wm.nix) enables exactly
+  # one WM at build time (design.md Decision 7). Each config.toml wraps both
+  # groups in sentinel line-comments (`# WM-GROUP-BEGIN:<wm>` / `#
+  # WM-GROUP-END:<wm>`), and the inactive group is stripped out here via a
+  # simple line-based filter rather than a `fromTOML`/re-serialize
+  # round-trip, which would silently drop the file's many hand-written
+  # comment blocks (nixpkgs' TOML tooling has no comment-preservation).
+  inactiveWm = if lcars.wm.active == "yabai" then "aerospace" else "yabai";
+
+  # Drops every line from (and including) `# WM-GROUP-BEGIN:<marker>`
+  # through (and including) `# WM-GROUP-END:<marker>`, keeping all other
+  # lines (and their order) untouched. Applied once, to strip the inactive
+  # WM's entire group.
+  stripMarkedSection =
+    marker: lines:
+    let
+      beginMarker = "# WM-GROUP-BEGIN:${marker}";
+      endMarker = "# WM-GROUP-END:${marker}";
+      # Drops lines until (and including) `endMarker` is found.
+      skipToEnd =
+        ls:
+        if ls == [ ] then
+          [ ]
+        else if lib.head ls == endMarker then
+          lib.tail ls
+        else
+          skipToEnd (lib.tail ls);
+      go =
+        ls:
+        if ls == [ ] then
+          [ ]
+        else if lib.head ls == beginMarker then
+          go (skipToEnd (lib.tail ls))
+        else
+          [ (lib.head ls) ] ++ go (lib.tail ls);
+    in
+    go lines;
+
+  # Strips only the bare sentinel marker lines themselves (BEGIN/END),
+  # leaving everything between them intact — applied to the active WM's
+  # group, since its content should remain, just without the now-redundant
+  # marker comments.
+  stripMarkerLines =
+    marker: lines:
+    let
+      beginMarker = "# WM-GROUP-BEGIN:${marker}";
+      endMarker = "# WM-GROUP-END:${marker}";
+    in
+    builtins.filter (l: l != beginMarker && l != endMarker) lines;
+
+  configLines = lib.splitString "\n" templatedConfig;
+  linesWithoutInactiveGroup = stripMarkedSection inactiveWm configLines;
+  linesWithoutActiveMarkers = stripMarkerLines lcars.wm.active linesWithoutInactiveGroup;
+  filteredConfig = lib.concatStringsSep "\n" linesWithoutActiveMarkers;
 in
 {
   # 1) Install the managed file
   home.file."Library/Application Support/Tuna/config.toml" = {
-    text = templatedConfig;
+    text = filteredConfig;
   };
 
   # 2) Activation step to create a backup of any pre-existing target

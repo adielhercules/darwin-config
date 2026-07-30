@@ -1,13 +1,10 @@
 
-# You can use it to add commands that run after login to macOS user session.
-# 'start-at-login' needs to be 'true' for 'after-login-command' to work
-# Available commands: https://nikitabobko.github.io/AeroSpace/commands
-after-login-command = []
-
 # You can use it to add commands that run after AeroSpace startup.
-# 'after-startup-command' is run after 'after-login-command'
-# Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+# Available commands: https://nikitabobko.github.io/AeroSpace/commands
+# No after-startup-command is needed: build-time exclusivity
+# (`lcars.wm.active`, see nix/options/wm.nix and design.md Decision 7) means
+# yabai is simply never enabled when AeroSpace is the active WM, so there is
+# nothing to pause/coordinate with at login anymore.
 
 # Notify Sketchybar about workspace change
 # exec-on-workspace-change = [

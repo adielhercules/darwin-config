@@ -85,6 +85,7 @@ let
     inputs.stylix.darwinModules.stylix
     nix-homebrew.darwinModules.nix-homebrew
     home-manager.darwinModules.home-manager
+    ../modules/darwin/yabai
 
     # The main Darwin configuration, now as a module
     (
