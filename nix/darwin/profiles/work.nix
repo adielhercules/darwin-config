@@ -37,7 +37,7 @@ let
       [ ];
 in
 {
-  homebrew.casks = [ "visual-studio-code" ];
+  homebrew.casks = [ "visual-studio-code" "git-credential-manager" ];
 
   imports = lib.optional hasSecrets secretsFile;
 
