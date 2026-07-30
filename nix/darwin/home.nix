@@ -44,6 +44,7 @@ in
     ../modules/home/ghostty.nix
     ../modules/home/oh-my-posh.nix
     ../modules/home/zellij.nix
+    ../modules/home/sketchybar
     tunaModule
     ../modules/home/helix.nix
     ../modules/home/helix.scripts-manager.nix

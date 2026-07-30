@@ -79,6 +79,43 @@ in
     };
 
     extraConfig = ''
+      # Reserve space at the top of the screen for sketchybar (height must
+      # match nix/modules/home/sketchybar/sketchybarrc.sh's
+      # `--bar height=28`), and notify sketchybar to refresh the workspace
+      # indicator whenever the active space changes (see
+      # openspec/changes/add-yabai-sketchybar/design.md, Decision 6).
+      # `all` (not `main`) is required so the reserved padding applies to
+      # every display, not just the main one — confirmed live: with `main`,
+      # windows on the secondary monitor were placed underneath/overlapping
+      # the bar since only the main display's spaces had top padding.
+      yabai -m config external_bar all:28:0
+      yabai -m signal --add event=space_changed action="sketchybar --trigger yabai_space_change"
+      # `space_changed` alone doesn't fire when switching focus between apps
+      # on different displays that each already show their own space (no
+      # actual space change occurs in that case, only a focus change) —
+      # `window_focused` covers that case too. Both signals trigger the same
+      # `yabai_space_change` sketchybar event since `workspace.sh` just
+      # re-queries whatever the currently-focused space is, regardless of
+      # which signal woke it up.
+      yabai -m signal --add event=window_focused action="sketchybar --trigger yabai_space_change"
+
+      # NOTE: an earlier version of this file auto-created missing macOS
+      # Spaces here via a synchronous `yabai -m query --spaces | grep -c
+      # ...` loop. This broke yabai's own startup entirely — calling
+      # `yabai -m query` (a full request/response IPC round-trip) from
+      # *within* yabai's own `-c` config script is racy, since yabai's
+      # internal message-passing server may not yet be ready to answer
+      # queries while it is still synchronously executing its own startup
+      # config. Confirmed live: after deploying that loop, execution never
+      # reached the space-labeling/rule lines below (`yabai -m rule --list`
+      # returned `[]`, all space labels were blank), even though the daemon
+      # answered the identical query fine moments later once fully up.
+      # Reverted to a manual one-time step instead: if fewer than 6 Spaces
+      # exist on the target machine, create the missing ones via Mission
+      # Control (or run `yabai -m space --create` manually from a normal
+      # shell — never from within yabairc) *before* the labels below can
+      # apply successfully.
+
       # Space labels mirroring AeroSpace's workspace scheme
       # (nix/modules/home/aerospace/main.toml), renumbered to real macOS
       # Space indices (linkarzu-style `deskN` labels — design.md Decision 7).

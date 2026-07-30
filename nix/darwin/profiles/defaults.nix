@@ -75,6 +75,16 @@
     NSGlobalDomain = {
       AppleICUForce24HourTime = true;
       AppleInterfaceStyle = "Dark";
+      # Hides the native macOS menu bar so sketchybar (nix/modules/home/
+      # sketchybar) can take over the top of the screen without visual
+      # overlap/duplication. NOTE: this legacy key may require a
+      # logout/re-login to fully take effect, and on macOS Sonoma+ it can
+      # sometimes need to be paired with a one-time manual System Settings
+      # toggle (Control Center -> "Automatically hide and show the menu
+      # bar: Always") if the key alone doesn't fully suppress the native
+      # bar — this is a known OS-level limitation, not something Nix can
+      # guarantee.
+      _HIHideMenuBar = true;
     };
   };
 
