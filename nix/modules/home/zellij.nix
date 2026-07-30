@@ -30,7 +30,7 @@ in
         extension = "kdl";
       };
       "zellij/config.kdl".text =
-        builtins.readFile ./zellij/config.kdl
+        builtins.readFile "${files}/zellij/config.kdl"
         + import ./zellij/zjstatus.nix {
           inherit
             colors
@@ -40,6 +40,34 @@ in
             ;
         };
     };
+
+    # Pre-approve permissions for plugins loaded via `load_plugins {}` (background
+    # plugins). Zellij has a bug (zellij-org/zellij#4982) where background-loaded
+    # plugins request permissions before being attached to a tab, so the
+    # interactive approval popup never renders/becomes focusable. Pre-populating
+    # the permission cache short-circuits that broken path.
+    #
+    # NOTE: on macOS, Zellij's Rust `directories` crate does NOT respect
+    # $XDG_CACHE_HOME - it always uses the native macOS cache path
+    # (~/Library/Caches/org.Zellij-Contributors.Zellij/permissions.kdl), so
+    # this must be provisioned via `home.file` at that absolute path rather
+    # than `xdg.cacheFile` (which targets ~/.cache and is never read here).
+    #
+    # Cache keys must match the plugin's real resolved path exactly as Zellij
+    # loads it - using ${pkgs.zjstatus} keeps the zjstatus entry in sync
+    # automatically across nixpkgs updates instead of hardcoding a nix store
+    # hash that would go stale.
+    home.file."Library/Caches/org.Zellij-Contributors.Zellij/permissions.kdl".text = ''
+      "${pkgs.zjstatus}/bin/zjstatus.wasm" {
+          ReadApplicationState
+          RunCommands
+          ChangeApplicationState
+      }
+      "${config.home.homeDirectory}/.config/zellij/plugins/zjstatus-hints.wasm" {
+          ReadApplicationState
+          MessageAndLaunchOtherPlugins
+      }
+    '';
 
     programs = {
       zellij.enable = true;

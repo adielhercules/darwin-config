@@ -38,12 +38,13 @@
               "C-y" = "copy_between_registers";
               "C-," = "command_mode";
               "C-e" =
-                ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}";
+                ":sh zellij run -n Yazi -c -f -x 1%% -y 1%% --width 98%% --height 98%% -- bash ~/.config/helix/yazi-picker.sh open '%{buffer_name}'";
               "C-l" = [
                 ":new"
                 ":insert-output lazygit"
                 ":buffer-close!"
                 ":reload-all"
+                ":redraw"
               ];
               "C-a" = [
                 ":new"
@@ -71,6 +72,22 @@
                   x = ":buffer-close!";
                   a = ":buffer-close-all";
                   b = "buffer_picker";
+                };
+                "/" = "toggle_comments";
+                f = {
+                  f = "file_picker";
+                  "/" = "global_search";
+                  s = "select_regex";
+                  e = "file_explorer";
+                  j = "jumplist_picker";
+                  c = "changed_file_picker";
+                };
+                l = {
+                  f = "format_selections";
+                  d = "diagnostics_picker";
+                  D = "workspace_diagnostics_picker";
+                  s = "symbol_picker";
+                  S = "workspace_symbol_picker";
                 };
               };
             };

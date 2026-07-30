@@ -1,11 +1,11 @@
 layout {
   default_tab_template {
-      pane size=1 borderless=true {
-          plugin location="zjstatus"
-      }
-      children
+  	pane size=1 borderless=true {
+      plugin location="zjstatus"
+    }
+    children
   }
-  tab stacked=true name="workarea" {
+  tab name="workarea" {
     pane name="edit"
     pane name="agents"
   }

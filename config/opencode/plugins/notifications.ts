@@ -24,8 +24,20 @@ import type { Plugin } from "@opencode-ai/plugin"
  */
 async function isGhosttyFrontmost(): Promise<boolean> {
   try {
-    const result = await Bun.$`osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true'`
-    return result.stdout.toString().trim() === "Ghostty"
+    // Uses Finder + "path to frontmost application" instead of
+    // "System Events ... frontmost is true", since the System Events
+    // approach requires Accessibility API access which macOS flags with
+    // a permission-adjacent indicator. Finder only needs a plain Apple
+    // Event.
+    //
+    // Also calls .text() (which implies .quiet()) to prevent Bun.$ from
+    // echoing the command's raw stdout directly to the terminal. Without
+    // it, the osascript output (e.g. "Ghostty.app") leaks into Ghostty's
+    // TTY and renders as a corrupting overlay on top of the TUI's input
+    // area.
+    const result = await Bun.$`osascript -e 'tell application "Finder" to get name of (path to frontmost application)'`.text()
+    const appName = result.trim().toLowerCase()
+    return appName === "ghostty.app" || appName === "ghostty"
   } catch {
     return false
   }

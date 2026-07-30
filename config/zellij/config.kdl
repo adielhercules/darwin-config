@@ -240,7 +240,7 @@ keybinds clear-defaults=true {
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-// theme "stylix"
+theme "kanagawa"
  
 // Choose the base input mode of zellij.
 // Default: normal
@@ -342,7 +342,7 @@ on_force_close "quit"
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
-scrollback_editor "nvim"
+scrollback_editor "hx"
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
@@ -424,4 +424,3 @@ show_startup_tips false
 // show_release_notes false
 
 // The plugin loading section gets injected from nix side, so we can reference nix variables
-

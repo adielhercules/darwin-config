@@ -8,7 +8,7 @@
   config = {
 
     xdg.configFile = {
-      "fish/functions/zz.fish".source = "${files}/fish/zz.fish";
+      "fish/conf.d/zellij.fish".source = "${files}/fish/zellij.fish";
     };
     programs = {
       fish = {
