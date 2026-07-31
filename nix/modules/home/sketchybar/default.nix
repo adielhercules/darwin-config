@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   lcars,
   ...
 }:
@@ -73,6 +74,21 @@ let
       '';
   workspaceSh = pkgs.writeText "sketchybar-workspace.sh" workspaceShContent;
 
+  # Explicitly loads the Hack Nerd Font's Regular weight directly into
+  # sketchybar's own CoreText context via `--load-font`, bypassing any
+  # dependence on the OS-level font registration/ATS cache having picked
+  # it up correctly. This is sketchybar's own documented troubleshooting
+  # step for "if you experience missing icons"
+  # (https://felixkratz.github.io/SketchyBar/setup#fonts) — added after
+  # icon glyphs failed to render even though the font was confirmed
+  # correctly installed, named, and glyph-mapped via every other check.
+  # The absolute Nix store path is baked in at build time so this doesn't
+  # depend on any runtime PATH/font-directory assumption.
+  loadFontSh = pkgs.writeText "sketchybar-load-font.sh" ''
+    #!/usr/bin/env bash
+    sketchybar --load-font "${pkgs.nerd-fonts.hack}/share/fonts/truetype/NerdFonts/Hack/HackNerdFont-Regular.ttf"
+  '';
+
   # Assembles the full `.config/sketchybar` directory tree: the static
   # entrypoint + plugin scripts alongside the two generated files above.
   # Merge pattern mirrors the other resolveModule-adjacent directory-merge
@@ -91,36 +107,74 @@ let
       }
       ''
         mkdir -p "$out/plugins"
+        mkdir -p "$out/items"
 
         cp ${./sketchybarrc.sh} "$out/sketchybarrc"
         cp ${./plugins/battery.sh} "$out/plugins/battery.sh"
         cp ${./plugins/wifi.sh} "$out/plugins/wifi.sh"
         cp ${./plugins/clock.sh} "$out/plugins/clock.sh"
+        cp ${./icons.sh} "$out/icons.sh"
+        cp ${./items/apple.sh} "$out/items/apple.sh"
+        cp ${./items/wifi.sh} "$out/items/wifi.sh"
         cp ${colorsSh} "$out/colors.sh"
         cp ${workspaceSh} "$out/plugins/workspace.sh"
+        cp ${loadFontSh} "$out/load_font.sh"
 
-        chmod +x "$out/sketchybarrc" "$out"/plugins/*.sh
+        chmod +x "$out/sketchybarrc" "$out"/plugins/*.sh "$out"/items/*.sh "$out/load_font.sh"
       '';
-in
-{
-  programs.sketchybar = {
-    enable = true;
-    configType = "bash";
-    # `jq` is needed to parse yabai's JSON query output. The active WM's
-    # CLI binary itself must ALSO be on PATH — sketchybar runs as its own
-    # launchd agent, whose PATH does NOT include the Nix/home-manager
-    # profile paths where `yabai`/`aerospace` actually live (confirmed live:
-    # workspace.sh failed with "yabai: command not found" in
-    # sketchybar.err.log until this was added). Only the active WM's
-    # package is added, matching the build-time exclusivity used
-    # throughout this feature (lcars.wm.active, nix/options/wm.nix).
-    extraPackages = [
+  # `jq` (to parse yabai's JSON query output) plus the active WM's own CLI
+  # binary (`yabai`/`aerospace`) need to be on sketchybar's launchd PATH,
+  # same requirement as before — only now threaded manually into our own
+  # launchd.agents.sketchybar block below instead of via home-manager's
+  # programs.sketchybar `extraPackages` option, since that module is no
+  # longer used (see explanation above extraBinPath).
+  extraBinPath = lib.makeBinPath (
+    [
       pkgs.jq
     ]
-    ++ (if lcars.wm.active == "yabai" then [ pkgs.yabai ] else [ pkgs.unstable.aerospace ]);
+    ++ (if lcars.wm.active == "yabai" then [ pkgs.yabai ] else [ pkgs.unstable.aerospace ])
+  );
+in
+{
+  # sketchybar is intentionally installed via Homebrew (nix-darwin's
+  # `homebrew.brews`, see nix/darwin/profiles/defaults.nix's
+  # "felixkratz/formulae" tap) rather than home-manager's
+  # `programs.sketchybar` module. The nixpkgs-built sketchybar binary
+  # (ad-hoc/linker-signed, no entitlements — standard for nixpkgs Darwin
+  # CLI tools) exhibited a total icon-glyph rendering failure that
+  # persisted across every font/cache/config fix attempted (font-name
+  # verification, cmap glyph-presence checks, font-cache dedup, full
+  # logout, explicit `--load-font`, switching fonts entirely) and traced
+  # most plausibly to sketchybar v2.23.0's rendering engine (nixpkgs'
+  # pinned version at the time) predating upstream's v2.24.0 "Rendering
+  # System Overhaul" — rather than chase a version bump across this
+  # flake's pinned nixpkgs, we switch the binary source to Homebrew
+  # entirely, which tracks upstream releases directly. Since
+  # `programs.sketchybar` has no supported way to manage config-only
+  # while deferring the actual package/launchd-service to an external
+  # binary (its `package`/`home.packages`/`launchd.agents.sketchybar`
+  # wiring are all unconditionally coupled under `cfg.enable`), we
+  # replicate just the config-file delivery (`xdg.configFile`) and
+  # launchd agent (`launchd.agents.sketchybar`) pieces of that module
+  # directly here, pointed at Homebrew's install path instead of a Nix
+  # store path.
+  xdg.configFile."sketchybar" = {
+    source = sketchybarConfigDir;
+    recursive = true;
+  };
+
+  launchd.agents.sketchybar = {
+    enable = true;
     config = {
-      source = sketchybarConfigDir;
-      recursive = true;
+      Program = "/opt/homebrew/bin/sketchybar";
+      ProcessType = "Interactive";
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/sketchybar/sketchybar.err.log";
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/sketchybar/sketchybar.out.log";
+      EnvironmentVariables = {
+        PATH = "${extraBinPath}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin";
+      };
     };
   };
 }

@@ -9,6 +9,13 @@
 # query.
 
 source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
+
+# Explicitly loads Hack Nerd Font directly into sketchybar's CoreText
+# context (see default.nix's loadFontSh) — sketchybar's own documented fix
+# for missing icon glyphs, done regardless of whatever the OS font
+# registry/ATS cache currently believes is installed.
+source "$CONFIG_DIR/load_font.sh"
 
 # Bar itself is fully transparent (alpha 0) — only the individual item
 # "islands" below have a visible background, giving the floating-pill look
@@ -27,7 +34,7 @@ sketchybar --bar height=28 \
 # COLOR_ITEM_BG for all islands, plus padding_left/right which creates the
 # small gap between adjacent islands (each pill "owns" this much empty,
 # transparent space on either side of it).
-sketchybar --default icon.font="SF Pro:Regular:14.0" \
+sketchybar --default icon.font="Hack Nerd Font:Regular:14.0" \
   label.font="JetBrainsMono Nerd Font:Regular:13.0" \
   icon.color="$COLOR_FG" \
   label.color="$COLOR_FG" \
@@ -50,6 +57,9 @@ sketchybar --default icon.font="SF Pro:Regular:14.0" \
 sketchybar --add event yabai_space_change
 sketchybar --add event aerospace_workspace_change
 
+# Apple menu island — leftmost item on the bar.
+source "$CONFIG_DIR/items/apple.sh"
+
 sketchybar --add item workspace left \
   --set workspace script="$CONFIG_DIR/plugins/workspace.sh" \
   update_freq=2 \
@@ -60,11 +70,7 @@ sketchybar --add item workspace left \
 # Right side items, added in order so wifi is leftmost and clock is
 # rightmost among the right-side group (matching native macOS menu-bar
 # ordering).
-sketchybar --add item wifi right \
-  --set wifi script="$CONFIG_DIR/plugins/wifi.sh" \
-  update_freq=30 \
-  icon.drawing=off \
-  label.color="$COLOR_FG"
+source "$CONFIG_DIR/items/wifi.sh"
 
 sketchybar --add item battery right \
   --set battery script="$CONFIG_DIR/plugins/battery.sh" \
