@@ -19,7 +19,7 @@ default:
 
 # Standard deploy
 [group('build')]
-deploy: && optimise
+deploy:
   sudo {{darwin_rebuild}} switch --flake {{flake_target}} --impure
 
 # Standard deploy with extended debug enabled
@@ -111,7 +111,7 @@ tree:
 # Keep only 5 generations
 [group('cleanup')]
 keep5:
-  sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +5
+  sudo -H nix-env --profile /nix/var/nix/profiles/system --delete-generations +5
 
 # Remove all generations older than 7 days
 [group('cleanup')]

@@ -1,17 +1,14 @@
-schemaVersion = 1
+schemaVersion = 4
 
 [catalogs]
+searchPriorities = []
 sortOrders = []
 
     [[catalogs.globalScopes]]
-    catalogIdentifier = 'Tuna.EffectsCatalog'
-    mode = 'none'
-    selectedItemKeys = []
+    catalogIdentifier = 'tuna.emoji'
 
-    [[catalogs.globalScopes]]
-    catalogIdentifier = 'TunaEmoji.EmojiCatalog'
-    mode = 'none'
-    selectedItemKeys = []
+        [catalogs.globalScopes.scope]
+        kind = 'none'
 
 [[comboMode.bindings]]
 iconPath = 'apple.terminal'
@@ -19,9 +16,15 @@ key = 'c'
 label = 'Commands'
 
     [[comboMode.bindings.children]]
+    iconPath = 'lock.app.dashed'
     key = 'l'
     label = 'Lock'
-    url = 'tuna://run/TunaAutomation.SystemTasksCatalog.Lock%20Screen/TunaCore.CommonActionsCatalog.Run'
+    url = 'tuna://run?subject=tuna.system-tasks/Lock%20Screen&action=tuna.common-actions/run'
+
+    [[comboMode.bindings.children]]
+    key = 't'
+    label = 'This is fine'
+    url = 'tuna://run?subject=tuna.effects/This%20is%20fine&action=tuna.common-actions/run'
 
 [[comboMode.bindings]]
 iconPath = 'arrowshape.turn.up.right.circle'
@@ -29,57 +32,58 @@ key = 'o'
 label = ' Open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/Applications/Ghostty.app'
     key = 'g'
-    url = 'tuna://run/path.%252FApplications%252FGhostty.app/Open'
+    label = 'ghostty'
+    url = 'tuna://run?subject=tuna.applications//Applications/Ghostty.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/System/Applications/Music.app'
     key = 'm'
-    url = 'tuna://run/path.%252FSystem%252FApplications%252FMusic.app/Open'
+    label = 'music'
+    url = 'tuna://run?subject=tuna.applications//System/Applications/Music.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/Applications/Figma.app'
     key = 'f'
-    url = 'tuna://run/path.%252FApplications%252FFigma.app/Open'
+    label = 'figma'
+    url = 'tuna://run?subject=tuna.applications//Applications/Figma.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app'
     key = 's'
-    url = 'tuna://run/path.%252FSystem%252FVolumes%252FPreboot%252FCryptexes%252FApp%252FSystem%252FApplications%252FSafari.app/Open'
+    label = 'safari'
+    url = 'tuna://run?subject=tuna.applications//System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
-    key = 'c'
-    url = 'tuna://run/path.%252FApplications%252FVisual%2520Studio%2520Code.app/Open'
-
-    [[comboMode.bindings.children]]
-    key = 'w'
-    url = 'tuna://run/path.%252FApplications%252FWarp.app/Open'
-
-    [[comboMode.bindings.children]]
-    key = 'e'
-    url = 'tuna://run/path.%252FApplications%252FMicrosoft%2520Edge.app/Open'
-
-    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Dia.app'
     key = 'd'
-    url = 'tuna://run/path.%252FApplications%252FDia.app/Open'
+    label = 'dia'
+    url = 'tuna://run?subject=tuna.applications//Applications/Dia.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/Applications/Zed.app'
     key = 'z'
-    url = 'tuna://run/path.%252FApplications%252FZed.app/Open'
+    label = 'zed'
+    url = 'tuna://run?subject=tuna.applications//Applications/Zed.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/Applications/Obsidian.app'
     key = 'n'
-    url = 'tuna://run/path.%252FApplications%252FObsidian.app/Open'
+    label = 'obsidian'
+    url = 'tuna://run?subject=tuna.applications//Applications/Obsidian.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
+    iconPath = '/System/Applications/Android Studio.app'
     key = 'a'
-    url = 'tuna://run/path.%252FUsers%252F<user>%252FApplications%252FAndroid%2520Studio.app/Open'
+    label = 'android studio'
+    url = 'tuna://run?subject=tuna.applications//Users/adielhercules/Applications/Android%20Studio.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
-    key = 'r'
-    label = 'Sublime Me(r)ge'
-    url = 'tuna://run/path.%252FApplications%252FSublime%2520Merge.app/Open'
-
-    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Xcode.app'
     key = 'x'
-    url = 'tuna://run/path.%252FApplications%252FXcode.app/Open'
+    label = 'xcode'
+    url = 'tuna://run?subject=tuna.applications//Applications/Xcode.app&action=tuna.common-actions/open'
 
 # WM-GROUP-BEGIN:aerospace
 [[comboMode.bindings]]
@@ -402,6 +406,10 @@ label = 'Aerospace'
     key = 'z'
     label = 'Center'
     url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+[[comboMode.bindings]]
+key = "'"
+label = 'Last window or workspace'
+url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-back-and-forth%2520%257C%257C%2520%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
 # WM-GROUP-END:aerospace
 # WM-GROUP-BEGIN:yabai
 [[comboMode.bindings]]
@@ -1027,11 +1035,6 @@ label = 'Yabai'
         url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--switch%2520next/Run%20Text%20as%20Shell%20Command'
 # WM-GROUP-END:yabai
 [[comboMode.bindings]]
-key = "'"
-label = 'Last window or workspace'
-url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-back-and-forth%2520%257C%257C%2520%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
-
-[[comboMode.bindings]]
 key = 'z'
 label = 'Center Window'
 url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
@@ -1125,7 +1128,20 @@ url = 'tuna://run/TunaSystem.AllWindowsSearchCatalog.Windows/TunaCore.CommonActi
 
 [[comboMode.bindings]]
 key = 'enter'
-url = 'tuna://run/TunaCore.ApplicationsCatalog.Ghostty/TunaCore.CommonActionsCatalog.Open'
+url = 'tuna://run?subject=tuna.applications//Applications/Ghostty.app&action=tuna.common-actions/open'
+
+[[comboMode.bindings]]
+iconPath = 'square.stack.fill'
+key = 's'
+label = 'Spaces'
+
+    [[comboMode.bindings.children]]
+    key = 'n'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Next%20Space/TunaCore.CommonActionsCatalog.Run'
+
+    [[comboMode.bindings.children]]
+    key = 't'
+    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Previous%20Space/TunaCore.CommonActionsCatalog.Run'
 
 [hotkeys]
 custom = []
@@ -1151,6 +1167,7 @@ backspaceBehavior = 'deleteCharacters'
 clipboardHistoryEnabled = false
 comboModeBackspaceBehavior = 'stepBack'
 comboModeCheatsheetDelayMS = 1000
+dictationActivationMode = 'toggle'
 dictationWindowPosition = 'topCenter'
 shelfCatalogEnabled = false
 talkModeDoublePressTrigger = 'rightCommand'
@@ -1158,7 +1175,13 @@ talkModeModifierTrigger = 'hyper'
 themeIdentifier = 'com.brnbw.tuna.themes.nuggets'
 
 [[catalogSettings]]
-catalogIdentifier = 'TunaCore.TextActionsCatalog'
+catalogIdentifier = 'tuna.prompts'
+
+    [catalogSettings.values]
+    Provider = 'apple'
+
+[[catalogSettings]]
+catalogIdentifier = 'tuna.text-actions'
 
     [catalogSettings.values]
     TextActionsFileExtension = 'txt'

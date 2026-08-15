@@ -51,6 +51,7 @@ in
     aerospaceModule
     ../modules/home/rtk.nix
     ../modules/home/opencode.nix
+    ../modules/home/opencode2.nix
     ../modules/home/headroom.nix
     gitProfileModule
   ]

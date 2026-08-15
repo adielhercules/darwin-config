@@ -55,6 +55,7 @@
       # default.nix for the launchd.agents.sketchybar wiring pointed at
       # this Homebrew-installed binary.
       "sketchybar"
+      "wallspace"
     ];
     taps = [
       # Homebrew 6.0+ requires third-party taps to be explicitly trusted
