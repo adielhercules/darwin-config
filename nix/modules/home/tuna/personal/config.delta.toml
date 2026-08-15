@@ -1,0 +1,29 @@
+# This file contains only the PERSONAL-profile-specific additions layered
+# on top of ../config.shared.toml by ../default.nix's `applyPatches` merge.
+#
+# Format: each block below is a `# @patch:append <path>` / `# @end` pair.
+# `<path>` is either the literal dotted path `catalogs.globalScopes` (a
+# top-level array not keyed by `key`), or a `/`-separated chain of `key`
+# field values, resolved by walking `comboMode.bindings` (the top-level
+# array) and then `.children` / `.children.children` / etc for nested
+# paths, matching each path segment against a sibling's `key` field.
+#
+# LIMITATION: only tail-append is currently supported — every block's
+# entries are spliced in as the LAST item(s) of the target array, never at
+# an arbitrary position within it. Dia originally sat right after "safari"
+# in the Open group; it will now appear at the end of that group instead.
+# This is an accepted, documented cosmetic reordering — there is no
+# replace/remove/insert-after support yet.
+#
+# NOTE: "code" (VS Code) and "edge" (Microsoft Edge) are work-only per user
+# decision and live in ../work/config.delta.toml instead of
+# ../config.shared.toml, so the personal profile intentionally does not
+# have them in the Open group.
+
+# @patch:append o
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Dia.app'
+    key = 'd'
+    label = 'dia'
+    url = 'tuna://run?subject=tuna.applications//Applications/Dia.app&action=tuna.common-actions/open'
+# @end

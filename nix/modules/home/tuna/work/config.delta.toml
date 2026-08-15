@@ -1,0 +1,83 @@
+# This file contains only the WORK-profile-specific additions layered on
+# top of ../config.shared.toml by ../default.nix's `applyPatches` merge.
+#
+# Format: each block below is a `# @patch:append <path>` / `# @end` pair.
+# `<path>` is either the literal dotted path `catalogs.globalScopes` (a
+# top-level array not keyed by `key`), or a `/`-separated chain of `key`
+# field values, resolved by walking `comboMode.bindings` (the top-level
+# array) and then `.children` / `.children.children` / etc for nested
+# paths, matching each path segment against a sibling's `key` field.
+#
+# LIMITATION: only tail-append is currently supported — every block's
+# entries are spliced in as the LAST item(s) of the target array, never at
+# an arbitrary position within it. Where these work-only entries originally
+# sat in the middle of the array (teams/outlook/dia between "edge" and
+# "zed" in the Open group; "Focus (work)" between "misc" and "Focus window"
+# in the Aerospace group), they will now appear at the end of their
+# respective array instead. This is an accepted, documented cosmetic
+# reordering — there is no replace/remove/insert-after support yet.
+
+# @patch:append catalogs.globalScopes
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'tuna.applications'
+
+        [catalogs.globalScopes.scope]
+        itemIDs = [ '/Applications/Zscaler/RevertZcc/Zscaler-osx-4.5.2.105-installer.app' ]
+        kind = 'excluding'
+# @end
+
+# @patch:append o
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Microsoft Teams.app'
+    key = 't'
+    label = 'teams'
+    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Teams.app&action=tuna.common-actions/open'
+
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Microsoft Outlook.app'
+    key = 'o'
+    label = 'outlook'
+    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Outlook.app&action=tuna.common-actions/open'
+
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Dia.app'
+    key = 'd'
+    label = 'dia'
+    url = 'tuna://run?subject=tuna.applications//Applications/Dia.app&action=tuna.common-actions/open'
+# @end
+
+# VS Code and Microsoft Edge are work-only per user decision (personal
+# should not have these installed/used); moved out of the shared config
+# and appended here instead.
+# @patch:append o
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Visual Studio Code.app'
+    key = 'c'
+    label = 'code'
+    url = 'tuna://run?subject=tuna.applications//Applications/Visual%20Studio%20Code.app&action=tuna.common-actions/open'
+
+    [[comboMode.bindings.children]]
+    iconPath = '/Applications/Microsoft Edge.app'
+    key = 'e'
+    label = 'edge'
+    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Edge.app&action=tuna.common-actions/open'
+# @end
+
+# @patch:append a
+    [[comboMode.bindings.children]]
+    key = 'k'
+    label = 'Focus (work)'
+    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520F/Run%20Text%20as%20Shell%20Command'
+# @end
+
+# @patch:append a/s/w
+            [[comboMode.bindings.children.children.children]]
+            key = 'K'
+            label = 'Focus (work)'
+            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520F/Run%20Text%20as%20Shell%20Command'
+
+            [[comboMode.bindings.children.children.children]]
+            key = 'k'
+            label = 'Focus (work)'
+            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520F%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+# @end

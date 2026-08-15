@@ -56,18 +56,6 @@ label = ' Open'
     url = 'tuna://run?subject=tuna.applications//System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
-    iconPath = '/Applications/Visual Studio Code.app'
-    key = 'c'
-    label = 'code'
-    url = 'tuna://run?subject=tuna.applications//Applications/Visual%20Studio%20Code.app&action=tuna.common-actions/open'
-
-    [[comboMode.bindings.children]]
-    iconPath = '/Applications/Microsoft Edge.app'
-    key = 'e'
-    label = 'edge'
-    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Edge.app&action=tuna.common-actions/open'
-
-    [[comboMode.bindings.children]]
     iconPath = '/Applications/Zed.app'
     key = 'z'
     label = 'zed'
