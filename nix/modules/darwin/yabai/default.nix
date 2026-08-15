@@ -66,12 +66,15 @@ in
     # window_gap = 2, {top,bottom,left,right}_padding = 8.
     config = {
       layout = "stack"; # single focused window per space (design.md Decision 2)
-      window_gap = 2;
+      window_gap = 4;
       top_padding = 8;
-      bottom_padding = 8;
-      left_padding = 8;
-      right_padding = 8;
-      mouse_follows_focus = "off";
+      bottom_padding = 16;
+      left_padding = 16;
+      right_padding = 16;
+      window_opacity = "on";
+      active_window_opacity = 0.98;
+      normal_window_opacity = 0.1;
+      mouse_follows_focus = "on";
       focus_follows_mouse = "off";
       window_placement = "second_child";
       window_topmost = "off";
