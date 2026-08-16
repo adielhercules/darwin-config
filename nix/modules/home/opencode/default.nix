@@ -1,4 +1,8 @@
-{ files, ... }:
+{
+  files,
+  profile,
+  ...
+}:
 
 let
   # OpenCode agent-oriented configuration.
@@ -22,8 +26,16 @@ let
   #       ├── thinking.md          — deep reasoning subagent
   #       ├── code-reviewer.md     — tech-specific code reviewer
   #       └── research-summarizer.md — research consolidation subagent
+  #
+  # Providers — shared config ships with no providers configured. The
+  # Ollama local-model provider is personal-laptop-only (see
+  # ./providers.personal.nix) and is merged in below only when
+  # `profile == "personal"`, following this repo's profile-split
+  # convention (see nix/modules/home/aerospace/default.nix).
 
   opencodeSource = "${files}/opencode";
+
+  personalProviders = import ./providers.personal.nix;
 
   # Shared delegation prompt, applied to both `build` and `plan` primary
   # agents so their delegation behavior stays in sync without duplicating
@@ -75,6 +87,10 @@ let
 
   opencodeConfig = {
     "$schema" = "https://opencode.ai/config.json";
+
+    # Providers — empty by default in the shared config; profile-specific
+    # providers are merged in below.
+    providers = if profile == "personal" then personalProviders else { };
 
     agent = {
       build = {
