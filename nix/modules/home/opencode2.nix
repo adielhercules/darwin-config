@@ -4,7 +4,7 @@
   # available as a Homebrew formula. Runs on every rebuild so the
   # `opencode2` binary stays current with the `next` beta tag.
   # OpenCode v2 installs as `opencode2` and does not replace the
-  # Homebrew-installed `opencode` v1 binary (see opencode.nix).
+  # Homebrew-installed `opencode` v1 binary (see opencode/default.nix).
   #
   # Uses the Nix store path directly rather than `command -v bun` /
   # bare `bun`, because home-manager's activation script runs with its

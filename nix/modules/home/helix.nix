@@ -4,6 +4,9 @@
     programs = {
       helix = {
         enable = true;
+        # pkgs.unstable: helix ships frequent editor/LSP-integration
+        # improvements between stable nixpkgs releases; pinned to unstable
+        # to stay closer to upstream's fast-moving release cadence.
         package = pkgs.unstable.helix;
         settings = {
           theme = lib.mkDefault "lcars";

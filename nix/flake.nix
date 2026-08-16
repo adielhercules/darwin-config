@@ -8,9 +8,13 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Global styling through stylix
+    # Global styling through stylix. Pinned to release-26.05 (rather than
+    # the bare rolling master branch) to match the matched stable trio
+    # above — nix-community/stylix officially recommends this branch when
+    # paired with nixpkgs/nix-darwin/home-manager 26.05, and stylix's own
+    # `enableReleaseChecks` option would otherwise warn on a mismatch.
     stylix = {
-      url = "github:nix-community/stylix";
+      url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

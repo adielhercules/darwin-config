@@ -29,6 +29,11 @@ in
     programs.aerospace = {
       enable = lcars.wm.active == "aerospace";
       launchd.enable = lcars.wm.active == "aerospace";
+      # pkgs.unstable: AeroSpace ships frequent fixes/features upstream;
+      # pinned to unstable to stay closer to its release cadence rather
+      # than the slower-moving 26.05 stable channel. Kept consistent with
+      # the other pkgs.unstable.aerospace references in this repo (see
+      # nix/modules/home/sketchybar/default.nix).
       package = pkgs.unstable.aerospace;
       settings = merged;
     };
@@ -58,6 +63,8 @@ in
     home.file.".aerospace.toml" = lib.mkIf (lcars.wm.active == "aerospace") {
       onChange = lib.mkForce ''
         echo "AeroSpace config changed, reloading (best-effort)..."
+        # pkgs.unstable.aerospace here for consistency with the aerospace
+        # package pinned above — see that usage's comment for rationale.
         ${lib.getExe pkgs.unstable.aerospace} reload-config || true
       '';
     };

@@ -71,7 +71,7 @@ label = ' Open'
     iconPath = '/System/Applications/Android Studio.app'
     key = 'a'
     label = 'android studio'
-    url = 'tuna://run?subject=tuna.applications//Users/adielhercules/Applications/Android%20Studio.app&action=tuna.common-actions/open'
+    url = 'tuna://run?subject=tuna.applications//Users/<user>/Applications/Android%20Studio.app&action=tuna.common-actions/open'
 
     [[comboMode.bindings.children]]
     iconPath = '/Applications/Xcode.app'

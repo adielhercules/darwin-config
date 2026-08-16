@@ -132,6 +132,9 @@ let
     [
       pkgs.jq
     ]
+    # pkgs.unstable.aerospace: consistent with the aerospace package pin in
+    # nix/modules/home/aerospace/default.nix — kept on unstable to track
+    # upstream's fast release cadence rather than 26.05 stable.
     ++ (if lcars.wm.active == "yabai" then [ pkgs.yabai ] else [ pkgs.unstable.aerospace ])
   );
 in

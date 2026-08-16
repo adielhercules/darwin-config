@@ -71,6 +71,9 @@ in
 
     programs = {
       zellij.enable = true;
+      # pkgs.unstable: tracks zellij's frequent upstream releases (plugin
+      # API and WASM plugin compatibility, e.g. zjstatus below, move fast),
+      # which the pinned 26.05 stable channel lags behind.
       zellij.package = pkgs.unstable.zellij;
       fish.interactiveShellInit = "${config.programs.zellij.package}/bin/zellij setup --generate-completion fish | source";
     };

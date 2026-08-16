@@ -1,3 +1,15 @@
 #!/bin/bash
+set -euo pipefail
 
-exit 0
+# Mirrors a subset of the CI checks in .github/workflows/nix-check.yml for
+# fast local feedback before pushing. deadnix is intentionally left out
+# here (kept CI-only) since it's slower and less critical at pre-commit
+# speed — see openspec/changes/fix-best-practices-findings/design.md
+# Decision 5.
+cd "$(git rev-parse --show-toplevel)/nix"
+
+echo "Running nixfmt-tree --ci..."
+nix --extra-experimental-features 'nix-command flakes' run nixpkgs#nixfmt-tree -- --ci
+
+echo "Running statix check..."
+nix --extra-experimental-features 'nix-command flakes' run nixpkgs#statix -- check .

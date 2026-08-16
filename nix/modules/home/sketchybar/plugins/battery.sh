@@ -4,8 +4,9 @@
 # NOTE: SF Symbols/SF Pro private-use-area codepoints for battery-level
 # glyphs (charging bolt, level tiers, etc.) were deliberately NOT hardcoded
 # here — they could not be confidently verified during this change (see
-# openspec/changes/add-yabai-sketchybar/tasks.md, task group 9 notes), and
-# guessing unicode codepoints risks silently rendering garbage/tofu glyphs.
+# openspec/changes/archive/2026-07-30-add-yabai-sketchybar/tasks.md, task
+# group 9 notes), and guessing unicode codepoints risks silently rendering
+# garbage/tofu glyphs.
 # This script is label-only: just the percentage, plus a plain, universally
 # renderable unicode bolt (U+26A1 "⚡", a standard emoji character, NOT an
 # SF-Symbols guess) appended when charging. `icon.drawing=off` is set for

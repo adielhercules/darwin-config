@@ -127,9 +127,9 @@ let
       };
 
       # Thinking subagent: deep reasoning and structured analysis.
-      # Definition lives in nix/modules/home/opencode/agents/thinking.md — this
-      # entry only adds config that can't be expressed in frontmatter
-      # (or needs to override the .md file).
+      # Definition lives in config/opencode/agents/thinking.md (see
+      # opencodeSource above) — this entry only adds config that can't be
+      # expressed in frontmatter (or needs to override the .md file).
       thinking = {
         description = "Deep reasoning and analysis. Use for complex planning, architectural decisions, and structured thinking.";
         mode = "subagent";

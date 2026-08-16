@@ -130,6 +130,9 @@ in
     };
     difftastic = {
       enable = true;
+      # pkgs.unstable: difftastic ships frequent language-grammar/diff
+      # rendering improvements upstream; pinned to unstable to stay closer
+      # to that cadence rather than the slower-moving 26.05 stable channel.
       package = pkgs.unstable.difftastic;
       git = {
         diffToolMode = true;
@@ -152,6 +155,14 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Suppress GTK4 theme migration warning (macOS-only setup, no GTK apps)
-  gtk.gtk4.theme = null;
+  # This is a Darwin-only config with no GTK applications, and as of
+  # stylix's release-26.05 branch, its GTK home-manager target
+  # unconditionally sets `gtk.gtk4.theme`, which previously conflicted
+  # with a workaround for a theme migration warning. Disabling the target
+  # entirely (rather than fighting it with an override) avoids both the
+  # conflict and any unnecessary GTK theming machinery. This option only
+  # exists at the home-manager level (GTK has no nix-darwin module), so it
+  # must be set here rather than in the darwin-level `stylix` block in
+  # nix/darwin/default.nix.
+  stylix.targets.gtk.enable = false;
 }

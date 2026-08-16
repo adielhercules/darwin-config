@@ -297,7 +297,7 @@ BREAKING CHANGE: Explanation of what breaks and how to migrate
 
 ```
 nix/
-├── flake.nix                 # Main flake configuration
+├── flake.nix                 # Main flake configuration (also defines rootPath inline)
 ├── features.nix              # Feature flags
 ├── darwin/                   # nix-darwin system configuration
 │   ├── default.nix
@@ -306,8 +306,7 @@ nix/
 ├── modules/
 │   └── home/                 # home-manager modules
 ├── options/                  # Nix option definitions
-├── lib/                      # Nix helper functions (e.g. resolve-module.nix)
-└── paths/                    # path-related definitions
+└── lib/                      # Nix helper functions (e.g. resolve-module.nix)
 
 dotfiles/                     # Dotfiles deployed into the home directory
 openspec/                     # Spec-driven change proposals (changes/, specs/)
