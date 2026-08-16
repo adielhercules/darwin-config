@@ -17,6 +17,8 @@
           ''
             set -x SHELL /run/current-system/sw/bin/bash
             fish_add_path /run/current-system/sw/bin
+            # bun's global installs (e.g. opencode2) live in ~/.bun/bin
+            fish_add_path ~/.bun/bin
           ''
           (lib.mkIf pkgs.stdenv.isDarwin "fish_add_path /opt/homebrew/bin/")
         ];

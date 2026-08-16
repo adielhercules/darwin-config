@@ -10,6 +10,9 @@
   # bare `bun`, because home-manager's activation script runs with its
   # own hardcoded minimal PATH that does not include
   # `/run/current-system/sw/bin` — a PATH-based lookup silently no-ops.
+  #
+  # The `opencode2` binary itself lands in `~/.bun/bin`, which is added
+  # to the fish shell PATH in fish.nix.
   home.activation.installOpencode2 = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     run ${pkgs.bun}/bin/bun install -g --trust @opencode-ai/cli@next
   '';
