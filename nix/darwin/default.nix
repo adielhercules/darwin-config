@@ -164,10 +164,18 @@ let
         # Disable nix management from nix-darwin - Lix manages its own daemon
         nix.enable = false;
 
-        # Add logging to the activate-system boot daemon so failures are visible
+        # Configure the activate-system boot daemon:
+        # - Log output for debugging activation failures
+        # - KeepAlive retries if the daemon fails (e.g. boot race condition
+        #   where /nix/store or /run isn't ready yet). Without this, a single
+        #   failure at boot leaves /run/current-system missing and system
+        #   packages (devenv, lazygit, bat, etc.) unreachable until the next
+        #   manual `darwin-rebuild switch` or reboot.
         launchd.daemons.activate-system.serviceConfig = {
           StandardOutPath = "/var/log/nix-darwin-activate.log";
           StandardErrorPath = "/var/log/nix-darwin-activate.log";
+          KeepAlive.SuccessfulExit = false;
+          ThrottleInterval = 10;
         };
       }
     )
