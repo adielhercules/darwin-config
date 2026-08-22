@@ -17,12 +17,18 @@ source "$CONFIG_DIR/icons.sh"
 # registry/ATS cache currently believes is installed.
 source "$CONFIG_DIR/load_font.sh"
 
+# Bar height: injected by the launchd agent (EnvironmentVariables.BAR_HEIGHT,
+# see default.nix) from lcars.bar.height, so it always matches yabai's
+# external_bar reservation which reads the same option. The fallback keeps
+# manual runs (`sketchybar -c ~/.config/sketchybar/sketchybarrc`) working.
+BAR_HEIGHT="${BAR_HEIGHT:-28}"
+
 # Bar itself is fully transparent (alpha 0) — only the individual item
 # "islands" below have a visible background, giving the floating-pill look
 # requested. `padding_left`/`padding_right` here is the bar's own edge
 # inset (space between the screen edge and the first/last island), not the
 # gap between islands (that's each item's own padding_left/right below).
-sketchybar --bar height=28 \
+sketchybar --bar height="$BAR_HEIGHT" \
   position=top \
   sticky=on \
   padding_left=8 \

@@ -35,6 +35,7 @@
 # coordination, launchd pause/resume script, or login-time wiring required.
 # See openspec/changes/add-yabai-sketchybar/design.md, Decision 7.
 {
+  lib,
   pkgs,
   profile,
   lcars,
@@ -81,111 +82,127 @@ in
       window_shadow = "off";
     };
 
-    extraConfig = ''
-      # Reserve space at the top of the screen for sketchybar (height must
-      # match nix/modules/home/sketchybar/sketchybarrc.sh's
-      # `--bar height=28`), and notify sketchybar to refresh the workspace
-      # indicator whenever the active space changes (see
-      # openspec/changes/add-yabai-sketchybar/design.md, Decision 6).
-      # `all` (not `main`) is required so the reserved padding applies to
-      # every display, not just the main one — confirmed live: with `main`,
-      # windows on the secondary monitor were placed underneath/overlapping
-      # the bar since only the main display's spaces had top padding.
-      yabai -m config external_bar all:28:0
-      yabai -m signal --add event=space_changed action="sketchybar --trigger yabai_space_change"
-      # `space_changed` alone doesn't fire when switching focus between apps
-      # on different displays that each already show their own space (no
-      # actual space change occurs in that case, only a focus change) —
-      # `window_focused` covers that case too. Both signals trigger the same
-      # `yabai_space_change` sketchybar event since `workspace.sh` just
-      # re-queries whatever the currently-focused space is, regardless of
-      # which signal woke it up.
-      yabai -m signal --add event=window_focused action="sketchybar --trigger yabai_space_change"
+    extraConfig =
+      let
+        # Top-of-screen padding reserved for the status bar, straight from
+        # lcars.bar.height (nix/options/bar.nix) — the exact same value
+        # sketchybar itself runs at (threaded into
+        # nix/modules/home/sketchybar/sketchybarrc.sh as its BAR_HEIGHT env
+        # var), so the reserved area and the drawn bar can never drift
+        # apart. Collapses to 0 when sketchybar is disabled, letting tiled
+        # windows reclaim the full screen height under the native menu bar.
+        barTopPadding = if lcars.bar.sketchybar.enable then toString lcars.bar.height else "0";
+      in
+      ''
+        # Reserve space at the top of the screen for the status bar
+        # (${barTopPadding}px; see lcars.bar.height, nix/options/bar.nix).
+        # `all` (not `main`) is required so the reserved padding applies to
+        # every display, not just the main one — confirmed live: with
+        # `main`, windows on the secondary monitor were placed
+        # underneath/overlapping the bar since only the main display's
+        # spaces had top padding.
+        yabai -m config external_bar all:${barTopPadding}:0
+      ''
+      + lib.optionalString lcars.bar.sketchybar.enable ''
+        # Notify sketchybar to refresh the workspace indicator whenever the
+        # active space changes (see
+        # openspec/changes/add-yabai-sketchybar/design.md, Decision 6).
+        yabai -m signal --add event=space_changed action="sketchybar --trigger yabai_space_change"
+        # `space_changed` alone doesn't fire when switching focus between apps
+        # on different displays that each already show their own space (no
+        # actual space change occurs in that case, only a focus change) —
+        # `window_focused` covers that case too. Both signals trigger the same
+        # `yabai_space_change` sketchybar event since `workspace.sh` just
+        # re-queries whatever the currently-focused space is, regardless of
+        # which signal woke it up.
+        yabai -m signal --add event=window_focused action="sketchybar --trigger yabai_space_change"
+      ''
+      + ''
 
-      # NOTE: an earlier version of this file auto-created missing macOS
-      # Spaces here via a synchronous `yabai -m query --spaces | grep -c
-      # ...` loop. This broke yabai's own startup entirely — calling
-      # `yabai -m query` (a full request/response IPC round-trip) from
-      # *within* yabai's own `-c` config script is racy, since yabai's
-      # internal message-passing server may not yet be ready to answer
-      # queries while it is still synchronously executing its own startup
-      # config. Confirmed live: after deploying that loop, execution never
-      # reached the space-labeling/rule lines below (`yabai -m rule --list`
-      # returned `[]`, all space labels were blank), even though the daemon
-      # answered the identical query fine moments later once fully up.
-      # Reverted to a manual one-time step instead: if fewer than 6 Spaces
-      # exist on the target machine, create the missing ones via Mission
-      # Control (or run `yabai -m space --create` manually from a normal
-      # shell — never from within yabairc) *before* the labels below can
-      # apply successfully.
+          # NOTE: an earlier version of this file auto-created missing macOS
+        # Spaces here via a synchronous `yabai -m query --spaces | grep -c
+        # ...` loop. This broke yabai's own startup entirely — calling
+        # `yabai -m query` (a full request/response IPC round-trip) from
+        # *within* yabai's own `-c` config script is racy, since yabai's
+        # internal message-passing server may not yet be ready to answer
+        # queries while it is still synchronously executing its own startup
+        # config. Confirmed live: after deploying that loop, execution never
+        # reached the space-labeling/rule lines below (`yabai -m rule --list`
+        # returned `[]`, all space labels were blank), even though the daemon
+        # answered the identical query fine moments later once fully up.
+        # Reverted to a manual one-time step instead: if fewer than 6 Spaces
+        # exist on the target machine, create the missing ones via Mission
+        # Control (or run `yabai -m space --create` manually from a normal
+        # shell — never from within yabairc) *before* the labels below can
+        # apply successfully.
 
-      # Space labels mirroring AeroSpace's workspace scheme
-      # (nix/modules/home/aerospace/main.toml), renumbered to real macOS
-      # Space indices (linkarzu-style `deskN` labels — design.md Decision 7).
-      # Shared 6-desk scheme (desk6/Browsing was previously work-profile-only
-      # but is now shared, since Dia routes there regardless of profile):
-      # desk1=Communications, desk2=IDE, desk3=Dev, desk4=Terminal,
-      # desk5=Music, desk6=Browsing. Spaces are created/labeled by index;
-      # yabai numbers spaces per-display starting at 1, so this assumes at
-      # least 6 spaces already exist on the display(s) being labeled (create
-      # additional spaces via Mission Control if needed before labels apply).
-      yabai -m space 1 --label desk1
-      yabai -m space 2 --label desk2
-      yabai -m space 3 --label desk3
-      yabai -m space 4 --label desk4
-      yabai -m space 5 --label desk5
-      yabai -m space 6 --label desk6
+        # Space labels mirroring AeroSpace's workspace scheme
+        # (nix/modules/home/aerospace/main.toml), renumbered to real macOS
+        # Space indices (linkarzu-style `deskN` labels — design.md Decision 7).
+        # Shared 6-desk scheme (desk6/Browsing was previously work-profile-only
+        # but is now shared, since Dia routes there regardless of profile):
+        # desk1=Communications, desk2=IDE, desk3=Dev, desk4=Terminal,
+        # desk5=Music, desk6=Browsing. Spaces are created/labeled by index;
+        # yabai numbers spaces per-display starting at 1, so this assumes at
+        # least 6 spaces already exist on the display(s) being labeled (create
+        # additional spaces via Mission Control if needed before labels apply).
+        yabai -m space 1 --label desk1
+        yabai -m space 2 --label desk2
+        yabai -m space 3 --label desk3
+        yabai -m space 4 --label desk4
+        yabai -m space 5 --label desk5
+        yabai -m space 6 --label desk6
 
-      # App-routing rules mirroring aerospace/main.toml's
-      # `on-window-detected` entries. yabai's `--rule` matches on app name
-      # (not bundle id like aerospace), so app names below are best-effort
-      # equivalents of the aerospace app-ids they mirror.
-      yabai -m rule --add app="^Ghostty$" space=desk4        # com.mitchellh.ghostty
-      yabai -m rule --add app="^Xcode$" space=desk2           # com.apple.dt.Xcode
-      yabai -m rule --add app="^Android Studio$" space=desk2  # com.google.android.studio
-      yabai -m rule --add app="^Code$" space=desk2            # com.microsoft.VSCode
-      yabai -m rule --add app="^Music$" space=desk5           # com.apple.Music
-      yabai -m rule --add app="^Dia$" space=desk6             # company.thebrowser.dia
+        # App-routing rules mirroring aerospace/main.toml's
+        # `on-window-detected` entries. yabai's `--rule` matches on app name
+        # (not bundle id like aerospace), so app names below are best-effort
+        # equivalents of the aerospace app-ids they mirror.
+        yabai -m rule --add app="^Ghostty$" space=desk4        # com.mitchellh.ghostty
+        yabai -m rule --add app="^Xcode$" space=desk2           # com.apple.dt.Xcode
+        yabai -m rule --add app="^Android Studio$" space=desk2  # com.google.android.studio
+        yabai -m rule --add app="^Code$" space=desk2            # com.microsoft.VSCode
+        yabai -m rule --add app="^Music$" space=desk5           # com.apple.Music
+        yabai -m rule --add app="^Dia$" space=desk6             # company.thebrowser.dia
 
-      # Float-by-default apps: `manage=off` excludes matching windows from
-      # tiling entirely (they stay floating, unaffected by whatever layout
-      # mode the space they're on is switched to). No space assignment is
-      # given for these — they float freely wherever they happen to open.
-      yabai -m rule --add app="^Simulator$" manage=off
-      yabai -m rule --add app="^Finder$" manage=off
+        # Float-by-default apps: `manage=off` excludes matching windows from
+        # tiling entirely (they stay floating, unaffected by whatever layout
+        # mode the space they're on is switched to). No space assignment is
+        # given for these — they float freely wherever they happen to open.
+        yabai -m rule --add app="^Simulator$" manage=off
+        yabai -m rule --add app="^Finder$" manage=off
 
-      # NOTE: aerospace's main.toml has a catch-all
-      # `[[on-window-detected]] check-further-callbacks = true; run =
-      # ["layout floating"]` fallback for anything not matched above. yabai
-      # has no exact equivalent — it tiles all windows by default unless an
-      # explicit `manage=off` rule is added per-app, so there is no direct
-      # 1:1 translation of that fallback here.
+        # NOTE: aerospace's main.toml has a catch-all
+        # `[[on-window-detected]] check-further-callbacks = true; run =
+        # ["layout floating"]` fallback for anything not matched above. yabai
+        # has no exact equivalent — it tiles all windows by default unless an
+        # explicit `manage=off` rule is added per-app, so there is no direct
+        # 1:1 translation of that fallback here.
 
-      # Monitor assignment mirroring aerospace's
-      # `[workspace-to-monitor-force-assignment]`: Communications (desk1) is
-      # kept on the primary display, everything else (desk2-desk6) on the
-      # secondary display. Display indices confirmed via a live
-      # `yabai -m query --displays` on this machine: index 1 = built-in
-      # 1728x1117 primary display, index 2 = 2560x1440 external secondary
-      # display. These are hardware-dependent — re-verify with
-      # `yabai -m query --displays` and adjust indices below if the monitor
-      # setup changes.
-      yabai -m space desk1 --display 1   # Communications -> primary
-      yabai -m space desk2 --display 2   # IDE -> secondary
-      yabai -m space desk3 --display 2   # Dev -> secondary
-      yabai -m space desk4 --display 2   # Terminal -> secondary
-      yabai -m space desk5 --display 2   # Music -> secondary
-      yabai -m space desk6 --display 2   # Browsing -> secondary
+        # Monitor assignment mirroring aerospace's
+        # `[workspace-to-monitor-force-assignment]`: Communications (desk1) is
+        # kept on the primary display, everything else (desk2-desk6) on the
+        # secondary display. Display indices confirmed via a live
+        # `yabai -m query --displays` on this machine: index 1 = built-in
+        # 1728x1117 primary display, index 2 = 2560x1440 external secondary
+        # display. These are hardware-dependent — re-verify with
+        # `yabai -m query --displays` and adjust indices below if the monitor
+        # setup changes.
+        yabai -m space desk1 --display 1   # Communications -> primary
+        yabai -m space desk2 --display 2   # IDE -> secondary
+        yabai -m space desk3 --display 2   # Dev -> secondary
+        yabai -m space desk4 --display 2   # Terminal -> secondary
+        yabai -m space desk5 --display 2   # Music -> secondary
+        yabai -m space desk6 --display 2   # Browsing -> secondary
 
-      ${profileExtraConfig}
+        ${profileExtraConfig}
 
-      # Retroactively apply all rules above to any windows that were
-      # already open before yabai (re)started — `yabai -m rule --add`
-      # alone only affects windows created from this point forward, so
-      # without this, already-running apps never get moved to their
-      # assigned desk<N> space. Safe/idempotent to re-run on every
-      # yabai start/reload.
-      yabai -m rule --apply
-    '';
+        # Retroactively apply all rules above to any windows that were
+        # already open before yabai (re)started — `yabai -m rule --add`
+        # alone only affects windows created from this point forward, so
+        # without this, already-running apps never get moved to their
+        # assigned desk<N> space. Safe/idempotent to re-run on every
+        # yabai start/reload.
+        yabai -m rule --apply
+      '';
   };
 }

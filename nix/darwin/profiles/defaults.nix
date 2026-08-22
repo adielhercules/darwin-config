@@ -6,7 +6,12 @@
 # options (`homebrew.brews`, `homebrew.casks`, `environment.systemPackages`,
 # etc.) across all merged modules, so appends from any profile module
 # accumulate automatically.
-{ pkgs, ... }:
+{
+  lib,
+  pkgs,
+  lcars,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     comma
@@ -42,20 +47,22 @@
       "yazi"
       "rtk"
       "terminal-notifier" # macOS notifications for OpenCode plugin & fish done
-      # sketchybar is installed via Homebrew rather than nixpkgs
-      # (nix/modules/home/sketchybar) — the nixpkgs-built binary (as of
-      # sketchybar v2.23.0, ad-hoc/linker-signed with no entitlements, the
-      # standard nixpkgs Darwin build posture) exhibited a total icon-glyph
-      # rendering failure that persisted across every diagnosed cause
-      # (font-name/cmap verification, font-cache dedup, full logout,
-      # explicit --load-font, font swap) and most plausibly traced to that
-      # version predating upstream's v2.24.0 "Rendering System Overhaul".
-      # Homebrew's tap tracks upstream releases directly, sidestepping this
-      # flake's nixpkgs pin entirely. See nix/modules/home/sketchybar/
-      # default.nix for the launchd.agents.sketchybar wiring pointed at
-      # this Homebrew-installed binary.
-      "sketchybar"
-    ];
+    ]
+    # sketchybar is installed via Homebrew rather than nixpkgs
+    # (nix/modules/home/sketchybar) — the nixpkgs-built binary (as of
+    # sketchybar v2.23.0, ad-hoc/linker-signed with no entitlements, the
+    # standard nixpkgs Darwin build posture) exhibited a total icon-glyph
+    # rendering failure that persisted across every diagnosed cause
+    # (font-name/cmap verification, font-cache dedup, full logout,
+    # explicit --load-font, font swap) and most plausibly traced to that
+    # version predating upstream's v2.24.0 "Rendering System Overhaul".
+    # Homebrew's tap tracks upstream releases directly, sidestepping this
+    # flake's nixpkgs pin entirely. Gated on lcars.bar.sketchybar.enable so
+    # disabling the bar (nix/features.nix) also skips the install; see
+    # nix/modules/home/sketchybar/default.nix for the
+    # launchd.agents.sketchybar wiring pointed at this Homebrew-installed
+    # binary.
+    ++ lib.optional lcars.bar.sketchybar.enable "sketchybar";
     taps = [
       # Homebrew 6.0+ requires third-party taps to be explicitly trusted
       # before their formulae can be loaded (HOMEBREW_REQUIRE_TAP_TRUST=1
@@ -108,14 +115,16 @@
       AppleInterfaceStyle = "Dark";
       # Hides the native macOS menu bar so sketchybar (nix/modules/home/
       # sketchybar) can take over the top of the screen without visual
-      # overlap/duplication. NOTE: this legacy key may require a
+      # overlap/duplication. Gated on lcars.bar.sketchybar.enable so the
+      # native bar returns when sketchybar is disabled (nix/features.nix).
+      # NOTE: this legacy key may require a
       # logout/re-login to fully take effect, and on macOS Sonoma+ it can
       # sometimes need to be paired with a one-time manual System Settings
       # toggle (Control Center -> "Automatically hide and show the menu
       # bar: Always") if the key alone doesn't fully suppress the native
       # bar — this is a known OS-level limitation, not something Nix can
       # guarantee.
-      _HIHideMenuBar = true;
+      _HIHideMenuBar = lib.mkIf lcars.bar.sketchybar.enable true;
     };
   };
 

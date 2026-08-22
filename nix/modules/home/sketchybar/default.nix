@@ -177,6 +177,11 @@ in
       StandardOutPath = "${config.home.homeDirectory}/Library/Logs/sketchybar/sketchybar.out.log";
       EnvironmentVariables = {
         PATH = "${extraBinPath}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin";
+        # Bar height from the shared lcars.bar.height option
+        # (nix/options/bar.nix) so sketchybarrc.sh's `--bar height=` always
+        # matches yabai's `external_bar` reservation, which reads the same
+        # option (nix/modules/darwin/yabai/default.nix).
+        BAR_HEIGHT = toString lcars.bar.height;
       };
     };
   };

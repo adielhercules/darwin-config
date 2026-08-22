@@ -9,6 +9,12 @@
 let
   fishModule = ../modules/home/fish.nix;
 
+  # Gated behind lcars.bar.sketchybar.enable (nix/options/bar.nix, set in
+  # nix/features.nix): when disabled, neither the sketchybar config tree nor
+  # its launchd agent is deployed — and nix/darwin/profiles/defaults.nix
+  # skips the matching Homebrew install + native-menu-bar hiding too.
+  sketchybarModule = ../modules/home/sketchybar;
+
   resolverLib = import ../lib/resolve-module.nix { };
   inherit (resolverLib) resolveModule;
 
@@ -44,7 +50,6 @@ in
     ../modules/home/ghostty.nix
     ../modules/home/oh-my-posh.nix
     ../modules/home/zellij.nix
-    ../modules/home/sketchybar
     tunaModule
     ../modules/home/helix.nix
     ../modules/home/helix.scripts-manager.nix
@@ -56,6 +61,7 @@ in
     gitProfileModule
   ]
   ++ (lib.optional lcars.shell.fish.enable fishModule)
+  ++ (lib.optional lcars.bar.sketchybar.enable sketchybarModule)
   ++ (lib.optional (lcars.shell.fish.enable && hasFishBindings) {
     # Per-profile fish shellInit additions (aliases, corporate proxy
     # settings, etc.). `interactiveShellInit` is a `types.lines` option, so
