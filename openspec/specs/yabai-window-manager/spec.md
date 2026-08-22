@@ -1,11 +1,12 @@
 ## Requirements
 
 ### Requirement: yabai enabled conditionally via the build-time WM flag
-The system SHALL configure `services.yabai` (nix-darwin, `nix/modules/darwin/yabai/default.nix`) with `enable = lcars.wm.active == "yabai"`, using `pkgs.yabai`, `stack` global layout, and `enableScriptingAddition = true` (which nix-darwin itself wires to a declarative sudoers NOPASSWD entry and a `launchd.daemons.yabai-sa` job — no manual sudoers stanza required).
+The system SHALL configure `services.yabai` (nix-darwin, `nix/modules/darwin/yabai/default.nix`) with `enable = lcars.wm.active == "yabai"`, using `pkgs.yabai`, `float` global layout, and `enableScriptingAddition = true` (which nix-darwin itself wires to a declarative sudoers NOPASSWD entry and a `launchd.daemons.yabai-sa` job — no manual sudoers stanza required).
 
 #### Scenario: yabai enabled by default
 - **WHEN** `lcars.wm.active` is `"yabai"` (the default)
-- **THEN** yabai's launchd agent (`org.nixos.yabai`) is active with `stack` layout, `window_gap = 2`, and `{top,bottom,left,right}_padding = 8`
+- **THEN** yabai's launchd agent (`org.nixos.yabai`) is active with `float` layout, `mouse_follows_focus = off`, `window_gap = 2`, and `{top,bottom,left,right}_padding = 8`
+- **AND** individual spaces can still be manually switched to `stack` or `bsp` later via `yabai -m space --layout <mode>` without affecting the global default
 
 #### Scenario: Scripting Addition sudoers wired automatically
 - **WHEN** `enableScriptingAddition = true`
@@ -41,6 +42,7 @@ The system SHALL route specific applications to their assigned desk via `yabai -
 #### Scenario: Simulator and Finder float by default
 - **WHEN** Simulator or Finder windows are open
 - **THEN** they are excluded from tiling (`manage=off`) and float freely, unaffected by whichever layout mode their current space uses, and are not assigned to any specific desk
+- **AND** these explicit `manage=off` rules remain in place even though `float` is now the global layout, so Simulator/Finder still float if a given space's layout is later manually switched to `stack`/`bsp`
 
 #### Scenario: Work-profile-only routing
 - **WHEN** the work profile is deployed

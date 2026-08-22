@@ -66,7 +66,13 @@ in
     # value (design.md Decision 7):
     # window_gap = 2, {top,bottom,left,right}_padding = 8.
     config = {
-      layout = "stack"; # single focused window per space (design.md Decision 2)
+      # Free-floating windows by default, per explicit user request
+      # (superseding the previous `stack` default — see
+      # openspec/changes/yabai-float-default-layout/design.md Decision 1).
+      # Any given space's layout can still be manually switched to `stack` or
+      # `bsp` later via `yabai -m space --layout <mode>` (already exposed
+      # through the Tuna `y l` submenu) — this only changes the default.
+      layout = "float";
       window_gap = 4;
       top_padding = 8;
       bottom_padding = 16;
@@ -75,7 +81,12 @@ in
       window_opacity = "on";
       active_window_opacity = 0.98;
       normal_window_opacity = 0.1;
-      mouse_follows_focus = "on";
+      # Off (was "on" under the old `stack` default): under `stack` only one
+      # window is ever focused/visible per space, so cursor-warping on focus
+      # change was unobtrusive. Under `float`, multiple windows can be
+      # visible/focused at once, so warping the cursor on every focus change
+      # is disruptive — see design.md Decision 2.
+      mouse_follows_focus = "off";
       focus_follows_mouse = "off";
       window_placement = "second_child";
       window_topmost = "off";
@@ -166,7 +177,11 @@ in
 
         # Float-by-default apps: `manage=off` excludes matching windows from
         # tiling entirely (they stay floating, unaffected by whatever layout
-        # mode the space they're on is switched to). No space assignment is
+        # mode the space they're on is switched to). These rules are kept
+        # explicit on purpose even now that `float` is the global default
+        # (see design.md Decision 3, yabai-float-default-layout): they ensure
+        # Simulator/Finder keep floating even if a given space's layout is
+        # later manually overridden to `stack`/`bsp`. No space assignment is
         # given for these — they float freely wherever they happen to open.
         yabai -m rule --add app="^Simulator$" manage=off
         yabai -m rule --add app="^Finder$" manage=off
