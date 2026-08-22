@@ -34,6 +34,24 @@ let
   sharedConfigText = builtins.readFile ./config.shared.toml;
   deltaConfigText = builtins.readFile (./. + "/${profile}/config.delta.toml");
 
+  # Only one of the two WM Tuna groups (`a`/Aerospace, `y`/Yabai) is ever
+  # meaningful, since `lcars.wm.active` (nix/options/wm.nix) enables exactly
+  # one WM at build time (design.md Decision 7). Each config.toml wraps both
+  # groups in sentinel line-comments (`# WM-GROUP-BEGIN:<wm>` / `#
+  # WM-GROUP-END:<wm>`), and the inactive group is stripped out here via a
+  # simple line-based filter rather than a `fromTOML`/re-serialize
+  # round-trip, which would silently drop the file's many hand-written
+  # comment blocks (nixpkgs' TOML tooling has no comment-preservation).
+  #
+  # This stripping happens on `sharedConfigText`, *before* delta patches are
+  # applied: patch paths (e.g. `a/s/w` for Aerospace, `y/s/w` for Yabai)
+  # only exist inside the active WM's group, so resolving them against the
+  # shared text still containing both groups' markers (or against the
+  # wrong, already-stripped group) would either misresolve or drop the
+  # patch's target entirely. Stripping first guarantees the delta merge
+  # operates on exactly the WM group that's actually going to ship.
+  inactiveWm = if lcars.wm.active == "yabai" then "aerospace" else "yabai";
+
   # ---- Delta directive parsing -------------------------------------------
   #
   # Scans the delta file's lines for `# @patch:append <path>` ... `# @end`
@@ -76,6 +94,55 @@ let
 
   deltaPatches = parseDeltaPatches deltaConfigText;
 
+  # Drops every line from (and including) `# WM-GROUP-BEGIN:<marker>`
+  # through (and including) `# WM-GROUP-END:<marker>`, keeping all other
+  # lines (and their order) untouched. Applied once, to strip the inactive
+  # WM's entire group.
+  stripMarkedSection =
+    marker: lines:
+    let
+      beginMarker = "# WM-GROUP-BEGIN:${marker}";
+      endMarker = "# WM-GROUP-END:${marker}";
+      # Drops lines until (and including) `endMarker` is found.
+      skipToEnd =
+        ls:
+        if ls == [ ] then
+          [ ]
+        else if lib.head ls == endMarker then
+          lib.tail ls
+        else
+          skipToEnd (lib.tail ls);
+      go =
+        ls:
+        if ls == [ ] then
+          [ ]
+        else if lib.head ls == beginMarker then
+          go (skipToEnd (lib.tail ls))
+        else
+          [ (lib.head ls) ] ++ go (lib.tail ls);
+    in
+    go lines;
+
+  # Strips only the bare sentinel marker lines themselves (BEGIN/END),
+  # leaving everything between them intact — applied to the active WM's
+  # group, since its content should remain, just without the now-redundant
+  # marker comments.
+  stripMarkerLines =
+    marker: lines:
+    let
+      beginMarker = "# WM-GROUP-BEGIN:${marker}";
+      endMarker = "# WM-GROUP-END:${marker}";
+    in
+    builtins.filter (l: l != beginMarker && l != endMarker) lines;
+
+  # Strip the inactive WM's group (and the active WM's now-redundant marker
+  # lines) from the shared text *before* delta patches are resolved/applied
+  # — see the comment on `inactiveWm` above for why this must happen first.
+  sharedLines = lib.splitString "\n" sharedConfigText;
+  sharedWithoutInactiveGroup = stripMarkedSection inactiveWm sharedLines;
+  sharedWithoutActiveMarkers = stripMarkerLines lcars.wm.active sharedWithoutInactiveGroup;
+  strippedSharedText = lib.concatStringsSep "\n" sharedWithoutActiveMarkers;
+
   # ---- Patch application --------------------------------------------------
   #
   # Every non-blank, non-comment array-of-tables entry in the shared file
@@ -88,7 +155,6 @@ let
   # which a `.children.children` entry whose `key = 'w'` sits at 8 spaces —
   # and the patch body (at 12 spaces, one level deeper still) is appended
   # as the last `.children.children.children` entry inside that `w` block.
-  indentFor = depth: lib.concatStrings (lib.replicate (depth * 4) " ");
 
   # Number of leading space characters on `line`.
   leadingSpaces =
@@ -104,7 +170,11 @@ let
   isKeyLine =
     indent: key: line:
     let
-      prefix = indentFor indent;
+      # `indent` here is already an absolute space count (e.g. `state.depth
+      # * 4` from `resolveAppendIndex`), matching the space-count semantics
+      # `isBoundaryLine` below also uses directly (no depth-based
+      # multiplication happens inside this function).
+      prefix = lib.concatStrings (lib.replicate indent " ");
     in
     line == "${prefix}key = '${key}'" || line == "${prefix}key = \"${key}\"";
 
@@ -144,7 +214,7 @@ let
   # index in `lines` immediately before which a new entry should be
   # spliced to become the last child of the final matched block.
   resolveAppendIndex =
-    lines: pathComponents:
+    lines: path: pathComponents:
     let
       initial = {
         rangeStart = 0;
@@ -161,11 +231,14 @@ let
           relBoundary = findIndexFromOr (relMatch + 1) (isBoundaryLine indent) slice;
           boundaryIdx = state.rangeStart + relBoundary;
         in
-        {
-          rangeStart = matchIdx;
-          rangeEnd = boundaryIdx;
-          depth = state.depth + 1;
-        };
+        if relMatch >= lib.length slice then
+          builtins.throw "tuna delta: path '${path}' — segment '${comp}' not found while resolving append location"
+        else
+          {
+            rangeStart = matchIdx;
+            rangeEnd = boundaryIdx;
+            depth = state.depth + 1;
+          };
       final = lib.foldl' step initial pathComponents;
     in
     final.rangeEnd;
@@ -214,76 +287,20 @@ let
           # first top-level `[[comboMode.bindings]]` entry in this file.
           findIndexFromOr 0 (line: line == "[[comboMode.bindings]]") lines
         else
-          resolveAppendIndex lines (lib.splitString "/" patch.path);
+          resolveAppendIndex lines patch.path (lib.splitString "/" patch.path);
     in
     lib.concatStringsSep "\n" (collapseBlankRuns (spliceAt lines idx patch.body));
 
   applyPatches = sharedText: patches: lib.foldl' applyPatch sharedText patches;
 
-  mergedConfigText = applyPatches sharedConfigText deltaPatches;
+  mergedConfigText = applyPatches strippedSharedText deltaPatches;
 
   # The merged config text uses a redacted `<user>` placeholder in place of
   # a real username inside a Tuna deep-link URL's URL-encoded home
   # directory path (%252FUsers%252F<user>%252F...). Substitute it at build
   # time for the current user's actual username, so the deployed file is
   # portable and no real username is ever committed.
-  templatedConfig = builtins.replaceStrings [ "<user>" ] [ config.home.username ] mergedConfigText;
-
-  # Only one of the two WM Tuna groups (`a`/Aerospace, `y`/Yabai) is ever
-  # meaningful, since `lcars.wm.active` (nix/options/wm.nix) enables exactly
-  # one WM at build time (design.md Decision 7). Each config.toml wraps both
-  # groups in sentinel line-comments (`# WM-GROUP-BEGIN:<wm>` / `#
-  # WM-GROUP-END:<wm>`), and the inactive group is stripped out here via a
-  # simple line-based filter rather than a `fromTOML`/re-serialize
-  # round-trip, which would silently drop the file's many hand-written
-  # comment blocks (nixpkgs' TOML tooling has no comment-preservation).
-  inactiveWm = if lcars.wm.active == "yabai" then "aerospace" else "yabai";
-
-  # Drops every line from (and including) `# WM-GROUP-BEGIN:<marker>`
-  # through (and including) `# WM-GROUP-END:<marker>`, keeping all other
-  # lines (and their order) untouched. Applied once, to strip the inactive
-  # WM's entire group.
-  stripMarkedSection =
-    marker: lines:
-    let
-      beginMarker = "# WM-GROUP-BEGIN:${marker}";
-      endMarker = "# WM-GROUP-END:${marker}";
-      # Drops lines until (and including) `endMarker` is found.
-      skipToEnd =
-        ls:
-        if ls == [ ] then
-          [ ]
-        else if lib.head ls == endMarker then
-          lib.tail ls
-        else
-          skipToEnd (lib.tail ls);
-      go =
-        ls:
-        if ls == [ ] then
-          [ ]
-        else if lib.head ls == beginMarker then
-          go (skipToEnd (lib.tail ls))
-        else
-          [ (lib.head ls) ] ++ go (lib.tail ls);
-    in
-    go lines;
-
-  # Strips only the bare sentinel marker lines themselves (BEGIN/END),
-  # leaving everything between them intact — applied to the active WM's
-  # group, since its content should remain, just without the now-redundant
-  # marker comments.
-  stripMarkerLines =
-    marker: lines:
-    let
-      beginMarker = "# WM-GROUP-BEGIN:${marker}";
-      endMarker = "# WM-GROUP-END:${marker}";
-    in
-    builtins.filter (l: l != beginMarker && l != endMarker) lines;
-
-  configLines = lib.splitString "\n" templatedConfig;
-  linesWithoutInactiveGroup = stripMarkedSection inactiveWm configLines;
-  linesWithoutActiveMarkers = stripMarkerLines lcars.wm.active linesWithoutInactiveGroup;
-  filteredConfig = lib.concatStringsSep "\n" linesWithoutActiveMarkers;
+  filteredConfig = builtins.replaceStrings [ "<user>" ] [ config.home.username ] mergedConfigText;
 in
 {
   # 1) Install the managed file

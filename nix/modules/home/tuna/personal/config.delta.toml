@@ -5,7 +5,7 @@
 # `<path>` is either the literal dotted path `catalogs.globalScopes` (a
 # top-level array not keyed by `key`), or a `/`-separated chain of `key`
 # field values, resolved by walking `comboMode.bindings` (the top-level
-# array) and then `.children` / `.children.children` / etc for nested
+# array) and then `.destination.bindings` / `.destination.bindings.destination.bindings` / etc for nested
 # paths, matching each path segment against a sibling's `key` field.
 #
 # LIMITATION: only tail-append is currently supported — every block's
@@ -21,9 +21,18 @@
 # have them in the Open group.
 
 # @patch:append o
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Dia.app'
     key = 'd'
     label = 'dia'
-    url = 'tuna://run?subject=tuna.applications//Applications/Dia.app&action=tuna.common-actions/open'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Dia.app' ]
+            type = 'savedCommand'
 # @end

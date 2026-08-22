@@ -5,7 +5,7 @@
 # `<path>` is either the literal dotted path `catalogs.globalScopes` (a
 # top-level array not keyed by `key`), or a `/`-separated chain of `key`
 # field values, resolved by walking `comboMode.bindings` (the top-level
-# array) and then `.children` / `.children.children` / etc for nested
+# array) and then `.destination.bindings` / `.destination.bindings.destination.bindings` / etc for nested
 # paths, matching each path segment against a sibling's `key` field.
 #
 # LIMITATION: only tail-append is currently supported — every block's
@@ -27,57 +27,129 @@
 # @end
 
 # @patch:append o
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Microsoft Teams.app'
     key = 't'
     label = 'teams'
-    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Teams.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Microsoft Teams.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Microsoft Outlook.app'
     key = 'o'
     label = 'outlook'
-    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Outlook.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Microsoft Outlook.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Dia.app'
     key = 'd'
     label = 'dia'
-    url = 'tuna://run?subject=tuna.applications//Applications/Dia.app&action=tuna.common-actions/open'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Dia.app' ]
+            type = 'savedCommand'
 # @end
 
 # VS Code and Microsoft Edge are work-only per user decision (personal
 # should not have these installed/used); moved out of the shared config
 # and appended here instead.
 # @patch:append o
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Visual Studio Code.app'
     key = 'c'
     label = 'code'
-    url = 'tuna://run?subject=tuna.applications//Applications/Visual%20Studio%20Code.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Visual Studio Code.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Microsoft Edge.app'
     key = 'e'
     label = 'edge'
-    url = 'tuna://run?subject=tuna.applications//Applications/Microsoft%20Edge.app&action=tuna.common-actions/open'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Microsoft Edge.app' ]
+            type = 'savedCommand'
 # @end
 
 # @patch:append a
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = 'k'
     label = 'Focus (work)'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520F/Run%20Text%20as%20Shell%20Command'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace F' ]
+            type = 'savedCommand'
 # @end
 
 # @patch:append a/s/w
-            [[comboMode.bindings.children.children.children]]
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'K'
             label = 'Focus (work)'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520F/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace F' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'k'
             label = 'Focus (work)'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520F%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace F --focus-follows-window' ]
+                    type = 'savedCommand'
 # @end

@@ -15,69 +15,165 @@ iconPath = 'apple.terminal'
 key = 'c'
 label = 'Commands'
 
-    [[comboMode.bindings.children]]
+    [comboMode.bindings.destination]
+    type = 'group'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = 'lock.app.dashed'
     key = 'l'
     label = 'Lock'
-    url = 'tuna://run?subject=tuna.system-tasks/Lock%20Screen&action=tuna.common-actions/run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'tuna.system-tasks/Lock Screen' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 't'
     label = 'This is fine'
-    url = 'tuna://run?subject=tuna.effects/This%20is%20fine&action=tuna.common-actions/run'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'tuna.effects/This is fine' ]
+            type = 'savedCommand'
 
 [[comboMode.bindings]]
 iconPath = 'arrowshape.turn.up.right.circle'
 key = 'o'
 label = ' Open'
 
-    [[comboMode.bindings.children]]
+    [comboMode.bindings.destination]
+    type = 'group'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Ghostty.app'
     key = 'g'
     label = 'ghostty'
-    url = 'tuna://run?subject=tuna.applications//Applications/Ghostty.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Ghostty.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/System/Applications/Music.app'
     key = 'm'
     label = 'music'
-    url = 'tuna://run?subject=tuna.applications//System/Applications/Music.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/System/Applications/Music.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Figma.app'
     key = 'f'
     label = 'figma'
-    url = 'tuna://run?subject=tuna.applications//Applications/Figma.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Figma.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app'
     key = 's'
     label = 'safari'
-    url = 'tuna://run?subject=tuna.applications//System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Zed.app'
     key = 'z'
     label = 'zed'
-    url = 'tuna://run?subject=tuna.applications//Applications/Zed.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Zed.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Obsidian.app'
     key = 'n'
     label = 'obsidian'
-    url = 'tuna://run?subject=tuna.applications//Applications/Obsidian.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Obsidian.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/System/Applications/Android Studio.app'
     key = 'a'
     label = 'android studio'
-    url = 'tuna://run?subject=tuna.applications//Users/<user>/Applications/Android%20Studio.app&action=tuna.common-actions/open'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Users/<user>/Applications/Android Studio.app' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = '/Applications/Xcode.app'
     key = 'x'
     label = 'xcode'
-    url = 'tuna://run?subject=tuna.applications//Applications/Xcode.app&action=tuna.common-actions/open'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/open'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'path:/Applications/Xcode.app' ]
+            type = 'savedCommand'
 
 # WM-GROUP-BEGIN:aerospace
 [[comboMode.bindings]]
@@ -85,325 +181,862 @@ iconPath = 'rectangle.grid.2x2'
 key = 'a'
 label = 'Aerospace'
 
-    [[comboMode.bindings.children]]
+    [comboMode.bindings.destination]
+    type = 'group'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'c'
     label = 'Communications'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520C/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace C' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'b'
     label = 'Browsing'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520B/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace B' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 't'
     label = 'Terminals'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520T/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace T' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'i'
     label = 'IDEs'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520I/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace I' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'd'
     label = 'Dev / Simulators'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520D/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace D' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'm'
     label = 'Music'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%2520M/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace M' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = '1'
     label = 'misc'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace%25201/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace 1' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'e'
     label = 'Focus window'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Left'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus%2520left/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus left' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Right'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus%2520right/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus right' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Down'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus%2520down/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus down' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Up'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus%2520up/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus up' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = '`'
         label = 'Focus last window'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-back-and-forth/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-back-and-forth' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = '`'
     label = 'Focus last workspace'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace workspace-back-and-forth' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'f'
     label = 'Fullscreen'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520fullscreen/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace fullscreen' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'F'
     label = 'Flatten workspace tree'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520flatten-workspace-tree/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace flatten-workspace-tree' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'g'
     label = 'Screens'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'f'
         label = 'Focus screen'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-monitor%2520left/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-monitor left' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-monitor%2520right/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-monitor right' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-monitor%2520down/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-monitor down' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-monitor%2520up/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-monitor up' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'w'
         label = 'Move window'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-monitor%2520--focus-follows-window%2520left/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-monitor --focus-follows-window left' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-monitor%2520--focus-follows-window%2520right/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-monitor --focus-follows-window right' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-monitor%2520--focus-follows-window%2520down/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-monitor --focus-follows-window down' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-monitor%2520--focus-follows-window%2520up/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-monitor --focus-follows-window up' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 's'
         label = 'Move workspace'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-workspace-to-monitor%2520left/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-workspace-to-monitor left' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-workspace-to-monitor%2520right/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-workspace-to-monitor right' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-workspace-to-monitor%2520down/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-workspace-to-monitor down' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-workspace-to-monitor%2520up/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-workspace-to-monitor up' ]
+                    type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'j'
     label = 'Join with'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Left'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520join-with%2520left/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace join-with left' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Right'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520join-with%2520right/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace join-with right' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Down'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520join-with%2520down/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace join-with down' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Up'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520join-with%2520up/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace join-with up' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'l'
     label = 'Layout'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'a'
         label = 'Accordion'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520layout%2520accordion%2520horizontal%2520vertical/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace layout accordion horizontal vertical' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'f'
         label = 'Floating'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520layout%2520floating%2520tiling/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace layout floating tiling' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 't'
         label = 'Tiles'
-        url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520layout%2520tiles%2520vertical%2520horizontal/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace layout tiles vertical horizontal' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = 'window.awning'
     key = 's'
     label = 'Send window to'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Directions'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move%2520left/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move left' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move%2520right/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move right' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move%2520down/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move down' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move%2520up/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move up' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'w'
         label = 'Workspaces'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'C'
             label = 'Communications'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520C/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace C' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'c'
             label = 'Communications'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520C%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace C --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'B'
             label = 'Browsing'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520B/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace B' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'b'
             label = 'Browsing'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520B%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace B --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'T'
             label = 'Terminals'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520T/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace T' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 't'
             label = 'Terminals'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520T%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace T --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'I'
             label = 'IDEs'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520I/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace I' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'i'
             label = 'IDEs'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520I%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace I --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'D'
             label = 'Dev / Simulators'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520D/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace D' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Dev / Simulators'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520D%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace D --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'M'
             label = 'Music'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520M/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace M' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'm'
             label = 'Music'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%2520M%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace M --focus-follows-window' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '!'
             label = 'misc'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%25201/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace 1' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '1'
             label = 'misc'
-            url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520move-node-to-workspace%25201%2520--focus-follows-window/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace move-node-to-workspace 1 --focus-follows-window' ]
+                    type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'R'
     label = 'Reload config'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520reload-config/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace reload-config' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'r'
     label = 'Mode resize'
-    url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520mode%2520resize/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace mode resize' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'z'
     label = 'Center'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/center' ]
+            type = 'savedCommand'
 [[comboMode.bindings]]
 key = "'"
 label = 'Last window or workspace'
-url = 'tuna://run/text.%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520focus-back-and-forth%2520%257C%257C%2520%252Fetc%252Fprofiles%252Fper-user%252F<user>%252Fbin%252Faerospace%2520workspace-back-and-forth/Run%20Text%20as%20Shell%20Command'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+        behavior = 'run'
+        presentation = 'automatic'
+        subjectIdentifiers = [ 'text:/etc/profiles/per-user/<user>/bin/aerospace focus-back-and-forth || /etc/profiles/per-user/<user>/bin/aerospace workspace-back-and-forth' ]
+        type = 'savedCommand'
 # WM-GROUP-END:aerospace
 # WM-GROUP-BEGIN:yabai
 [[comboMode.bindings]]
@@ -411,731 +1044,1910 @@ iconPath = 'square.grid.3x3'
 key = 'y'
 label = 'Yabai'
 
-    [[comboMode.bindings.children]]
+    [comboMode.bindings.destination]
+    type = 'group'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'c'
     label = 'Communications'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk1/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk1' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'b'
     label = 'Browsing'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk6/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk6' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 't'
     label = 'Terminals'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk4/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk4' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'i'
     label = 'IDE'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk2/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk2' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'd'
     label = 'Dev / Simulators'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk3/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk3' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'm'
     label = 'Music'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk5/Run%20Text%20as%20Shell%20Command'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus desk5' ]
+            type = 'savedCommand'
 
     # See the "IDEs" comment above re: unlabeled placeholder space indices
     # (8 here, mirroring aerospace's dynamically-created "1"/misc workspace).
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = '1'
     label = 'misc'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%25208/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus 8' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'e'
     label = 'Focus window'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Left'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520west/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus west' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Right'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520east/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus east' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Down'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520south/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus south' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Up'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520north/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus north' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = '`'
         label = 'Focus last window'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520recent/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus recent' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'n'
         label = 'Stack next'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520stack.next/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus stack.next' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'p'
         label = 'Stack prev'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--focus%2520stack.prev/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --focus stack.prev' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = '`'
     label = 'Focus last workspace'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520recent/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --focus recent' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'f'
     label = 'Fullscreen'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520zoom-fullscreen/Run%20Text%20as%20Shell%20Command'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle zoom-fullscreen' ]
+            type = 'savedCommand'
 
     # yabai has no bsp-tree "flatten" equivalent in stack mode; resetting to
     # `--layout stack` is the closest approximation (see design.md
     # Decision 2).
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = 'F'
     label = 'Flatten workspace tree (reset stack layout)'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--layout%2520stack/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout stack' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'g'
     label = 'Screens'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'f'
         label = 'Focus screen'
 
             # yabai's `display --focus` has no directional west/east/etc
             # targets (only prev/next/recent/mouse/<index>) — next/prev are
             # used as the closest approximation for left/right/down/up.
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520display%2520--focus%2520prev/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m display --focus prev' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520display%2520--focus%2520next/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m display --focus next' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520display%2520--focus%2520next/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m display --focus next' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520display%2520--focus%2520prev/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m display --focus prev' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'w'
         label = 'Move window'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--display%2520prev%2520--focus/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --display prev --focus' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--display%2520next%2520--focus/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --display next --focus' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--display%2520next%2520--focus/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --display next --focus' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--display%2520prev%2520--focus/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --display prev --focus' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 's'
         label = 'Move workspace'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--display%2520prev/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --display prev' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--display%2520next/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --display next' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down (next)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--display%2520next/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --display next' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up (prev)'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--display%2520prev/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --display prev' ]
+                    type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'j'
     label = 'Join with'
 
         # yabai's `--warp` is the closest bsp-style-join equivalent; no
         # perfect match exists in stack mode (see design.md task 5 notes).
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Left'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--warp%2520west/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --warp west' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Right'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--warp%2520east/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --warp east' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Down'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--warp%2520south/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --warp south' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Up'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--warp%2520north/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --warp north' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'l'
     label = 'Layout'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'a'
         label = 'Accordion (stack)'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--layout%2520stack/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout stack' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'f'
         label = 'Floating (window)'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520float/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle float' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 't'
         label = 'Tiles (bsp)'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--layout%2520bsp/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout bsp' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'o'
         label = 'Floating (space)'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--layout%2520float/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout float' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Rotate'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '1'
             label = '90°'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--rotate%252090/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --rotate 90' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '2'
             label = '180°'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--rotate%2520180/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --rotate 180' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '3'
             label = '270°'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--rotate%2520270/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --rotate 270' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'm'
         label = 'Mirror'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'x'
             label = 'X-axis'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--mirror%2520x-axis/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --mirror x-axis' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'y'
             label = 'Y-axis'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--mirror%2520y-axis/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --mirror y-axis' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'b'
         label = 'Balance sizes'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--balance/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --balance' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'e'
         label = 'Equalize sizes'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--equalize/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --equalize' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 's'
         label = 'Toggle split'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520split/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle split' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     iconPath = 'window.awning'
     key = 's'
     label = 'Send window to'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Directions'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Left'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--swap%2520west/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --swap west' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'r'
             label = 'Right'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--swap%2520east/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --swap east' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Down'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--swap%2520south/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --swap south' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'u'
             label = 'Up'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--swap%2520north/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --swap north' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'w'
         label = 'Workspaces'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'C'
             label = 'Communications'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk1/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk1' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'c'
             label = 'Communications'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk1%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk1/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk1 && /run/current-system/sw/bin/yabai -m space --focus desk1' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'B'
             label = 'Browsing'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk6/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk6' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'b'
             label = 'Browsing'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk6%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk6/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk6 && /run/current-system/sw/bin/yabai -m space --focus desk6' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'T'
             label = 'Terminals'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk4/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk4' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 't'
             label = 'Terminals'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk4%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk4/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk4 && /run/current-system/sw/bin/yabai -m space --focus desk4' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'I'
             label = 'IDE'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk2/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk2' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'i'
             label = 'IDE'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk2%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk2/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk2 && /run/current-system/sw/bin/yabai -m space --focus desk2' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'D'
             label = 'Dev / Simulators'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk3/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk3' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'd'
             label = 'Dev / Simulators'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk3%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk3/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk3 && /run/current-system/sw/bin/yabai -m space --focus desk3' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'M'
             label = 'Music'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk5/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk5' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'm'
             label = 'Music'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%2520desk5%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%2520desk5/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space desk5 && /run/current-system/sw/bin/yabai -m space --focus desk5' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '!'
             label = 'misc'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%25208/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space 8' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = '1'
             label = 'misc'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--space%25208%2520%2526%2526%2520%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--focus%25208/Run%20Text%20as%20Shell%20Command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --space 8 && /run/current-system/sw/bin/yabai -m space --focus 8' ]
+                    type = 'savedCommand'
 
     # yabai has no "reload config" verb; the closest equivalent is
     # restarting its launchd user agent. Label determined by reading
     # nix-darwin's actual services.yabai module source (see
     # nix/modules/darwin/yabai/default.nix's module-level comment).
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = 'R'
     label = 'Reload config'
-    url = 'tuna://run/text.launchctl%2520kickstart%2520-k%2520gui%252F%2524%2528id%2520-u%2529%252Forg.nixos.yabai/Run%20Text%20as%20Shell%20Command'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:launchctl kickstart -k gui/$(id -u)/org.nixos.yabai' ]
+            type = 'savedCommand'
 
     # yabai has no modal resize mode; fixed-step resize commands are used
     # as a best-effort approximation (see tasks.md task 5, resize
     # translation table).
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = 'r'
     label = 'Resize'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Grow right'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520right%253A50%253A0/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize right:50:0' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'R'
         label = 'Shrink right'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520right%253A-50%253A0/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize right:-50:0' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Grow left'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520left%253A-50%253A0/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize left:-50:0' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'L'
         label = 'Shrink left'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520left%253A50%253A0/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize left:50:0' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Grow up'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520top%253A0%253A-50/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize top:0:-50' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'U'
         label = 'Shrink up'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520top%253A0%253A50/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize top:0:50' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Grow down'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520bottom%253A0%253A50/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize bottom:0:50' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'D'
         label = 'Shrink down'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--resize%2520bottom%253A0%253A-50/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --resize bottom:0:-50' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = '+'
         label = 'Ratio +'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--ratio%2520rel%253A0.05/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --ratio rel:0.05' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = '-'
         label = 'Ratio -'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--ratio%2520rel%253A-0.05/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --ratio rel:-0.05' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'z'
     label = 'Center'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/center' ]
+            type = 'savedCommand'
 
     # yabai has no native window-stack verb distinct from bsp `--stack`; a
     # dedicated submenu groups the directional stack-insert commands, kept
     # separate from the Send-window-to ('s') and Layout ('l') submenus.
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
     key = 'x'
     label = 'Stack'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Stack left'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--stack%2520west/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --stack west' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Stack right'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--stack%2520east/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --stack east' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Stack down'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--stack%2520south/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --stack south' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Stack up'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--stack%2520north/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --stack north' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'n'
     label = 'Native fullscreen'
-    url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520native-fullscreen/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+            behavior = 'run'
+            presentation = 'automatic'
+            subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle native-fullscreen' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'w'
     label = 'Window toggles'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 's'
         label = 'Sticky'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520sticky/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle sticky' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'p'
         label = 'PIP'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520pip/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle pip' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Shadow'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--toggle%2520shadow/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle shadow' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'm'
         label = 'Minimize'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--minimize/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --minimize' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'M'
         label = 'Deminimize'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--deminimize/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --deminimize' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'o'
         label = 'Opacity'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'o'
             label = 'Opaque'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--opacity%25201.0/Run%20Text%20as%20Shell%20Command'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --opacity 1.0' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 't'
             label = 'Transparent'
-            url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--opacity%25200.85/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                    behavior = 'run'
+                    presentation = 'automatic'
+                    subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --opacity 0.85' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'a'
         label = 'Scratchpad assign'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--scratchpad%2520term/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --scratchpad term' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'A'
         label = 'Scratchpad recover'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--scratchpad%2520recover/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --scratchpad recover' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Raise'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--raise/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --raise' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'b'
         label = 'Lower'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--lower/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --lower' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'p'
     label = 'Placement'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Left half'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--grid%25201%253A2%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --grid 1:2:0:0:1:1' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'r'
         label = 'Right half'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--grid%25201%253A2%253A1%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --grid 1:2:1:0:1:1' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'u'
         label = 'Top half'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--grid%25202%253A1%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --grid 2:1:0:0:1:1' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Bottom half'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--grid%25202%253A1%253A0%253A1%253A1%253A1/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --grid 2:1:0:1:1:1' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'm'
         label = 'Maximize'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520window%2520--grid%25201%253A1%253A0%253A0%253A1%253A1/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --grid 1:1:0:0:1:1' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'N'
     label = 'Space management'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'c'
         label = 'Create space'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--create/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --create' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'd'
         label = 'Destroy space'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--destroy/Run%20Text%20as%20Shell%20Command'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --destroy' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'O'
     label = 'Order spaces'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'm'
         label = 'Move prev'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--move%2520prev/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --move prev' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'M'
         label = 'Move next'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--move%2520next/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --move next' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 's'
         label = 'Swap prev'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--swap%2520prev/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --swap prev' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'S'
         label = 'Swap next'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--swap%2520next/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --swap next' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'w'
         label = 'Switch prev'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--switch%2520prev/Run%20Text%20as%20Shell%20Command'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --switch prev' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'W'
         label = 'Switch next'
-        url = 'tuna://run/text.%252Frun%252Fcurrent-system%252Fsw%252Fbin%252Fyabai%2520-m%2520space%2520--switch%2520next/Run%20Text%20as%20Shell%20Command'
+
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --switch next' ]
+                type = 'savedCommand'
 # WM-GROUP-END:yabai
 [[comboMode.bindings]]
 key = 'z'
 label = 'Center Window'
-url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/run'
+        behavior = 'run'
+        presentation = 'show'
+        subjectIdentifiers = [ 'tuna.window-management/center' ]
+        type = 'savedCommand'
 
 [[comboMode.bindings]]
 iconPath = 'uiwindow.split.2x1'
 key = 'w'
 label = 'Window'
 
-    [[comboMode.bindings.children]]
+    [comboMode.bindings.destination]
+    type = 'group'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'a'
     label = 'Comfortable'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Almost%20Maximize/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/almost-maximize' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 't'
     label = 'Thirds'
 
-        [[comboMode.bindings.children.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'group'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'e'
         label = 'Two thirds'
 
-            [[comboMode.bindings.children.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'group'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'h'
             label = 'First two thirds'
-            url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run%20in%20Background'
 
-            [[comboMode.bindings.children.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run'
+                    behavior = 'run'
+                    presentation = 'show'
+                    subjectIdentifiers = [ 'tuna.window-management/first-two-thirds' ]
+                    type = 'savedCommand'
+
+            [[comboMode.bindings.destination.bindings.destination.bindings.destination.bindings]]
             key = 'l'
             label = 'Last two thirds'
-            url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run%20in%20Background'
 
-        [[comboMode.bindings.children.children]]
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination]
+                type = 'command'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination.bindings.destination.command]
+                    actionIdentifier = 'tuna.common-actions/run'
+                    behavior = 'run'
+                    presentation = 'show'
+                    subjectIdentifiers = [ 'tuna.window-management/last-two-thirds' ]
+                    type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'c'
         label = 'Center third'
-        url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/center-third' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'h'
         label = 'First third'
-        url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
 
-        [[comboMode.bindings.children.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/first-third' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings.destination.bindings]]
         key = 'l'
         label = 'Last third'
-        url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Third/TunaCore.CommonActionsCatalog.Run%20in%20Background'
 
-    [[comboMode.bindings.children]]
+            [comboMode.bindings.destination.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/last-third' ]
+                type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'c'
     label = 'Center'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Center/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/center' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'f'
     label = 'Full screen'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Maximize/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/maximize' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'h'
     label = 'Left'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Left%20Half/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/left-half' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'H'
     label = 'Max height'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Maximize%20Height/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/maximize-height' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'l'
     label = 'Right'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Right%20Half/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/right-half' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'n'
     label = 'First third'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.First%20Third/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/first-third' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 'o'
     label = 'Last two thirds'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Last%20Two%20Thirds/TunaCore.CommonActionsCatalog.Run'
 
-    [[comboMode.bindings.children]]
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/last-two-thirds' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 's'
     label = 'sssslide'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Move%20Right/TunaCore.CommonActionsCatalog.Run'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/move-right' ]
+            type = 'savedCommand'
 
 [[comboMode.bindings]]
 key = 'n'
-url = 'tuna://run/TunaSystem.AllWindowsSearchCatalog.Windows/TunaCore.CommonActionsCatalog.Browse'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/browse'
+        behavior = 'run'
+        presentation = 'show'
+        subjectIdentifiers = [ 'tuna.windows.search/allWindows.search' ]
+        type = 'savedCommand'
 
 [[comboMode.bindings]]
 key = 'enter'
-url = 'tuna://run?subject=tuna.applications//Applications/Ghostty.app&action=tuna.common-actions/open'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/open'
+        behavior = 'run'
+        presentation = 'automatic'
+        subjectIdentifiers = [ 'path:/Applications/Ghostty.app' ]
+        type = 'savedCommand'
 
 [[comboMode.bindings]]
 iconPath = 'square.stack.fill'
 key = 's'
 label = 'Spaces'
 
-    [[comboMode.bindings.children]]
-    key = 'n'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Next%20Space/TunaCore.CommonActionsCatalog.Run'
+    [comboMode.bindings.destination]
+    type = 'group'
 
-    [[comboMode.bindings.children]]
+    [[comboMode.bindings.destination.bindings]]
+    key = 'n'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/next-space' ]
+            type = 'savedCommand'
+
+    [[comboMode.bindings.destination.bindings]]
     key = 't'
-    url = 'tuna://run/TunaSystem.WindowManagementCatalog.Previous%20Space/TunaCore.CommonActionsCatalog.Run'
+
+        [comboMode.bindings.destination.bindings.destination]
+        type = 'command'
+
+            [comboMode.bindings.destination.bindings.destination.command]
+            actionIdentifier = 'tuna.common-actions/run'
+            behavior = 'run'
+            presentation = 'show'
+            subjectIdentifiers = [ 'tuna.window-management/previous-space' ]
+            type = 'savedCommand'
 
 [hotkeys]
 custom = []
