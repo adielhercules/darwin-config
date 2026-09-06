@@ -50,7 +50,28 @@ let
   # wrong, already-stripped group) would either misresolve or drop the
   # patch's target entirely. Stripping first guarantees the delta merge
   # operates on exactly the WM group that's actually going to ship.
+  #
+  # A profile's delta file may still contain patches targeting the
+  # *inactive* WM's group (e.g. `work/config.delta.toml` patches `a` /
+  # `a/s/w`, which only make sense when Aerospace is active). Since that
+  # group has just been stripped from the shared text, such a patch has no
+  # target left to resolve against. Rather than let `resolveAppendIndex`
+  # throw in that case, `applyPatch` below detects a patch whose path
+  # belongs to the inactive WM's group (via `wmGroupKeyToName` /
+  # `inactiveWm`) and treats it as a no-op — this is what actually enforces
+  # the "only one WM group is ever meaningful" invariant described above.
   inactiveWm = if lcars.wm.active == "yabai" then "aerospace" else "yabai";
+
+  # Maps a Tuna top-level group `key` (as used in patch paths, e.g. the `a`
+  # in `a/s/w`) to the WM name it belongs to, so `applyPatch` can tell
+  # whether a given patch targets the currently-inactive WM's (now
+  # stripped) group. Paths not starting with one of these keys (e.g.
+  # `catalogs.globalScopes`, or a bare `o` group) are unaffected by WM
+  # activation and are never treated as no-ops here.
+  wmGroupKeyToName = {
+    a = "aerospace";
+    y = "yabai";
+  };
 
   # ---- Delta directive parsing -------------------------------------------
   #
@@ -279,17 +300,30 @@ let
   applyPatch =
     text: patch:
     let
-      lines = lib.splitString "\n" text;
-      idx =
-        if patch.path == "catalogs.globalScopes" then
-          # Not keyed by `key` — this dotted path is a fixed anchor
-          # instead: the catalogs section always ends right before the
-          # first top-level `[[comboMode.bindings]]` entry in this file.
-          findIndexFromOr 0 (line: line == "[[comboMode.bindings]]") lines
-        else
-          resolveAppendIndex lines patch.path (lib.splitString "/" patch.path);
+      # First path segment (e.g. `a` in `a/s/w`, or the whole path if it
+      # has no "/"). If this matches a known WM group key whose WM is the
+      # currently-inactive one, the patch's target group was already
+      # stripped from `text` and there is nothing left to append to —
+      # skip resolving/splicing entirely and return `text` unchanged. See
+      # the comment on `wmGroupKeyToName`/`inactiveWm` above.
+      firstSegment = lib.head (lib.splitString "/" patch.path);
+      targetsInactiveWm = (wmGroupKeyToName.${firstSegment} or null) == inactiveWm;
     in
-    lib.concatStringsSep "\n" (collapseBlankRuns (spliceAt lines idx patch.body));
+    if targetsInactiveWm then
+      text
+    else
+      let
+        lines = lib.splitString "\n" text;
+        idx =
+          if patch.path == "catalogs.globalScopes" then
+            # Not keyed by `key` — this dotted path is a fixed anchor
+            # instead: the catalogs section always ends right before the
+            # first top-level `[[comboMode.bindings]]` entry in this file.
+            findIndexFromOr 0 (line: line == "[[comboMode.bindings]]") lines
+          else
+            resolveAppendIndex lines patch.path (lib.splitString "/" patch.path);
+      in
+      lib.concatStringsSep "\n" (collapseBlankRuns (spliceAt lines idx patch.body));
 
   applyPatches = sharedText: patches: lib.foldl' applyPatch sharedText patches;
 

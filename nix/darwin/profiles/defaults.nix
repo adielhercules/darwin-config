@@ -46,6 +46,7 @@
       "opencode"
       "yazi"
       "rtk"
+      "git-lfs"
       "terminal-notifier" # macOS notifications for OpenCode plugin & fish done
     ]
     # sketchybar is installed via Homebrew rather than nixpkgs
@@ -90,6 +91,7 @@
       "zed"
       "copilot-cli"
       "wallspace"
+      "opencode-desktop"
     ];
     masApps = { };
   };

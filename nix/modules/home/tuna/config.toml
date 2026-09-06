@@ -1,0 +1,772 @@
+[catalogs]
+searchPriorities = []
+sortOrders = []
+
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'tuna.applications'
+
+        [catalogs.globalScopes.scope]
+        itemIDs = [ '/Applications/Zscaler/RevertZcc/Zscaler-osx-4.5.2.105-installer.app' ]
+        kind = 'excluding'
+
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'tuna.emoji'
+
+        [catalogs.globalScopes.scope]
+        kind = 'none'
+
+    [[catalogs.globalScopes]]
+    catalogIdentifier = 'tuna.smart-folders'
+
+        [catalogs.globalScopes.scope]
+        kind = 'none'
+
+[[comboMode.bindings]]
+iconPath = 'apple.terminal'
+key = 'c'
+label = 'Commands'
+
+    [comboMode.bindings.destination]
+    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = 'lock.app.dashed'
+        key = 'l'
+        label = 'Lock'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'tuna.system-tasks/Lock Screen' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 't'
+        label = 'This is fine'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'tuna.effects/This is fine' ]
+                type = 'savedCommand'
+
+[[comboMode.bindings]]
+iconPath = 'arrowshape.turn.up.right.circle'
+key = 'o'
+label = ' Open'
+
+    [comboMode.bindings.destination]
+    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Ghostty.app'
+        key = 'g'
+        label = 'ghostty'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Ghostty.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/System/Applications/Music.app'
+        key = 'm'
+        label = 'music'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/System/Applications/Music.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Figma.app'
+        key = 'f'
+        label = 'figma'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Figma.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app'
+        key = 's'
+        label = 'safari'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Visual Studio Code.app'
+        key = 'c'
+        label = 'code'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Visual Studio Code.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Microsoft Edge.app'
+        key = 'e'
+        label = 'edge'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Microsoft Edge.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Microsoft Teams.app'
+        key = 't'
+        label = 'teams'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Microsoft Teams.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Microsoft Outlook.app'
+        key = 'o'
+        label = 'outlook'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Microsoft Outlook.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Dia.app'
+        key = 'd'
+        label = 'dia'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Dia.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Zed.app'
+        key = 'z'
+        label = 'zed'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Zed.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Obsidian.app'
+        key = 'n'
+        label = 'obsidian'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Obsidian.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/System/Applications/Android Studio.app'
+        key = 'a'
+        label = 'android studio'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Users/adielhercules/Applications/Android Studio.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/Xcode.app'
+        key = 'x'
+        label = 'xcode'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'path:/Applications/Xcode.app' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = '/Applications/OpenCode.app'
+        key = 'p'
+        label = 'opencode'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/open'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'tuna.applications//Applications/OpenCode.app' ]
+                type = 'savedCommand'
+
+[[comboMode.bindings]]
+iconPath = 'square.grid.3x3'
+key = 'y'
+label = 'Yabai'
+
+    [comboMode.bindings.destination]
+    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'e'
+        label = 'Focus window'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'g'
+        label = 'Screens'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'f'
+                label = 'Focus screen'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'w'
+                label = 'Move window'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 's'
+                label = 'Move workspace'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'j'
+        label = 'Join with'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'l'
+        label = 'Layout'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'a'
+                label = 'Accordion (stack)'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    type = 'command'
+
+                        [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                        actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                        behavior = 'run'
+                        presentation = 'automatic'
+                        subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout stack' ]
+                        type = 'savedCommand'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'f'
+                label = 'Floating (window)'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    type = 'command'
+
+                        [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                        actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                        behavior = 'run'
+                        presentation = 'automatic'
+                        subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m window --toggle float' ]
+                        type = 'savedCommand'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 't'
+                label = 'Tiles (bsp)'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    type = 'command'
+
+                        [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                        actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                        behavior = 'run'
+                        presentation = 'automatic'
+                        subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout bsp' ]
+                        type = 'savedCommand'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'o'
+                label = 'Floating (space)'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    type = 'command'
+
+                        [comboMode.bindings.destination.bindings.destination.bindings.destination.command]
+                        actionIdentifier = 'tuna.common-actions/run-text-as-shell-command'
+                        behavior = 'run'
+                        presentation = 'automatic'
+                        subjectIdentifiers = [ 'text:/run/current-system/sw/bin/yabai -m space --layout float' ]
+                        type = 'savedCommand'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'r'
+                label = 'Rotate'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'm'
+                label = 'Mirror'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        iconPath = 'window.awning'
+        key = 's'
+        label = 'Send window to'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'd'
+                label = 'Directions'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'w'
+                label = 'Workspaces'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'r'
+        label = 'Resize'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'z'
+        label = 'Center'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/center' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'x'
+        label = 'Stack'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'w'
+        label = 'Window toggles'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'o'
+                label = 'Opacity'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'p'
+        label = 'Placement'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'N'
+        label = 'Space management'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'O'
+        label = 'Order spaces'
+
+            [comboMode.bindings.destination.bindings.destination]
+            bindings = []
+            type = 'group'
+
+[[comboMode.bindings]]
+key = 'z'
+label = 'Center Window'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/run'
+        behavior = 'run'
+        presentation = 'show'
+        subjectIdentifiers = [ 'tuna.window-management/center' ]
+        type = 'savedCommand'
+
+[[comboMode.bindings]]
+iconPath = 'uiwindow.split.2x1'
+key = 'w'
+label = 'Window'
+
+    [comboMode.bindings.destination]
+    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'a'
+        label = 'Comfortable'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/almost-maximize' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 't'
+        label = 'Thirds'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'group'
+
+                [[comboMode.bindings.destination.bindings.destination.bindings]]
+                key = 'e'
+                label = 'Two thirds'
+
+                    [comboMode.bindings.destination.bindings.destination.bindings.destination]
+                    bindings = []
+                    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'c'
+        label = 'Center'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/center' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'f'
+        label = 'Full screen'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/maximize' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'h'
+        label = 'Left'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/left-half' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'H'
+        label = 'Max height'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/maximize-height' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'l'
+        label = 'Right'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/right-half' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'n'
+        label = 'First third'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/first-third' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'o'
+        label = 'Last two thirds'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/last-two-thirds' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 's'
+        label = 'sssslide'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'show'
+                subjectIdentifiers = [ 'tuna.window-management/move-right' ]
+                type = 'savedCommand'
+
+[[comboMode.bindings]]
+key = 'n'
+label = 'Windows'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/browse'
+        behavior = 'run'
+        presentation = 'automatic'
+        subjectIdentifiers = [ 'tuna.windows.search/allWindows.search' ]
+        type = 'savedCommand'
+
+[[comboMode.bindings]]
+key = 'enter'
+label = 'Ghostty'
+
+    [comboMode.bindings.destination]
+    type = 'command'
+
+        [comboMode.bindings.destination.command]
+        actionIdentifier = 'tuna.common-actions/open'
+        behavior = 'run'
+        presentation = 'automatic'
+        subjectIdentifiers = [ 'path:/Applications/Ghostty.app' ]
+        type = 'savedCommand'
+
+[[comboMode.bindings]]
+iconPath = 'square.stack.fill'
+key = 's'
+label = 'Spaces'
+
+    [comboMode.bindings.destination]
+    type = 'group'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 'n'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'tuna.window-management/next-space' ]
+                type = 'savedCommand'
+
+        [[comboMode.bindings.destination.bindings]]
+        key = 't'
+
+            [comboMode.bindings.destination.bindings.destination]
+            type = 'command'
+
+                [comboMode.bindings.destination.bindings.destination.command]
+                actionIdentifier = 'tuna.common-actions/run'
+                behavior = 'run'
+                presentation = 'automatic'
+                subjectIdentifiers = [ 'tuna.window-management/previous-space' ]
+                type = 'savedCommand'
+
+[hotkeys]
+custom = []
+
+    [hotkeys.app.activate]
+    carbonKeyCode = 49
+    carbonModifiers = 256
+
+    [hotkeys.app.comboMode]
+    carbonKeyCode = 15
+    carbonModifiers = 2048
+
+    [hotkeys.app.dictation]
+    carbonKeyCode = 5
+    carbonModifiers = 6912
+
+    [hotkeys.app.textMode]
+    carbonKeyCode = 9
+    carbonModifiers = 6912
+
+[settings]
+backspaceBehavior = 'deleteCharacters'
+clipboardHistoryEnabled = false
+comboModeBackspaceBehavior = 'stepBack'
+comboModeCheatsheetDelayMS = 1000
+dictationActivationMode = 'toggle'
+dictationWindowPosition = 'topCenter'
+shelfCatalogEnabled = false
+talkModeDoublePressTrigger = 'rightCommand'
+talkModeModifierTrigger = 'hyper'
+themeIdentifier = 'com.brnbw.tuna.themes.Notch'
+
+[[catalogSettings]]
+catalogIdentifier = 'tuna.prompts'
+
+    [catalogSettings.values]
+    Provider = 'apple'
+
+[[catalogSettings]]
+catalogIdentifier = 'tuna.text-actions'
+
+    [catalogSettings.values]
+    TextActionsFileExtension = 'txt'
